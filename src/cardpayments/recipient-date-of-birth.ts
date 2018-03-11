@@ -1,8 +1,8 @@
 export class RecipientDateOfBirth {
 
-  day?: string;
-  month?: string;
-  year?: string;
+  private day?: string;
+  private month?: string;
+  private year?: string;
 
   constructor(resp?: RecipientDateOfBirth) {
     if (!resp)
@@ -14,8 +14,10 @@ export class RecipientDateOfBirth {
 
   setDay(day: string): void { this.day = day; }
   getDay(): string | undefined { return this.day; }
+  
   setMonth(month: string): void { this.month = month; }
   getMonth(): string | undefined { return this.month; }
+  
   setYear(year: string): void { this.year = year; }
   getYear(): string | undefined { return this.year; }
 

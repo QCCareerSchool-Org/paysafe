@@ -7,24 +7,24 @@ import { PaysafeError } from '../paysafe-error';
 
 export class Refund extends RequestObject {
 
-  id?: any;
-  merchantRefNum?: string;
-  amount?: string;
-  childAccountNum?: any;
-  dupCheck?: any;
-  txnTime?: any;
-  error?: PaysafeError;
-  status?: any;
-  riskReasonCode?: any;
-  acquirerResponse?: AcquirerResponse;
-  settlements?: Settlement;
-  links?: Link[];
-  refunds?: Refund[];
-  currencyCode?: string;
-  originalMerchantRefNum?: string;
-  mode: any;
-  authType: any;
-  confirmationNumber: any;
+  private id?: any;
+  private merchantRefNum?: string;
+  private amount?: string;
+  private childAccountNum?: any;
+  private dupCheck?: any;
+  private txnTime?: any;
+  private error?: PaysafeError;
+  private status?: any;
+  private riskReasonCode?: any;
+  private acquirerResponse?: AcquirerResponse;
+  private settlements?: Settlement;
+  private links?: Link[];
+  private refunds?: Refund[];
+  private currencyCode?: string;
+  private originalMerchantRefNum?: string;
+  private mode: any;
+  private authType: any;
+  private confirmationNumber: any;
 
   constructor(resp?: Refund) {
     super();
@@ -57,38 +57,55 @@ export class Refund extends RequestObject {
 
   setConfirmationNumber(confirmationNumber: any): void { this.confirmationNumber = confirmationNumber; }
   getConfirmationNumber(): any | undefined { return this.confirmationNumber; }
+
   setAuthType(authType: any): void { this.authType = authType; }
   getAuthType(): any | undefined { return this.authType; }
+
   setMode(mode: any): void { this.mode = mode; }
   getMode(): any | undefined { return this.mode; }
+
   setOriginalMerchantRefNum(originalMerchantRefNum: string): void { this.originalMerchantRefNum = originalMerchantRefNum; }
   getOriginalMerchantRefNum(): string | undefined { return this.originalMerchantRefNum; }
+
   setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
   getCurrencyCode(): string | undefined { return this.currencyCode; }
+
   setRefunds(refunds: Refund[]): void { this.refunds = refunds; }
   getRefunds(): Refund[] | undefined { return this.refunds; }
+
   setStatus(status: any): void { this.status = status; }
   getStatus(): any | undefined { return this.status; }
+
   setLinks(links: Link[]): void { this.links = links; }
   getLinks(): Link[] | undefined { return this.links; }
+
   setSettlements(settlements: Settlement): void { this.settlements = settlements; }
   getSettlements(): Settlement | undefined { return this.settlements; }
+
   setTxnTime(txnTime: any): void { this.txnTime = txnTime; }
   getTxnTime(): any | undefined { return this.txnTime; }
+
   setDupCheck(dupCheck: any): void { this.dupCheck = dupCheck; }
   getDupCheck(): any | undefined { return this.dupCheck; }
+
   setChildAccountNum(childAccountNum: any): void { this.childAccountNum = childAccountNum; }
   getChildAccountNum(): any | undefined { return this.childAccountNum; }
+
   setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
   getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
+
   setRiskReasonCode(riskReasonCode: any): void { this.riskReasonCode = riskReasonCode; }
   getRiskReasonCode(): any | undefined { return this.riskReasonCode; }
+
   setError(error: PaysafeError): void { this.error = error; }
   getError(): PaysafeError | undefined { return this.error; }
+
   setAmount(amount: string): void { this.amount = amount; }
   getAmount(): string | undefined { return this.amount; }
+
   setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
   getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
+
   setId(id: any): void { this.id = id; }
   getId(): any | undefined { return this.id; }
 

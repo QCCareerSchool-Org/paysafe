@@ -1,6 +1,6 @@
 export declare class MerchantDescriptor {
-    dynamicDescriptor?: string;
-    phone?: string;
+    private dynamicDescriptor?;
+    private phone?;
     constructor(resp?: MerchantDescriptor);
     setDynamicDescriptor(dynamicDescriptor: string): void;
     getDynamicDescriptor(): string | undefined;

@@ -1,9 +1,9 @@
 import { RecipientDateOfBirth } from './recipient-date-of-birth';
 export declare class VisaAdditionalAuthData {
-    recipientDateOfBirth?: RecipientDateOfBirth;
-    recipientZip?: string;
-    recipientLastName?: string;
-    recipientAccountNumber?: string;
+    private recipientDateOfBirth?;
+    private recipientZip?;
+    private recipientLastName?;
+    private recipientAccountNumber?;
     constructor(resp?: VisaAdditionalAuthData);
     setrecipientDateOfBirth(recipientDateOfBirth: RecipientDateOfBirth): void;
     getrecipientDateOfBirth(): RecipientDateOfBirth | undefined;

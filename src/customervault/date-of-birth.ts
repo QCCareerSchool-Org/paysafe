@@ -1,8 +1,8 @@
 export class DateOfBirth {
 
-  day?: string;
-  month?: string;
-  year?: string;
+  private day?: string;
+  private month?: string;
+  private year?: string;
 
   constructor(resp?: DateOfBirth) {
     if (!resp)

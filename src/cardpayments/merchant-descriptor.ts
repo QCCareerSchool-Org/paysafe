@@ -1,7 +1,7 @@
 export class MerchantDescriptor {
 
-  dynamicDescriptor?: string;
-  phone?: string;
+  private dynamicDescriptor?: string;
+  private phone?: string;
 
   constructor(resp?: MerchantDescriptor) {
     if (!resp)
@@ -12,6 +12,7 @@ export class MerchantDescriptor {
 
   setDynamicDescriptor(dynamicDescriptor: string): void { this.dynamicDescriptor = dynamicDescriptor; }
   getDynamicDescriptor(): string | undefined { return this.dynamicDescriptor; }
+  
   setPhone(phone: string): void { this.phone = phone; }
   getPhone(): string | undefined { return this.phone; }
 

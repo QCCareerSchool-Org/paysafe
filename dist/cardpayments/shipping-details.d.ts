@@ -1,14 +1,14 @@
 export declare class ShippingDetails {
-    carrier?: string;
-    shipMethod?: string;
-    recipientName?: string;
-    street?: string;
-    street2?: string;
-    city?: string;
-    state?: string;
-    country?: string;
-    zip?: string;
-    phone?: string;
+    private carrier?;
+    private shipMethod?;
+    private recipientName?;
+    private street?;
+    private street2?;
+    private city?;
+    private state?;
+    private country?;
+    private zip?;
+    private phone?;
     constructor(resp?: ShippingDetails);
     setCarrier(carrier: string): void;
     getCarrier(): string | undefined;

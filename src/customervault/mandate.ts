@@ -5,18 +5,18 @@ import { BACSBankAccount } from "./bacs-bank-account";
 
 export class Mandate {
 
-  id?: string;
-  reference?: string;
-  bankAccountId?: string;
-  statusChangeDate?: string;
-  statusReasonCode?: string;
-  statusReason?: string;
-  paymentToken?: string;
-  error?: PaysafeError;
-  status?: string;
-  profiles?: Profile;
-  sepabankaccounts?: SEPABankAccount;
-  bacsbankaccounts?: BACSBankAccount;
+  private id?: string;
+  private reference?: string;
+  private bankAccountId?: string;
+  private statusChangeDate?: string;
+  private statusReasonCode?: string;
+  private statusReason?: string;
+  private paymentToken?: string;
+  private error?: PaysafeError;
+  private status?: string;
+  private profiles?: Profile;
+  private sepabankaccounts?: SEPABankAccount;
+  private bacsbankaccounts?: BACSBankAccount;
 
   constructor(resp?: Mandate) {
     if (!resp)

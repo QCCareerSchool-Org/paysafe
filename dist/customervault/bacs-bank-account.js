@@ -22,7 +22,7 @@ class BACSBankAccount {
             if (resp.mandates instanceof Array)
                 this.mandates = create_array_1.createArray(resp.mandates, mandate_1.Mandate);
             else
-                this.mandates = resp.mandates;
+                this.mandates = new mandate_1.Mandate(resp.mandates);
         }
         this.lastDigits = resp.lastDigits;
         this.paymentToken = resp.paymentToken;

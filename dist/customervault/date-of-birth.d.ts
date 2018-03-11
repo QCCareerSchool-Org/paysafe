@@ -1,7 +1,7 @@
 export declare class DateOfBirth {
-    day?: string;
-    month?: string;
-    year?: string;
+    private day?;
+    private month?;
+    private year?;
     constructor(resp?: DateOfBirth);
     setDay(day: string): void;
     getDay(): string | undefined;

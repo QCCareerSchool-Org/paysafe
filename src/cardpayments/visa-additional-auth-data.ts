@@ -2,10 +2,10 @@ import { RecipientDateOfBirth } from './recipient-date-of-birth';
 
 export class VisaAdditionalAuthData {
 
-  recipientDateOfBirth?: RecipientDateOfBirth;
-  recipientZip?: string;
-  recipientLastName?: string;
-  recipientAccountNumber?: string;
+  private recipientDateOfBirth?: RecipientDateOfBirth;
+  private recipientZip?: string;
+  private recipientLastName?: string;
+  private recipientAccountNumber?: string;
 
   constructor(resp?: VisaAdditionalAuthData) {
     if (!resp)
@@ -19,10 +19,13 @@ export class VisaAdditionalAuthData {
 
   setrecipientDateOfBirth(recipientDateOfBirth: RecipientDateOfBirth): void { this.recipientDateOfBirth = recipientDateOfBirth; }
   getrecipientDateOfBirth(): RecipientDateOfBirth | undefined { return this.recipientDateOfBirth; }
+  
   setrecipientZip(recipientZip: string): void { this.recipientZip = recipientZip; }
   getrecipientZip(): string | undefined { return this.recipientZip; }
+  
   setrecipientLastName(recipientLastName: string): void { this.recipientLastName = recipientLastName; }
   getrecipientLastName(): string | undefined { return this.recipientLastName; }
+  
   setrecipientAccountNumber(recipientAccountNumber: string): void { this.recipientAccountNumber = recipientAccountNumber; }
   getrecipientAccountNumber(): string | undefined { return this.recipientAccountNumber; }
 

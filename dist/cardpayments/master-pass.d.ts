@@ -1,8 +1,8 @@
 export declare class MasterPass {
-    payPassWalletIndicator?: any;
-    authenticationMethod?: any;
-    cardEnrollmentMethod?: any;
-    masterCardAssignedId?: any;
+    private payPassWalletIndicator?;
+    private authenticationMethod?;
+    private cardEnrollmentMethod?;
+    private masterCardAssignedId?;
     constructor(resp?: MasterPass);
     setCardEnrollmentMethod(cardEnrollmentMethod: any): void;
     getCardEnrollmentMethod(): any | undefined;

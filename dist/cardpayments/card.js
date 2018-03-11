@@ -4,6 +4,7 @@ const paysafe_error_1 = require("../paysafe-error");
 const create_array_1 = require("../common/create-array");
 const billing_details_1 = require("./billing-details");
 const card_expiry_1 = require("./card-expiry");
+const profile_1 = require("../customervault/profile");
 class Card {
     constructor(resp) {
         if (!resp)
@@ -32,36 +33,33 @@ class Card {
         this.cvv = resp.cvv;
         this.track1 = resp.track1;
         this.track2 = resp.track2;
-        this.profile = resp.profile;
+        this.status = resp.status;
+        if (this.profile)
+            this.profile = new profile_1.Profile(resp.profile);
         if (resp.error)
             this.error = new paysafe_error_1.PaysafeError(resp.error);
-        this.status = resp.status;
     }
+    setId(id) { this.id = id; }
+    getId() { return this.id; }
     setSingleUseToken(singleUseToken) { this.singleUseToken = singleUseToken; }
     getSingleUseToken() { return this.singleUseToken; }
     setBrand(brand) { this.brand = brand; }
     getBrand() { return this.brand; }
-    setStatus(status) { this.status = status; }
-    getStatus() { return this.status; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
-    setProfile(profile) { this.profile = profile; }
-    getProfile() { return this.profile; }
-    setDefaultCardIndicator(defaultCardIndicator) { this.defaultCardIndicator = defaultCardIndicator; }
-    getDefaultCardIndicator() { return this.defaultCardIndicator; }
-    setBillingAddressId(billingAddressId) { this.billingAddressId = billingAddressId; }
-    getBillingAddressId() { return this.billingAddressId; }
-    setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
-    ;
-    getBillingDetails() { return this.billingDetails; }
-    setCardType(cardType) { this.cardType = cardType; }
-    getCardType() { return this.cardType; }
     setNickName(nickName) { this.nickName = nickName; }
     getNickName() { return this.nickName; }
     setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
     getMerchantRefNum() { return this.merchantRefNum; }
     setHolderName(holderName) { this.holderName = holderName; }
     getHolderName() { return this.holderName; }
+    setCardType(cardType) { this.cardType = cardType; }
+    getCardType() { return this.cardType; }
+    setBillingAddressId(billingAddressId) { this.billingAddressId = billingAddressId; }
+    getBillingAddressId() { return this.billingAddressId; }
+    setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
+    ;
+    getBillingDetails() { return this.billingDetails; }
+    setDefaultCardIndicator(defaultCardIndicator) { this.defaultCardIndicator = defaultCardIndicator; }
+    getDefaultCardIndicator() { return this.defaultCardIndicator; }
     setPaymentToken(paymentToken) { this.paymentToken = paymentToken; }
     getPaymentToken() { return this.paymentToken; }
     setCardNum(cardNum) { this.cardNum = cardNum; }
@@ -78,7 +76,11 @@ class Card {
     getTrack1() { return this.track1; }
     settrack2(track2) { this.track2 = track2; }
     gettrack2() { return this.track2; }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
+    setStatus(status) { this.status = status; }
+    getStatus() { return this.status; }
+    setProfile(profile) { this.profile = profile; }
+    getProfile() { return this.profile; }
+    setError(error) { this.error = error; }
+    getError() { return this.error; }
 }
 exports.Card = Card;

@@ -9,27 +9,27 @@ import { Profile } from '../customervault/profile';
 
 export class Card {
 
-  id?: any;
-  singleUseToken?: string;
-  brand?: any;
-  nickName?: any;
-  merchantRefNum?: string;
-  holderName?: string;
-  cardType?: any;
-  billingAddressId?: any;
-  billingDetails?: BillingDetails | BillingDetails[];
-  defaultCardIndicator?: 'true' | 'false';
-  paymentToken?: string;
-  cardNum?: string;
-  type?: any;
-  lastDigits?: string;
-  cardExpiry?: CardExpiry;
-  cvv?: string;
-  track1?: string;
-  track2?: string;
-  profile?: Profile;
-  error?: PaysafeError;
-  status?: any;
+  private id?: string;
+  private singleUseToken?: string;
+  private brand?: string;
+  private nickName?: string;
+  private merchantRefNum?: string;
+  private holderName?: string;
+  private cardType?: string;
+  private billingAddressId?: string;
+  private billingDetails?: BillingDetails | BillingDetails[];
+  private defaultCardIndicator?: 'true' | 'false';
+  private paymentToken?: string;
+  private cardNum?: string;
+  private type?: string;
+  private lastDigits?: string;
+  private cardExpiry?: CardExpiry;
+  private cvv?: string;
+  private track1?: string;
+  private track2?: string;
+  private status?: string;
+  private profile?: Profile;
+  private error?: PaysafeError;
 
   constructor(resp?: Card) {
     if (!resp)
@@ -58,53 +58,74 @@ export class Card {
     this.cvv = resp.cvv;
     this.track1 = resp.track1;
     this.track2 = resp.track2;
-    this.profile = resp.profile;
+    this.status = resp.status;
+    if (this.profile)
+      this.profile = new Profile(resp.profile);
     if (resp.error)
       this.error = new PaysafeError(resp.error);
-    this.status = resp.status;
   }
+
+  setId(id: string): void { this.id = id; }
+  getId(): string | undefined { return this.id; }
 
   setSingleUseToken(singleUseToken: string): void { this.singleUseToken = singleUseToken; }
   getSingleUseToken(): string | undefined { return this.singleUseToken; }
-  setBrand(brand: any): void { this.brand = brand; }
-  getBrand(): any | undefined { return this.brand; }
-  setStatus(status: any): void { this.status = status; }
-  getStatus(): any | undefined { return this.status; }
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-  setProfile(profile: Profile): void { this.profile = profile; }
-  getProfile(): Profile | undefined { return this.profile; }
-  setDefaultCardIndicator(defaultCardIndicator: any): void { this.defaultCardIndicator = defaultCardIndicator; }
-  getDefaultCardIndicator(): any | undefined { return this.defaultCardIndicator; }
-  setBillingAddressId(billingAddressId: any): void { this.billingAddressId = billingAddressId; }
-  getBillingAddressId(): any | undefined { return this.billingAddressId; }
-  setBillingDetails(billingDetails: BillingDetails | BillingDetails[]): void { this.billingDetails = billingDetails };
-  getBillingDetails(): BillingDetails | BillingDetails[] | undefined { return this.billingDetails; }
-  setCardType(cardType: any): void { this.cardType = cardType; }
-  getCardType(): any | undefined { return this.cardType; }
-  setNickName(nickName: any): void { this.nickName = nickName; }
-  getNickName(): any | undefined { return this.nickName; }
+
+  setBrand(brand: string): void { this.brand = brand; }
+  getBrand(): string | undefined { return this.brand; }
+
+  setNickName(nickName: string): void { this.nickName = nickName; }
+  getNickName(): string | undefined { return this.nickName; }
+
   setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
   getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
+
   setHolderName(holderName: string): void { this.holderName = holderName; }
   getHolderName(): string | undefined { return this.holderName; }
+
+  setCardType(cardType: string): void { this.cardType = cardType; }
+  getCardType(): string | undefined { return this.cardType; }
+
+  setBillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
+  getBillingAddressId(): string | undefined { return this.billingAddressId; }
+
+  setBillingDetails(billingDetails: BillingDetails | BillingDetails[]): void { this.billingDetails = billingDetails };
+  getBillingDetails(): BillingDetails | BillingDetails[] | undefined { return this.billingDetails; }
+
+  setDefaultCardIndicator(defaultCardIndicator: 'true' | 'false'): void { this.defaultCardIndicator = defaultCardIndicator; }
+  getDefaultCardIndicator(): string | undefined { return this.defaultCardIndicator; }
+
   setPaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
   getPaymentToken(): string | undefined { return this.paymentToken; }
+
   setCardNum(cardNum: string): void { this.cardNum = cardNum; }
   getCardNum(): string | undefined { return this.cardNum; }
-  setType(type: any): void { this.type = type; }
-  getType(): any | undefined { return this.type; }
+
+  setType(type: string): void { this.type = type; }
+  getType(): string | undefined { return this.type; }
+
   setLastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
   getLastDigits(): string | undefined { return this.lastDigits; }
+
   setCardExpiry(cardExpiry: CardExpiry): void { this.cardExpiry = cardExpiry; }
   getCardExpiry(): CardExpiry | undefined { return this.cardExpiry; }
-  setCvv(cvv: any): void { this.cvv = cvv; }
-  getCvv(): any | undefined { return this.cvv; }
+
+  setCvv(cvv: string): void { this.cvv = cvv; }
+  getCvv(): string | undefined { return this.cvv; }
+
   setTrack1(track1: string): void { this.track1 = track1; }
   getTrack1(): string | undefined { return this.track1; }
+
   settrack2(track2: string): void { this.track2 = track2; }
   gettrack2(): string | undefined { return this.track2; }
-  setId(id: any): void { this.id = id; }
-  getId(): any | undefined { return this.id; }
+
+  setStatus(status: string): void { this.status = status; }
+  getStatus(): string | undefined { return this.status; }
+
+  setProfile(profile: Profile): void { this.profile = profile; }
+  getProfile(): Profile | undefined { return this.profile; }
+
+  setError(error: PaysafeError): void { this.error = error; }
+  getError(): PaysafeError | undefined { return this.error; }
 
 }

@@ -6,22 +6,22 @@ import { Profile } from './profile';
 
 export class BACSBankAccount {
 
-  id?: string;
-  nickName?: string;
-  merchantRefNum?: string;
-  status?: string;
-  statusReason?: string;
-  accountNumber?: string;
-  accountHolderName?: string;
-  sortCode?: string;
-  billingAddressId?: string;
-  mandates?: Mandate | Mandate[];
-  lastDigits?: string;
-  paymentToken?: string;
-  mandateReference?: string;
-  error?: PaysafeError;
-  profile?: Profile;
-  links?: Link[];
+  private id?: string;
+  private nickName?: string;
+  private merchantRefNum?: string;
+  private status?: string;
+  private statusReason?: string;
+  private accountNumber?: string;
+  private accountHolderName?: string;
+  private sortCode?: string;
+  private billingAddressId?: string;
+  private mandates?: Mandate | Mandate[];
+  private lastDigits?: string;
+  private paymentToken?: string;
+  private mandateReference?: string;
+  private error?: PaysafeError;
+  private profile?: Profile;
+  private links?: Link[];
 
   constructor(resp?: BACSBankAccount) {
     if (!resp)
@@ -39,7 +39,7 @@ export class BACSBankAccount {
       if (resp.mandates instanceof Array)
         this.mandates = createArray(resp.mandates, Mandate);
       else
-        this.mandates = resp.mandates;
+        this.mandates = new Mandate(resp.mandates);
     }
     this.lastDigits = resp.lastDigits;
     this.paymentToken = resp.paymentToken;

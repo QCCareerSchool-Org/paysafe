@@ -3,20 +3,20 @@ import { PaysafeError } from '../paysafe-error';
 
 export class Address {
 
-  id?: string;
-  nickName?: string;
-  street?: string;
-  street2?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-  recipientName?: string;
-  phone?: string;
-  profile?: Profile;
-  error?: PaysafeError;
-  status?: string;
-  defaultShippingAddressIndicator?: 'true' | 'false';
+  private id?: string;
+  private nickName?: string;
+  private street?: string;
+  private street2?: string;
+  private city?: string;
+  private state?: string;
+  private zip?: string;
+  private country?: string;
+  private recipientName?: string;
+  private phone?: string;
+  private profile?: Profile;
+  private error?: PaysafeError;
+  private status?: string;
+  private defaultShippingAddressIndicator?: 'true' | 'false';
 
   constructor(resp?: Address) {
     if (!resp)

@@ -1,6 +1,6 @@
 export declare class CardExpiry {
-    month?: string;
-    year?: string;
+    private month?;
+    private year?;
     constructor(resp?: CardExpiry);
     setMonth(month: string): void;
     getMonth(): string | undefined;

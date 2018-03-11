@@ -1,7 +1,7 @@
 export class CardExpiry {
 
-  month?: string;
-  year?: string;
+  private month?: string;
+  private year?: string;
 
   constructor(resp?: CardExpiry) {
     if (!resp)
@@ -12,6 +12,7 @@ export class CardExpiry {
 
   setMonth(month: string): void { this.month = month; }
   getMonth(): string | undefined { return this.month; }
+  
   setYear(year: string): void { this.year = year; }
   getYear(): string | undefined { return this.year; }
 
