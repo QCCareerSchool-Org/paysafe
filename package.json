@@ -8,7 +8,7 @@
     "test": "mocha dist/**/*.spec.js"
   },
   "author": "Dave Welsh",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@types/node": "^9.4.7",
     "@types/request": "^2.47.0",

@@ -23,6 +23,7 @@ import { ShippingDetails } from './cardpayments/shipping-details';
 import { Verification } from './cardpayments/verification';
 import { VisaAdditionalAuthData } from './cardpayments/visa-additional-auth-data';
 import { Address } from './customervault/address';
+import { DateOfBirth } from './customervault/date-of-birth';
 import { Profile } from './customervault/profile';
 export declare class PaysafeAPIClient {
     private apiKey;
@@ -50,6 +51,7 @@ export declare class PaysafeAPIClient {
     Verification: typeof Verification;
     VisaAdditionalAuthData: typeof VisaAdditionalAuthData;
     Address: typeof Address;
+    DateOfBirth: typeof DateOfBirth;
     Profile: typeof Profile;
     constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string);
     updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string): void;

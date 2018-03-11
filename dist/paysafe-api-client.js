@@ -23,7 +23,7 @@ const shipping_details_1 = require("./cardpayments/shipping-details");
 const verification_1 = require("./cardpayments/verification");
 const visa_additional_auth_data_1 = require("./cardpayments/visa-additional-auth-data");
 const address_1 = require("./customervault/address");
-// import { DateOfBirth } from './customervault/date-of-birth';
+const date_of_birth_1 = require("./customervault/date-of-birth");
 // import { Mandate } from './customervault/mandate';
 const profile_1 = require("./customervault/profile");
 // import { ACHBankAccount } from './customervault/ach-bank-account';
@@ -65,7 +65,7 @@ class PaysafeAPIClient {
         this.VisaAdditionalAuthData = visa_additional_auth_data_1.VisaAdditionalAuthData;
         // customer vault
         this.Address = address_1.Address;
-        // DateOfBirth = DateOfBirth;
+        this.DateOfBirth = date_of_birth_1.DateOfBirth;
         // Mandate = Mandate;
         this.Profile = profile_1.Profile;
         this.apiKey = apiKey;

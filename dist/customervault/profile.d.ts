@@ -64,14 +64,14 @@ export declare class Profile {
     getAddresses(): Address | Address[] | undefined;
     setCards(cards: Card | Card[]): void;
     getCards(): Card | Card[] | undefined;
-    setACHBankAccounts(achbankaccounts: ACHBankAccount): void;
-    getACHBankAccounts(): ACHBankAccount | undefined;
-    setBACSBankAccounts(bacsbankaccounts: BACSBankAccount): void;
-    getBACSBankAccounts(): BACSBankAccount | undefined;
-    setEFTBankAccounts(eftbankaccounts: EFTBankAccount): void;
-    getEFTBankAccounts(): EFTBankAccount | undefined;
-    setSEPABankAccounts(sepabankaccounts: SEPABankAccount): void;
-    getSEPABankAccounts(): SEPABankAccount | undefined;
+    setACHBankAccounts(achbankaccounts: ACHBankAccount | ACHBankAccount[]): void;
+    getACHBankAccounts(): ACHBankAccount | ACHBankAccount[] | undefined;
+    setBACSBankAccounts(bacsbankaccounts: BACSBankAccount | BACSBankAccount[]): void;
+    getBACSBankAccounts(): BACSBankAccount | BACSBankAccount[] | undefined;
+    setEFTBankAccounts(eftbankaccounts: EFTBankAccount | EFTBankAccount[]): void;
+    getEFTBankAccounts(): EFTBankAccount | EFTBankAccount[] | undefined;
+    setSEPABankAccounts(sepabankaccounts: SEPABankAccount | SEPABankAccount[]): void;
+    getSEPABankAccounts(): SEPABankAccount | SEPABankAccount[] | undefined;
     setError(error: PaysafeError): void;
     getError(): PaysafeError | undefined;
 }

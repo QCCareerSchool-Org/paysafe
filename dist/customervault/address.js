@@ -23,33 +23,33 @@ class Address {
         this.status = resp.status;
         this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
     }
-    setDefaultShippingAddressIndicator(defaultShippingAddressIndicator) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
-    getDefaultShippingAddressIndicator() { return this.defaultShippingAddressIndicator; }
-    setStatus(status) { this.status = status; }
-    getStatus() { return this.status; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
+    setId(id) { this.id = id; }
+    getId() { return this.id; }
+    setNickName(nickName) { this.nickName = nickName; }
+    getNickName() { return this.nickName; }
+    setStreet(street) { this.street = street; }
+    getStreet() { return this.street; }
+    setStreet2(street2) { this.street2 = street2; }
+    getStreet2() { return this.street2; }
+    setCity(city) { this.city = city; }
+    getCity() { return this.city; }
+    setState(state) { this.state = state; }
+    getState() { return this.state; }
+    setZip(zip) { this.zip = zip; }
+    getZip() { return this.zip; }
+    setCountry(country) { this.country = country; }
+    getCountry() { return this.country; }
+    setRecipientName(recipientName) { this.recipientName = recipientName; }
+    getRecipientName() { return this.recipientName; }
     setPhone(phone) { this.phone = phone; }
     getPhone() { return this.phone; }
     setProfile(profile) { this.profile = profile; }
     getProfile() { return this.profile; }
-    setRecipientName(recipientName) { this.recipientName = recipientName; }
-    getRecipientName() { return this.recipientName; }
-    setCountry(country) { this.country = country; }
-    getCountry() { return this.country; }
-    setZip(zip) { this.zip = zip; }
-    getZip() { return this.zip; }
-    setState(state) { this.state = state; }
-    getState() { return this.state; }
-    setCity(city) { this.city = city; }
-    getCity() { return this.city; }
-    setStreet2(street2) { this.street2 = street2; }
-    getStreet2() { return this.street2; }
-    setStreet(street) { this.street = street; }
-    getStreet() { return this.street; }
-    setNickName(nickName) { this.nickName = nickName; }
-    getNickName() { return this.nickName; }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
+    setError(error) { this.error = error; }
+    getError() { return this.error; }
+    setStatus(status) { this.status = status; }
+    getStatus() { return this.status; }
+    setDefaultShippingAddressIndicator(defaultShippingAddressIndicator) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
+    getDefaultShippingAddressIndicator() { return this.defaultShippingAddressIndicator; }
 }
 exports.Address = Address;

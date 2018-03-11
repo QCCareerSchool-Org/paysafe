@@ -28,7 +28,7 @@ import { Verification } from './cardpayments/verification';
 import { VisaAdditionalAuthData } from './cardpayments/visa-additional-auth-data';
 
 import { Address } from './customervault/address';
-// import { DateOfBirth } from './customervault/date-of-birth';
+import { DateOfBirth } from './customervault/date-of-birth';
 // import { Mandate } from './customervault/mandate';
 import { Profile } from './customervault/profile';
 // import { ACHBankAccount } from './customervault/ach-bank-account';
@@ -74,7 +74,7 @@ export class PaysafeAPIClient {
 
   // customer vault
   Address = Address;
-  // DateOfBirth = DateOfBirth;
+  DateOfBirth = DateOfBirth;
   // Mandate = Mandate;
   Profile = Profile;
   // ACHBankAccount = ACHBankAccount;
