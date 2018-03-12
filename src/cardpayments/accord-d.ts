@@ -1,4 +1,3 @@
-
 const DEFERRED_PAYMENT = 'DEFERRED_PAYMENT';
 
 export class AccordD {
@@ -8,7 +7,7 @@ export class AccordD {
   private gracePeriod?: string;
   private term?: string;
 
-  constructor(resp: AccordD) {
+  constructor(resp?: AccordD) {
     if (!resp)
       return;
     this.financingType = resp.financingType;

@@ -52,8 +52,6 @@ class Authorization extends request_object_1.RequestObject {
         this.currencyCode = resp.currencyCode;
         this.avsResponse = resp.avsResponse;
         this.cvvVerification = resp.cvvVerification;
-        if (resp.error)
-            this.error = new paysafe_error_1.PaysafeError(resp.error);
         this.status = resp.status;
         this.riskReasonCode = resp.riskReasonCode;
         if (resp.acquirerResponse)
@@ -66,70 +64,73 @@ class Authorization extends request_object_1.RequestObject {
             this.auths = create_array_1.createArray(resp.auths, Authorization);
         if (resp.settlements)
             this.settlements = create_array_1.createArray(resp.settlements, settlement_1.Settlement);
+        if (resp.error)
+            this.error = new paysafe_error_1.PaysafeError(resp.error);
     }
-    setSettlements(settlements) { this.settlements = settlements; }
-    getSettlements() { return this.settlements; }
-    setAuths(auths) { this.auths = auths; }
-    getAuths() { return this.auths; }
-    setLinks(links) { this.links = links; }
-    getLinks() { return this.links; }
-    setShippingDetails(shippingDetails) { this.shippingDetails = shippingDetails; }
-    getShippingDetails() { return this.shippingDetails; }
-    setVisaAdditionalAuthData(visaAdditionalAuthData) { this.visaAdditionalAuthData = visaAdditionalAuthData; }
-    getVisaAdditionalAuthData() { return this.visaAdditionalAuthData; }
-    setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
-    getAcquirerResponse() { return this.acquirerResponse; }
-    setRiskReasonCode(riskReasonCode) { this.riskReasonCode = riskReasonCode; }
-    getRiskReasonCode() { return this.riskReasonCode; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
-    setCvvVerification(cvvVerification) { this.cvvVerification = cvvVerification; }
-    getCvvVerification() { return this.cvvVerification; }
-    setAvsResponse(avsResponse) { this.avsResponse = avsResponse; }
-    getAvsResponse() { return this.avsResponse; }
-    setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
-    getCurrencyCode() { return this.currencyCode; }
-    setTxnTime(txnTime) { this.txnTime = txnTime; }
-    getTxnTime() { return this.txnTime; }
-    setMasterPass(masterPass) { this.masterPass = masterPass; }
-    getMasterPass() { return this.masterPass; }
-    setDescription(description) { this.description = description; }
-    getDescription() { return this.description; }
-    setAccordD(accordD) { this.accordD = accordD; }
-    getAccordD() { return this.accordD; }
-    setMerchantDescriptor(merchantDescriptor) { this.merchantDescriptor = merchantDescriptor; }
-    getMerchantDescriptor() { return this.merchantDescriptor; }
-    setCard(card) { this.card = card; }
-    getCard() { return this.card; }
-    setKeywords(keywords) { this.keywords = keywords; }
-    getKeywords() { return this.keywords; }
-    setDupCheck(dupCheck) { this.dupCheck = dupCheck; }
-    getDupCheck() { return this.dupCheck; }
-    setRecurring(recurring) { this.recurring = recurring; }
-    getRecurring() { return this.recurring; }
-    setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
-    getBillingDetails() { return this.billingDetails; }
-    setProfile(profile) { this.profile = profile; }
-    getProfile() { return this.profile; }
-    setAuthCode(authCode) { this.authCode = authCode; }
-    getAuthCode() { return this.authCode; }
-    setCustomerIp(customerIp) { this.customerIp = customerIp; }
-    getCustomerIp() { return this.customerIp; }
-    setAuthentication(authentication) { this.authentication = authentication; }
-    getAuthentication() { return this.authentication; }
-    setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }
-    getChildAccountNum() { return this.childAccountNum; }
-    setAvailableToSettle(availableToSettle) { this.availableToSettle = availableToSettle; }
-    getAvailableToSettle() { return this.availableToSettle; }
-    setSettleWithAuth(settleWithAuth) { this.settleWithAuth = settleWithAuth; }
-    getSettleWithAuth() { return this.settleWithAuth; }
-    setAmount(amount) { this.amount = amount; }
-    getAmount() { return this.amount; }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
-    getMerchantRefNum() { return this.merchantRefNum; }
-    setStatus(status) { this.status = status; }
-    getStatus() { return this.status; }
     setId(id) { this.id = id; }
     getId() { return this.id; }
+    deleteId() { delete this.id; }
+    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
+    getMerchantRefNum() { return this.merchantRefNum; }
+    setAmount(amount) { this.amount = amount; }
+    getAmount() { return this.amount; }
+    setSettleWithAuth(settleWithAuth) { this.settleWithAuth = settleWithAuth; }
+    getSettleWithAuth() { return this.settleWithAuth; }
+    setAvailableToSettle(availableToSettle) { this.availableToSettle = availableToSettle; }
+    getAvailableToSettle() { return this.availableToSettle; }
+    setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }
+    getChildAccountNum() { return this.childAccountNum; }
+    setCard(card) { this.card = card; }
+    getCard() { return this.card; }
+    setAuthentication(authentication) { this.authentication = authentication; }
+    getAuthentication() { return this.authentication; }
+    setAuthCode(authCode) { this.authCode = authCode; }
+    getAuthCode() { return this.authCode; }
+    setProfile(profile) { this.profile = profile; }
+    getProfile() { return this.profile; }
+    setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
+    getBillingDetails() { return this.billingDetails; }
+    setShippingDetails(shippingDetails) { this.shippingDetails = shippingDetails; }
+    getShippingDetails() { return this.shippingDetails; }
+    setRecurring(recurring) { this.recurring = recurring; }
+    getRecurring() { return this.recurring; }
+    setCustomerIp(customerIp) { this.customerIp = customerIp; }
+    getCustomerIp() { return this.customerIp; }
+    setDupCheck(dupCheck) { this.dupCheck = dupCheck; }
+    getDupCheck() { return this.dupCheck; }
+    setKeywords(keywords) { this.keywords = keywords; }
+    getKeywords() { return this.keywords; }
+    setMerchantDescriptor(merchantDescriptor) { this.merchantDescriptor = merchantDescriptor; }
+    getMerchantDescriptor() { return this.merchantDescriptor; }
+    setAccordD(accordD) { this.accordD = accordD; }
+    getAccordD() { return this.accordD; }
+    setDescription(description) { this.description = description; }
+    getDescription() { return this.description; }
+    setMasterPass(masterPass) { this.masterPass = masterPass; }
+    getMasterPass() { return this.masterPass; }
+    setTxnTime(txnTime) { this.txnTime = txnTime; }
+    getTxnTime() { return this.txnTime; }
+    setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
+    getCurrencyCode() { return this.currencyCode; }
+    setAvsResponse(avsResponse) { this.avsResponse = avsResponse; }
+    getAvsResponse() { return this.avsResponse; }
+    setCvvVerification(cvvVerification) { this.cvvVerification = cvvVerification; }
+    getCvvVerification() { return this.cvvVerification; }
+    setStatus(status) { this.status = status; }
+    getStatus() { return this.status; }
+    setRiskReasonCode(riskReasonCode) { this.riskReasonCode = riskReasonCode; }
+    getRiskReasonCode() { return this.riskReasonCode; }
+    setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
+    getAcquirerResponse() { return this.acquirerResponse; }
+    setVisaAdditionalAuthData(visaAdditionalAuthData) { this.visaAdditionalAuthData = visaAdditionalAuthData; }
+    getVisaAdditionalAuthData() { return this.visaAdditionalAuthData; }
+    setLinks(links) { this.links = links; }
+    getLinks() { return this.links; }
+    setAuths(auths) { this.auths = auths; }
+    getAuths() { return this.auths; }
+    setSettlements(settlements) { this.settlements = settlements; }
+    getSettlements() { return this.settlements; }
+    setError(error) { this.error = error; }
+    getError() { return this.error; }
 }
 exports.Authorization = Authorization;

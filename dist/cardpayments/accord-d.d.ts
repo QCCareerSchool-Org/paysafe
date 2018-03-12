@@ -3,7 +3,7 @@ export declare class AccordD {
     private plan?;
     private gracePeriod?;
     private term?;
-    constructor(resp: AccordD);
+    constructor(resp?: AccordD);
     setFinancingType(financingType: string): void;
     getFinancingType(): string | undefined;
     setPlan(plan: string): void;

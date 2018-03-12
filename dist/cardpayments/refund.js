@@ -53,6 +53,7 @@ class Refund extends request_object_1.RequestObject {
     getLinks() { return this.links; }
     setSettlements(settlements) { this.settlements = settlements; }
     getSettlements() { return this.settlements; }
+    deleteSettlements() { delete this.settlements; }
     setTxnTime(txnTime) { this.txnTime = txnTime; }
     getTxnTime() { return this.txnTime; }
     setDupCheck(dupCheck) { this.dupCheck = dupCheck; }
@@ -71,5 +72,6 @@ class Refund extends request_object_1.RequestObject {
     getMerchantRefNum() { return this.merchantRefNum; }
     setId(id) { this.id = id; }
     getId() { return this.id; }
+    deleteId() { delete this.id; }
 }
 exports.Refund = Refund;

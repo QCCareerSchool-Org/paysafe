@@ -24,50 +24,46 @@ const verification_1 = require("./cardpayments/verification");
 const visa_additional_auth_data_1 = require("./cardpayments/visa-additional-auth-data");
 const address_1 = require("./customervault/address");
 const date_of_birth_1 = require("./customervault/date-of-birth");
-// import { Mandate } from './customervault/mandate';
+const mandate_1 = require("./customervault/mandate");
 const profile_1 = require("./customervault/profile");
-// import { ACHBankAccount } from './customervault/ach-bank-account';
-// import { BACSBankAccount } from './customervault/bacs-bank-account';
-// import { EFTBankAccount } from './customervault/eft-bank-account';
-// import { SEPABankAccount } from './customervault/sepa-bank-account';
+const ach_bank_account_1 = require("./customervault/ach-bank-account");
+const bacs_bank_account_1 = require("./customervault/bacs-bank-account");
+const eft_bank_account_1 = require("./customervault/eft-bank-account");
+const sepa_bank_account_1 = require("./customervault/sepa-bank-account");
 // import { Purchase } from './directdebit/purchase';
 // import { Standalonecredit } from './directdebit/standalone-credit';
 // import { EnrollmentCheck } from './threedsecure/enrollment-check';
 // import { Authentication3D } from './threedsecure/authentication-3d';
 class PaysafeAPIClient {
-    // ACHBankAccount = ACHBankAccount;
-    // BACSBankAccount = BACSBankAccount;
-    // EFTBankAccount = EFTBankAccount;
-    // SEPABankAccount = SEPABankAccount;
-    // direct debit
-    // Purchase = Purchase;
-    // Standalonecredit = Standalonecredit;
-    // 3D Secure
-    // EnrollmentCheck = EnrollmentCheck;
-    // Authentication3D = Authentication3D;
     constructor(apiKey, apiPassword, environment, accountNumber) {
-        // card payments
-        this.AccordD = accord_d_1.AccordD;
-        this.Authentication = authentication_1.Authentication;
-        this.Authorization = authorization_1.Authorization;
-        this.AuthorizationReversal = authorization_reversal_1.AuthorizationReversal;
-        this.BillingDetails = billing_details_1.BillingDetails;
-        this.Card = card_1.Card;
-        this.CardExpiry = card_expiry_1.CardExpiry;
-        this.MasterPass = master_pass_1.MasterPass;
-        this.MerchantDescriptor = merchant_descriptor_1.MerchantDescriptor;
-        this.Pagination = pagination_1.Pagination;
-        this.RecipientDateOfBirth = recipient_date_of_birth_1.RecipientDateOfBirth;
-        this.Refund = refund_1.Refund;
-        this.Settlement = settlement_1.Settlement;
-        this.ShippingDetails = shipping_details_1.ShippingDetails;
-        this.Verification = verification_1.Verification;
-        this.VisaAdditionalAuthData = visa_additional_auth_data_1.VisaAdditionalAuthData;
-        // customer vault
-        this.Address = address_1.Address;
-        this.DateOfBirth = date_of_birth_1.DateOfBirth;
-        // Mandate = Mandate;
-        this.Profile = profile_1.Profile;
+        this.classes = {
+            // card payments
+            AccordD: accord_d_1.AccordD,
+            Authentication: authentication_1.Authentication,
+            Authorization: authorization_1.Authorization,
+            AuthorizationReversal: authorization_reversal_1.AuthorizationReversal,
+            BillingDetails: billing_details_1.BillingDetails,
+            Card: card_1.Card,
+            CardExpiry: card_expiry_1.CardExpiry,
+            MasterPass: master_pass_1.MasterPass,
+            MerchantDescriptor: merchant_descriptor_1.MerchantDescriptor,
+            Pagination: pagination_1.Pagination,
+            RecipientDateOfBirth: recipient_date_of_birth_1.RecipientDateOfBirth,
+            Refund: refund_1.Refund,
+            Settlement: settlement_1.Settlement,
+            ShippingDetails: shipping_details_1.ShippingDetails,
+            Verification: verification_1.Verification,
+            VisaAdditionalAuthData: visa_additional_auth_data_1.VisaAdditionalAuthData,
+            // customer vault
+            Address: address_1.Address,
+            DateOfBirth: date_of_birth_1.DateOfBirth,
+            Mandate: mandate_1.Mandate,
+            Profile: profile_1.Profile,
+            ACHBankAccount: ach_bank_account_1.ACHBankAccount,
+            BACSBankAccount: bacs_bank_account_1.BACSBankAccount,
+            EFTBankAccount: eft_bank_account_1.EFTBankAccount,
+            SEPABankAccount: sepa_bank_account_1.SEPABankAccount,
+        };
         this.apiKey = apiKey;
         this.apiPassword = apiPassword;
         this.environment = environment;
@@ -85,42 +81,43 @@ class PaysafeAPIClient {
         error.setCode(code);
         return error;
     }
-    CardServiceHandler() {
+    getApiKey() { return this.apiKey; }
+    getApiPassword() { return this.apiPassword; }
+    getEnvironment() { return this.environment; }
+    getAccountNumber() { return this.accountNumber; }
+    getCardServiceHandler() {
         if (!this.cardServiceHandler) {
             this.cardServiceHandler = new card_service_handler_1.CardServiceHandler(this);
         }
         return this.cardServiceHandler;
     }
-    DirectDebitServiceHandler() {
+    getDirectDebitServiceHandler() {
         if (!this.directDebitServiceHandler) {
             this.directDebitServiceHandler = new direct_debit_service_handler_1.DirectDebitServiceHandler(this);
         }
         return this.directDebitServiceHandler;
     }
-    CustomerServiceHandler() {
+    getCustomerServiceHandler() {
         if (!this.customerServiceHandler) {
             this.customerServiceHandler = new customer_service_handler_1.CustomerServiceHandler(this);
         }
         return this.customerServiceHandler;
     }
-    ThreeDSecureServiceHandler() {
+    getThreeDSecureServiceHandler() {
         if (!this.threeDSecureServiceHandler) {
             this.threeDSecureServiceHandler = new three_d_secure_service_handler_1.ThreeDSecureServiceHandler(this);
         }
         return this.threeDSecureServiceHandler;
     }
     processRequest(PaysafeRequest, requestObject) {
-        var requestJson = prepareRequestParameter(requestObject);
-        var reqHeaders = {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
-        };
-        var strRegObject = serializeObject(requestObject);
-        var options = {
-            headers: reqHeaders,
+        const options = {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
+            },
             uri: PaysafeRequest.buildUrl(this.environment.host),
             method: PaysafeRequest.method,
-            body: strRegObject,
+            body: requestObject ? JSON.stringify(requestObject) : '',
             pool: {
                 maxSockets: this.environment.maxSockets,
             },
@@ -139,7 +136,7 @@ class PaysafeAPIClient {
                 }
                 else {
                     try {
-                        body = typeof body === "string" ? deSerializeObject(body) : body;
+                        body = typeof body === 'string' ? JSON.parse(body) : body;
                         resolve(body);
                     }
                     catch (e) {
@@ -157,18 +154,3 @@ function prepareAPICredential(apiKey, apiPassword) {
     return apiCredBuffer.toString('Base64');
 }
 ;
-function prepareRequestParameter(requestObject) {
-    if (requestObject === null)
-        return '';
-    return serializeObject(requestObject);
-}
-function serializeObject(obj) {
-    if (obj === null)
-        return '';
-    return JSON.stringify(obj);
-}
-function deSerializeObject(obj) {
-    if (obj === null)
-        return '';
-    return JSON.parse(obj);
-}

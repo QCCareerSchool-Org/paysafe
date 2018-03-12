@@ -19,38 +19,38 @@ import { RequestObject } from '../request-object';
 
 export class Authorization extends RequestObject {
 
-  id?: string;
-  merchantRefNum?: string;
-  amount?: string;
-  settleWithAuth?: any;
-  availableToSettle?: any;
-  childAccountNum?: any;
-  card?: any;
-  authentication?: Authentication;
-  authCode?: any;
-  profile?: any;
-  billingDetails?: BillingDetails;
-  shippingDetails?: ShippingDetails;
-  recurring?: any;
-  customerIp?: any;
-  dupCheck?: any;
-  keywords?: any;
-  merchantDescriptor?: MerchantDescriptor;
-  accordD?: AccordD;
-  description?: any;
-  masterPass?: MasterPass;
-  txnTime?: any;
-  currencyCode?: any;
-  avsResponse?: any;
-  cvvVerification?: any;
-  error?: PaysafeError;
-  status?: any;
-  riskReasonCode?: any;
-  acquirerResponse?: AcquirerResponse;
-  visaAdditionalAuthData?: VisaAdditionalAuthData;
-  links?: Link[];
-  auths?: Authorization[];
-  settlements?: Settlement[];
+  private id?: string;
+  private merchantRefNum?: string;
+  private amount?: string;
+  private settleWithAuth?: string;
+  private availableToSettle?: string;
+  private childAccountNum?: string;
+  private card?: Card;
+  private authentication?: Authentication;
+  private authCode?: string;
+  private profile?: Profile;
+  private billingDetails?: BillingDetails;
+  private shippingDetails?: ShippingDetails;
+  private recurring?: string;
+  private customerIp?: string;
+  private dupCheck?: string;
+  private keywords?: string;
+  private merchantDescriptor?: MerchantDescriptor;
+  private accordD?: AccordD;
+  private description?: string;
+  private masterPass?: MasterPass;
+  private txnTime?: string;
+  private currencyCode?: string;
+  private avsResponse?: string;
+  private cvvVerification?: string;
+  private status?: string;
+  private riskReasonCode?: string;
+  private acquirerResponse?: AcquirerResponse;
+  private visaAdditionalAuthData?: VisaAdditionalAuthData;
+  private links?: Link[];
+  private auths?: Authorization[];
+  private settlements?: Settlement[];
+  private error?: PaysafeError;
 
   constructor(resp?: Authorization) {
     super();
@@ -88,8 +88,6 @@ export class Authorization extends RequestObject {
     this.currencyCode = resp.currencyCode;
     this.avsResponse = resp.avsResponse;
     this.cvvVerification = resp.cvvVerification;
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
     this.status = resp.status;
     this.riskReasonCode = resp.riskReasonCode;
     if (resp.acquirerResponse)
@@ -102,71 +100,105 @@ export class Authorization extends RequestObject {
       this.auths = createArray(resp.auths, Authorization);
     if (resp.settlements)
       this.settlements = createArray(resp.settlements, Settlement);
+    if (resp.error)
+      this.error = new PaysafeError(resp.error);
   }
+
+  setId(id: string): void { this.id = id; }
+  getId(): string | undefined { return this.id; }
+  deleteId(): void { delete this.id; }
+
+  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
+
+  setAmount(amount: string): void { this.amount = amount; }
+  getAmount(): string | undefined { return this.amount; }
+
+  setSettleWithAuth(settleWithAuth: string): void { this.settleWithAuth = settleWithAuth; }
+  getSettleWithAuth(): string | undefined { return this.settleWithAuth; }
+
+  setAvailableToSettle(availableToSettle: string): void { this.availableToSettle = availableToSettle; }
+  getAvailableToSettle(): string | undefined { return this.availableToSettle; }
+
+  setChildAccountNum(childAccountNum: string): void { this.childAccountNum = childAccountNum; }
+  getChildAccountNum(): string | undefined { return this.childAccountNum; }
+
+  setCard(card: Card): void { this.card = card; }
+  getCard(): Card | undefined { return this.card; }
+
+  setAuthentication(authentication: Authentication): void { this.authentication = authentication; }
+  getAuthentication(): Authentication | undefined { return this.authentication; }
+
+  setAuthCode(authCode: string): void { this.authCode = authCode; }
+  getAuthCode(): string | undefined { return this.authCode; }
+
+  setProfile(profile: Profile): void { this.profile = profile; }
+  getProfile(): Profile | undefined { return this.profile; }
+
+  setBillingDetails(billingDetails: BillingDetails): void { this.billingDetails = billingDetails; }
+  getBillingDetails(): BillingDetails | undefined { return this.billingDetails; }
+
+  setShippingDetails(shippingDetails: ShippingDetails): void { this.shippingDetails = shippingDetails; }
+  getShippingDetails(): ShippingDetails | undefined { return this.shippingDetails; }
+
+  setRecurring(recurring: string): void { this.recurring = recurring; }
+  getRecurring(): string | undefined { return this.recurring; }
+
+  setCustomerIp(customerIp: string): void { this.customerIp = customerIp; }
+  getCustomerIp(): string | undefined { return this.customerIp; }
+
+  setDupCheck(dupCheck: string): void { this.dupCheck = dupCheck; }
+  getDupCheck(): string | undefined { return this.dupCheck; }
+
+  setKeywords(keywords: string): void { this.keywords = keywords; }
+  getKeywords(): string | undefined { return this.keywords; }
+
+  setMerchantDescriptor(merchantDescriptor: MerchantDescriptor): void { this.merchantDescriptor = merchantDescriptor; }
+  getMerchantDescriptor(): MerchantDescriptor | undefined { return this.merchantDescriptor; }
+
+  setAccordD(accordD: AccordD): void { this.accordD = accordD; }
+  getAccordD(): AccordD | undefined { return this.accordD; }
+
+  setDescription(description: string): void { this.description = description; }
+  getDescription(): string | undefined { return this.description; }
+
+  setMasterPass(masterPass: MasterPass): void { this.masterPass = masterPass; }
+  getMasterPass(): MasterPass | undefined { return this.masterPass; }
+
+  setTxnTime(txnTime: string): void { this.txnTime = txnTime; }
+  getTxnTime(): string | undefined { return this.txnTime; }
+
+  setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
+  getCurrencyCode(): string | undefined { return this.currencyCode; }
+
+  setAvsResponse(avsResponse: string): void { this.avsResponse = avsResponse; }
+  getAvsResponse(): string | undefined { return this.avsResponse; }
+
+  setCvvVerification(cvvVerification: string): void { this.cvvVerification = cvvVerification; }
+  getCvvVerification(): string | undefined { return this.cvvVerification; }
+
+  setStatus(status: string): void { this.status = status; }
+  getStatus(): string | undefined { return this.status; }
+
+  setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
+  getRiskReasonCode(): string | undefined { return this.riskReasonCode; }
+
+  setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
+  getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
+
+  setVisaAdditionalAuthData(visaAdditionalAuthData: VisaAdditionalAuthData): void { this.visaAdditionalAuthData = visaAdditionalAuthData; }
+  getVisaAdditionalAuthData(): VisaAdditionalAuthData | undefined { return this.visaAdditionalAuthData; }
+
+  setLinks(links: Link[]): void { this.links = links; }
+  getLinks(): Link[] | undefined { return this.links; }
+
+  setAuths(auths: Authorization[]): void { this.auths = auths; }
+  getAuths(): Authorization[] | undefined { return this.auths; }
 
   setSettlements(settlements: Settlement[]): void { this.settlements = settlements; }
   getSettlements(): Settlement[] | undefined { return this.settlements; }
-  setAuths(auths: Authorization[]): void { this.auths = auths; }
-  getAuths(): Authorization[] | undefined { return this.auths; }
-  setLinks(links: Link[]): void { this.links = links; }
-  getLinks(): Link[] | undefined { return this.links; }
-  setShippingDetails(shippingDetails: ShippingDetails): void { this.shippingDetails = shippingDetails; }
-  getShippingDetails(): ShippingDetails | undefined { return this.shippingDetails; }
-  setVisaAdditionalAuthData(visaAdditionalAuthData: VisaAdditionalAuthData): void { this.visaAdditionalAuthData = visaAdditionalAuthData; }
-  getVisaAdditionalAuthData(): VisaAdditionalAuthData | undefined { return this.visaAdditionalAuthData; }
-  setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
-  getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
-  setRiskReasonCode(riskReasonCode: any): void { this.riskReasonCode = riskReasonCode; }
-  getRiskReasonCode(): any | undefined { return this.riskReasonCode; }
+
   setError(error: PaysafeError): void { this.error = error; }
   getError(): PaysafeError | undefined { return this.error; }
-  setCvvVerification(cvvVerification: any): void { this.cvvVerification = cvvVerification; }
-  getCvvVerification(): any | undefined { return this.cvvVerification; }
-  setAvsResponse(avsResponse: any): void { this.avsResponse = avsResponse; }
-  getAvsResponse(): any | undefined { return this.avsResponse; }
-  setCurrencyCode(currencyCode: any): void { this.currencyCode = currencyCode; }
-  getCurrencyCode(): any | undefined { return this.currencyCode; }
-  setTxnTime(txnTime: any): void { this.txnTime = txnTime; }
-  getTxnTime(): any | undefined { return this.txnTime; }
-  setMasterPass(masterPass: MasterPass): void { this.masterPass = masterPass; }
-  getMasterPass(): MasterPass | undefined { return this.masterPass; }
-  setDescription(description: any): void { this.description = description; }
-  getDescription(): any | undefined { return this.description; }
-  setAccordD(accordD: AccordD): void { this.accordD = accordD; }
-  getAccordD(): AccordD | undefined { return this.accordD; }
-  setMerchantDescriptor(merchantDescriptor: MerchantDescriptor): void { this.merchantDescriptor = merchantDescriptor; }
-  getMerchantDescriptor(): MerchantDescriptor | undefined { return this.merchantDescriptor; }
-  setCard(card: Card): void { this.card = card; }
-  getCard(): Card | undefined { return this.card; }
-  setKeywords(keywords: any): void { this.keywords = keywords; }
-  getKeywords(): any | undefined { return this.keywords; }
-  setDupCheck(dupCheck: any): void { this.dupCheck = dupCheck; }
-  getDupCheck(): any | undefined { return this.dupCheck; }
-  setRecurring(recurring: any): void { this.recurring = recurring; }
-  getRecurring(): any | undefined { return this.recurring; }
-  setBillingDetails(billingDetails: BillingDetails): void { this.billingDetails = billingDetails; }
-  getBillingDetails(): BillingDetails | undefined { return this.billingDetails; }
-  setProfile(profile: any): void { this.profile = profile; }
-  getProfile(): any | undefined { return this.profile; }
-  setAuthCode(authCode: any): void { this.authCode = authCode; }
-  getAuthCode(): any | undefined { return this.authCode; }
-  setCustomerIp(customerIp: any): void { this.customerIp = customerIp; }
-  getCustomerIp(): any | undefined { return this.customerIp; }
-  setAuthentication(authentication: Authentication): void { this.authentication = authentication; }
-  getAuthentication(): Authentication | undefined { return this.authentication; }
-  setChildAccountNum(childAccountNum: any): void { this.childAccountNum = childAccountNum; }
-  getChildAccountNum(): any | undefined { return this.childAccountNum; }
-  setAvailableToSettle(availableToSettle: any): void { this.availableToSettle = availableToSettle; }
-  getAvailableToSettle(): any | undefined { return this.availableToSettle; }
-  setSettleWithAuth(settleWithAuth: any): void{ this.settleWithAuth = settleWithAuth; }
-  getSettleWithAuth(): any | undefined { return this.settleWithAuth; }
-  setAmount(amount: string): void { this.amount = amount; }
-  getAmount(): string | undefined { return this.amount; }
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
-  setStatus(status: any): void { this.status = status; }
-  getStatus(): any | undefined { return this.status; }
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
 
 }

@@ -56,6 +56,7 @@ class Settlement {
     getError() { return this.error; }
     setAuthorization(authorization) { this.authorization = authorization; }
     getAuthorization() { return this.authorization; }
+    deleteAuthorization() { delete this.authorization; }
     setAvailableToRefund(availableToRefund) { this.availableToRefund = availableToRefund; }
     getAvailableToRefund() { return this.availableToRefund; }
     setTxnTime(txnTime) { this.txnTime = txnTime; }
@@ -74,5 +75,6 @@ class Settlement {
     getMerchantRefNum() { return this.merchantRefNum; }
     setId(id) { this.id = id; }
     getId() { return this.id; }
+    deleteId() { delete this.id; }
 }
 exports.Settlement = Settlement;

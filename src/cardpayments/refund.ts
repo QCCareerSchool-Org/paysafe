@@ -81,6 +81,7 @@ export class Refund extends RequestObject {
 
   setSettlements(settlements: Settlement): void { this.settlements = settlements; }
   getSettlements(): Settlement | undefined { return this.settlements; }
+  deleteSettlements(): void { delete this.settlements; }
 
   setTxnTime(txnTime: any): void { this.txnTime = txnTime; }
   getTxnTime(): any | undefined { return this.txnTime; }
@@ -108,5 +109,6 @@ export class Refund extends RequestObject {
 
   setId(id: any): void { this.id = id; }
   getId(): any | undefined { return this.id; }
+  deleteId(): void { delete this.id; }
 
 }

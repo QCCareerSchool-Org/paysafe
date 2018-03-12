@@ -41,6 +41,7 @@ export declare class Refund extends RequestObject {
     getLinks(): Link[] | undefined;
     setSettlements(settlements: Settlement): void;
     getSettlements(): Settlement | undefined;
+    deleteSettlements(): void;
     setTxnTime(txnTime: any): void;
     getTxnTime(): any | undefined;
     setDupCheck(dupCheck: any): void;
@@ -59,4 +60,5 @@ export declare class Refund extends RequestObject {
     getMerchantRefNum(): string | undefined;
     setId(id: any): void;
     getId(): any | undefined;
+    deleteId(): void;
 }

@@ -29,12 +29,12 @@ import { VisaAdditionalAuthData } from './cardpayments/visa-additional-auth-data
 
 import { Address } from './customervault/address';
 import { DateOfBirth } from './customervault/date-of-birth';
-// import { Mandate } from './customervault/mandate';
+import { Mandate } from './customervault/mandate';
 import { Profile } from './customervault/profile';
-// import { ACHBankAccount } from './customervault/ach-bank-account';
-// import { BACSBankAccount } from './customervault/bacs-bank-account';
-// import { EFTBankAccount } from './customervault/eft-bank-account';
-// import { SEPABankAccount } from './customervault/sepa-bank-account';
+import { ACHBankAccount } from './customervault/ach-bank-account';
+import { BACSBankAccount } from './customervault/bacs-bank-account';
+import { EFTBankAccount } from './customervault/eft-bank-account';
+import { SEPABankAccount } from './customervault/sepa-bank-account';
 
 // import { Purchase } from './directdebit/purchase';
 // import { Standalonecredit } from './directdebit/standalone-credit';
@@ -54,41 +54,45 @@ export class PaysafeAPIClient {
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
 
-  // card payments
-  AccordD = AccordD;
-  Authentication = Authentication;
-  Authorization = Authorization;
-  AuthorizationReversal = AuthorizationReversal;
-  BillingDetails = BillingDetails;
-  Card = Card;
-  CardExpiry = CardExpiry;
-  MasterPass = MasterPass;
-  MerchantDescriptor = MerchantDescriptor;
-  Pagination = Pagination;
-  RecipientDateOfBirth = RecipientDateOfBirth;
-  Refund = Refund;
-  Settlement = Settlement;
-  ShippingDetails = ShippingDetails;
-  Verification = Verification;
-  VisaAdditionalAuthData = VisaAdditionalAuthData;
+  
+  classes: { [key: string]: any } = {
+  
+    // card payments
+    AccordD,
+    Authentication,
+    Authorization,
+    AuthorizationReversal,
+    BillingDetails,
+    Card,
+    CardExpiry,
+    MasterPass,
+    MerchantDescriptor,
+    Pagination,
+    RecipientDateOfBirth,
+    Refund,
+    Settlement,
+    ShippingDetails,
+    Verification,
+    VisaAdditionalAuthData,
 
-  // customer vault
-  Address = Address;
-  DateOfBirth = DateOfBirth;
-  // Mandate = Mandate;
-  Profile = Profile;
-  // ACHBankAccount = ACHBankAccount;
-  // BACSBankAccount = BACSBankAccount;
-  // EFTBankAccount = EFTBankAccount;
-  // SEPABankAccount = SEPABankAccount;
+    // customer vault
+    Address,
+    DateOfBirth,
+    Mandate,
+    Profile,
+    ACHBankAccount,
+    BACSBankAccount,
+    EFTBankAccount,
+    SEPABankAccount,
 
-  // direct debit
-  // Purchase = Purchase;
-  // Standalonecredit = Standalonecredit;
+    // direct debit
+    // Purchase,
+    // Standalonecredit,
 
-  // 3D Secure
-  // EnrollmentCheck = EnrollmentCheck;
-  // Authentication3D = Authentication3D;
+    // 3D Secure
+    // EnrollmentCheck,
+    // Authentication3D,
+  };
 
   constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
@@ -97,61 +101,63 @@ export class PaysafeAPIClient {
     this.accountNumber = accountNumber;
   }
 
-  public updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
+  updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
     this.environment = environment;
     this.accountNumber = accountNumber;
   }
 
-  public error(code: number, message: string): PaysafeError {
+  error(code: number, message: string): PaysafeError {
     const error = new PaysafeError();
     error.message = message;
     error.setCode(code);
     return error;
   }
 
-  public CardServiceHandler(): CardServiceHandler {
+  getApiKey(): string { return this.apiKey; }
+  getApiPassword(): string { return this.apiPassword; }
+  getEnvironment(): Environment { return this.environment; }
+  getAccountNumber(): string { return this.accountNumber; }
+
+  getCardServiceHandler(): CardServiceHandler {
     if (!this.cardServiceHandler) {
       this.cardServiceHandler = new CardServiceHandler(this);
     }
     return this.cardServiceHandler;
   }
 
-  public DirectDebitServiceHandler(): DirectDebitServiceHandler {
+  getDirectDebitServiceHandler(): DirectDebitServiceHandler {
     if (!this.directDebitServiceHandler) {
       this.directDebitServiceHandler = new DirectDebitServiceHandler(this);
     }
     return this.directDebitServiceHandler;
   }
 
-  public CustomerServiceHandler(): CustomerServiceHandler {
+  getCustomerServiceHandler(): CustomerServiceHandler {
     if (!this.customerServiceHandler) {
       this.customerServiceHandler = new CustomerServiceHandler(this);
     }
     return this.customerServiceHandler;
   }
 
-  public ThreeDSecureServiceHandler(): ThreeDSecureServiceHandler {
+  getThreeDSecureServiceHandler(): ThreeDSecureServiceHandler {
     if (!this.threeDSecureServiceHandler) {
       this.threeDSecureServiceHandler = new ThreeDSecureServiceHandler(this);
     }
     return this.threeDSecureServiceHandler;
   }
 
-  public processRequest(PaysafeRequest: PaysafeRequest, requestObject: RequestObject): Promise<any> {
+  processRequest(PaysafeRequest: PaysafeRequest, requestObject?: RequestObject): Promise<any> {
 
-    var requestJson = prepareRequestParameter(requestObject);
-    var reqHeaders = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
-    };
-    var strRegObject = serializeObject(requestObject);
-    var options = {
-      headers: reqHeaders,
+    const options = {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
+      },
       uri: PaysafeRequest.buildUrl(this.environment.host),
       method: PaysafeRequest.method,
-      body: strRegObject,
+      body: requestObject ? JSON.stringify(requestObject) : '',
       pool: {
         maxSockets: this.environment.maxSockets,
       },
@@ -169,7 +175,7 @@ export class PaysafeAPIClient {
           resolve({ status: response.statusCode });
         } else {
           try {
-            body = typeof body === "string" ? deSerializeObject(body) : body;
+            body = typeof body === 'string' ? JSON.parse(body) : body;
             resolve(body);
           } catch (e) {
             reject(this.error(e.code, 'Failed to parse body'));
@@ -186,21 +192,3 @@ function prepareAPICredential(apiKey: string, apiPassword: string): string {
   let apiCredBuffer = new Buffer(apiCredential);
   return apiCredBuffer.toString('Base64');
 };
-
-function prepareRequestParameter(requestObject: RequestObject | null): string {
-  if (requestObject === null)
-    return '';
-  return serializeObject(requestObject);
-}
-
-function serializeObject(obj: any): string {
-  if (obj === null)
-    return '';
-  return JSON.stringify(obj);
-}
-
-function deSerializeObject(obj: string): any {
-  if (obj === null)
-    return '';
-  return JSON.parse(obj);
-}

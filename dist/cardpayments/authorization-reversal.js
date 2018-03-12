@@ -32,6 +32,7 @@ class AuthorizationReversal extends request_object_1.RequestObject {
     }
     setAuthorization(authorization) { this.authorization = authorization; }
     getAuthorization() { return this.authorization; }
+    deleteAuthorization() { delete this.authorization; }
     setVoidAuths(voidAuths) { this.voidAuths = voidAuths; }
     getVoidAuths() { return this.voidAuths; }
     setLinks(links) { this.links = links; }
@@ -56,5 +57,6 @@ class AuthorizationReversal extends request_object_1.RequestObject {
     getStatus() { return this.status; }
     setId(id) { this.id = id; }
     getId() { return this.id; }
+    deleteId() { delete this.id; }
 }
 exports.AuthorizationReversal = AuthorizationReversal;
