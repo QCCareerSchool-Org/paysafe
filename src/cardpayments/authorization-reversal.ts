@@ -1,19 +1,17 @@
+import { RequestObject } from '../request-object';
+
 import { Link } from '../common/link';
 import { createArray } from '../common/create-array';
-import { RequestObject } from '../request-object';
 import { Authorization } from './authorization';
 import { AcquirerResponse } from './acquirer-response';
 import { PaysafeError } from '../paysafe-error';
 
 export class AuthorizationReversal extends RequestObject {
 
-  private id?: any;
-  private merchantRefNum?: string;
   private amount?: string;
   private childAccountNum?: any;
   private dupCheck?: any;
   private txnTime?: any;
-  private error?: PaysafeError;
   private status?: any;
   private riskReasonCode?: any;
   private acquirerResponse?: AcquirerResponse;
@@ -22,17 +20,13 @@ export class AuthorizationReversal extends RequestObject {
   private authorization?: Authorization;
 
   constructor(resp?: AuthorizationReversal) {
-    super();
+    super(resp);
     if (!resp)
       return;
-    this.id = resp.id;
-    this.merchantRefNum = resp.merchantRefNum;
     this.amount = resp.amount;
     this.childAccountNum = resp.childAccountNum;
     this.dupCheck = resp.dupCheck;
     this.txnTime = resp.txnTime;
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
     this.status = resp.status;
     this.riskReasonCode = resp.riskReasonCode;
     if (resp.acquirerResponse)
@@ -67,23 +61,13 @@ export class AuthorizationReversal extends RequestObject {
   setRiskReasonCode(riskReasonCode: any): void { this.riskReasonCode = riskReasonCode; }
   getRiskReasonCode(): any | undefined { return this.riskReasonCode; }
   
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-  
   setChildAccountNum(childAccountNum: any): void { this.childAccountNum = childAccountNum; }
   getChildAccountNum(): any | undefined { return this.childAccountNum; }
   
   setAmount(amount: string): void { this.amount = amount; }
   getAmount(): string | undefined { return this.amount; }
-  
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
-  
+   
   setStatus(status: any): void { this.status = status; }
   getStatus(): any | undefined { return this.status; }
   
-  setId(id: any): void { this.id = id; }
-  getId(): any | undefined { return this.id; }
-  deleteId(): void { delete this.id; }
-
 }

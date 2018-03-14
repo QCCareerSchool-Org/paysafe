@@ -16,8 +16,6 @@ import { PaysafeError } from '../paysafe-error';
 
 export class Verification extends RequestObject {
 
-  private id?: any;
-  private merchantRefNum?: string;
   private childAccountNum?: any;
   private card?: Card;
   private authCode?: any;
@@ -30,7 +28,6 @@ export class Verification extends RequestObject {
   private currencyCode?: any;
   private avsResponse?: any;
   private cvvVerification?: any;
-  private error?: PaysafeError;
   private status?: any;
   private riskReasonCode?: any;
   private acquirerResponse?: AcquirerResponse;
@@ -42,9 +39,40 @@ export class Verification extends RequestObject {
   private authentication?: Authentication;
 
   constructor(resp?: Verification) {
-    super();
+    super(resp);
     if (!resp)
       return;
+    this.childAccountNum = resp.childAccountNum;
+    if (resp.card)
+      this.card = new Card(resp.card);
+    this.authCode = resp.authCode;
+    if (resp.profile)
+      this.profile = new Profile(resp.profile);
+    if (resp.billingDetails)
+      this.billingDetails = new BillingDetails(resp.billingDetails);
+    this.customerIp = resp.customerIp;
+    this.dupCheck = resp.dupCheck;
+    this.description = resp.description;
+    this.txnTime = resp.txnTime;
+    this.currencyCode = resp.currencyCode;
+    this.avsResponse = resp.avsResponse;
+    this.cvvVerification = resp.cvvVerification;
+    this.status = resp.status;
+    this.riskReasonCode = resp.riskReasonCode;
+    if (this.acquirerResponse)
+      this.acquirerResponse = new AcquirerResponse(resp.acquirerResponse);
+    if (resp.links)
+      this.links = createArray(resp.links, Link);
+    if (resp.verifications)
+      this.verifications = createArray(resp.verifications, Verification);
+    if (resp.accordD)
+      this.accordD = new AccordD(resp.accordD);
+    if (resp.merchantDescriptor)
+      this.merchantDescriptor = new MerchantDescriptor(resp.merchantDescriptor);
+    if (resp.shippingDetails)
+      this.shippingDetails = new ShippingDetails(resp.shippingDetails);
+    if (resp.authentication)
+      this.authentication = new Authentication(resp.authentication);
   }
 
   setAccordD(accordD: AccordD): void { this.accordD = accordD; }
@@ -106,14 +134,5 @@ export class Verification extends RequestObject {
 
   setRiskReasonCode(riskReasonCode: any): void { this.riskReasonCode = riskReasonCode; }
   getRiskReasonCode(): any | undefined { return this.riskReasonCode; }
-
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-
-  setMerchantRefNum(merchantRefNum: any): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): any | undefined { return this.merchantRefNum; }
-
-  setId(id: any): void { this.id = id; }
-  getId(): any | undefined { return this.id; }
 
 }

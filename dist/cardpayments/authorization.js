@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const paysafe_error_1 = require("../paysafe-error");
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
 const accord_d_1 = require("./accord-d");
@@ -17,11 +16,9 @@ const settlement_1 = require("./settlement");
 const request_object_1 = require("../request-object");
 class Authorization extends request_object_1.RequestObject {
     constructor(resp) {
-        super();
+        super(resp);
         if (!resp)
             return;
-        this.id = resp.id;
-        this.merchantRefNum = resp.merchantRefNum;
         this.amount = resp.amount;
         this.settleWithAuth = resp.settleWithAuth;
         this.availableToSettle = resp.availableToSettle;
@@ -64,14 +61,7 @@ class Authorization extends request_object_1.RequestObject {
             this.auths = create_array_1.createArray(resp.auths, Authorization);
         if (resp.settlements)
             this.settlements = create_array_1.createArray(resp.settlements, settlement_1.Settlement);
-        if (resp.error)
-            this.error = new paysafe_error_1.PaysafeError(resp.error);
     }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
-    deleteId() { delete this.id; }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
-    getMerchantRefNum() { return this.merchantRefNum; }
     setAmount(amount) { this.amount = amount; }
     getAmount() { return this.amount; }
     setSettleWithAuth(settleWithAuth) { this.settleWithAuth = settleWithAuth; }
@@ -130,7 +120,5 @@ class Authorization extends request_object_1.RequestObject {
     getAuths() { return this.auths; }
     setSettlements(settlements) { this.settlements = settlements; }
     getSettlements() { return this.settlements; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
 }
 exports.Authorization = Authorization;

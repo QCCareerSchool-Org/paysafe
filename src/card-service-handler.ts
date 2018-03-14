@@ -6,9 +6,8 @@ import { Refund } from './cardpayments/refund';
 import { Pagination } from './cardpayments/pagination';
 import { Verification } from './cardpayments/verification';
 
-import * as constants from './constants';
+import * as Constants from './constants';
 import { PaysafeRequest } from './paysafe-request';
-import { resolve } from 'path';
 
 const HEALTH_BEAT_URL = 'cardpayments/monitor';
 const URI = 'cardpayments/v1';
@@ -45,7 +44,7 @@ export class CardServiceHandler {
 
   /** ? */
   monitor(): Promise<any> {
-    const requestObj = new PaysafeRequest(HEALTH_BEAT_URL, constants.GET);
+    const requestObj = new PaysafeRequest(HEALTH_BEAT_URL, Constants.GET);
     return this.paysafeApiClient.processRequest(requestObj);
   }
 
@@ -57,7 +56,7 @@ export class CardServiceHandler {
 
     return new Promise((resolve, reject) => {
 
-      const requestObj = new PaysafeRequest(prepareURI(paths.AUTHORIZATION, this.paysafeApiClient), constants.POST);
+      const requestObj = new PaysafeRequest(prepareURI(paths.AUTHORIZATION, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
         resolve(response ? new Authorization(response) : response);
@@ -82,7 +81,7 @@ export class CardServiceHandler {
       authorization.deleteId();
       authorization.setStatus(status.COMPLETED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), constants.PUT);
+      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
         resolve(response ? new Authorization(response) : response);
@@ -109,7 +108,7 @@ export class CardServiceHandler {
       authorization.deleteId();
       authorization.setStatus(status.CANCELLED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), constants.PUT);
+      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
         resolve(response ? new Authorization(response) : response);
@@ -139,7 +138,7 @@ export class CardServiceHandler {
 
       authorizationReversal.deleteAuthorization();
 
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.AUTHORIZATIONREVERSAL}`, this.paysafeApiClient), constants.POST);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.AUTHORIZATIONREVERSAL}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, authorizationReversal).then((response) => {
         resolve(response ? new AuthorizationReversal(response) : response);
@@ -169,7 +168,7 @@ export class CardServiceHandler {
 
       settlement.deleteAuthorization();
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.SETTLEMENT}`, this.paysafeApiClient), constants.POST);
+      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.SETTLEMENT}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, settlement).then((response) => {
         resolve(response ? new Settlement(response) : response);
@@ -195,7 +194,7 @@ export class CardServiceHandler {
       settlement.deleteId();
       settlement.setStatus(status.CANCELLED);
 
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementId}`, this.paysafeApiClient), constants.PUT);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, settlement).then((response) => {
         resolve(response ? new Settlement(response) : response);
@@ -225,7 +224,7 @@ export class CardServiceHandler {
 
       refund.deleteSettlements();
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementsId}/${paths.REFUND}`, this.paysafeApiClient), constants.POST);
+      var requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementsId}/${paths.REFUND}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, refund).then((response) => {
         resolve(response ? new Refund(response) : response);
@@ -252,7 +251,7 @@ export class CardServiceHandler {
       refund.deleteId();
       refund.setStatus(status.CANCELLED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.REFUND}/${refundId}`, this.paysafeApiClient), constants.POST);
+      var requestObj = new PaysafeRequest(prepareURI(`${paths.REFUND}/${refundId}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, refund).then((response) => {
         resolve(response ? new Refund(response) : response);
@@ -275,7 +274,7 @@ export class CardServiceHandler {
 
       authorization.deleteId();
 
-      const PaysafeRequestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), constants.GET);
+      const PaysafeRequestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.GET);
 
       this.paysafeApiClient.processRequest(PaysafeRequestObj).then((response) => {
         resolve(response ? new Authorization(response) : response);
@@ -300,7 +299,7 @@ export class CardServiceHandler {
 
       authorizationReversal.deleteId();
 
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATIONREVERSAL}/${authorizationReversalId}`, this.paysafeApiClient), constants.GET);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATIONREVERSAL}/${authorizationReversalId}`, this.paysafeApiClient), Constants.GET);
       this.paysafeApiClient.processRequest(requestObj).then((response) => {
         resolve(response ? new AuthorizationReversal(response) : response);
       }).catch((err) => {
@@ -353,7 +352,7 @@ export class CardServiceHandler {
         return reject(err);
       }
 
-      const requestObj = new PaysafeRequest(prepareURI(searchPath + "?" + toInclude, this.paysafeApiClient), constants.GET);
+      const requestObj = new PaysafeRequest(prepareURI(searchPath + "?" + toInclude, this.paysafeApiClient), Constants.GET);
 
       this.paysafeApiClient.processRequest(requestObj).then((response) => {
         resolve(response ? new this.paysafeApiClient.classes[className](response) : response);

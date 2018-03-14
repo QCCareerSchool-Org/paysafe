@@ -54,7 +54,6 @@ export class PaysafeAPIClient {
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
 
-  
   classes: { [key: string]: any } = {
   
     // card payments

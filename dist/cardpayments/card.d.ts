@@ -1,13 +1,11 @@
-import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
 import { BillingDetails } from './billing-details';
 import { CardExpiry } from './card-expiry';
 import { Profile } from '../customervault/profile';
-export declare class Card {
-    private id?;
+export declare class Card extends RequestObject {
     private singleUseToken?;
     private brand?;
     private nickName?;
-    private merchantRefNum?;
     private holderName?;
     private cardType?;
     private billingAddressId?;
@@ -23,18 +21,13 @@ export declare class Card {
     private track2?;
     private status?;
     private profile?;
-    private error?;
     constructor(resp?: Card);
-    setId(id: string): void;
-    getId(): string | undefined;
     setSingleUseToken(singleUseToken: string): void;
     getSingleUseToken(): string | undefined;
     setBrand(brand: string): void;
     getBrand(): string | undefined;
     setNickName(nickName: string): void;
     getNickName(): string | undefined;
-    setMerchantRefNum(merchantRefNum: string): void;
-    getMerchantRefNum(): string | undefined;
     setHolderName(holderName: string): void;
     getHolderName(): string | undefined;
     setCardType(cardType: string): void;
@@ -65,6 +58,4 @@ export declare class Card {
     getStatus(): string | undefined;
     setProfile(profile: Profile): void;
     getProfile(): Profile | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
 }

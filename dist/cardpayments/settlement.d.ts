@@ -1,10 +1,8 @@
 import { Link } from '../common/link';
 import { Authorization } from './authorization';
 import { AcquirerResponse } from './acquirer-response';
-import { PaysafeError } from '../paysafe-error';
-export declare class Settlement {
-    private id?;
-    private merchantRefNum?;
+import { RequestObject } from '../request-object';
+export declare class Settlement extends RequestObject {
     private amount?;
     private availableToRefund?;
     private childAccountNum?;
@@ -15,7 +13,6 @@ export declare class Settlement {
     private acquirerResponse?;
     private authorization?;
     private links?;
-    private error?;
     private settlements?;
     private originalMerchantRefNum?;
     private mode?;
@@ -39,8 +36,6 @@ export declare class Settlement {
     getStatus(): any | undefined;
     setLinks(links: Link[]): void;
     getLinks(): Link[] | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
     setAuthorization(authorization: Authorization): void;
     getAuthorization(): Authorization | undefined;
     deleteAuthorization(): void;
@@ -58,9 +53,4 @@ export declare class Settlement {
     getRiskReasonCode(): any | undefined;
     setAmount(amount: string): void;
     getAmount(): string | undefined;
-    setMerchantRefNum(merchantRefNum: string): void;
-    getMerchantRefNum(): string | undefined;
-    setId(id: any): void;
-    getId(): any | undefined;
-    deleteId(): void;
 }

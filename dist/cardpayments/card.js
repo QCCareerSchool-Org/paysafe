@@ -1,19 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const paysafe_error_1 = require("../paysafe-error");
+const request_object_1 = require("../request-object");
 const create_array_1 = require("../common/create-array");
 const billing_details_1 = require("./billing-details");
 const card_expiry_1 = require("./card-expiry");
 const profile_1 = require("../customervault/profile");
-class Card {
+class Card extends request_object_1.RequestObject {
     constructor(resp) {
+        super(resp);
         if (!resp)
             return;
-        this.id = resp.id;
         this.singleUseToken = resp.singleUseToken;
         this.brand = resp.brand;
         this.nickName = resp.nickName;
-        this.merchantRefNum = resp.merchantRefNum;
         this.holderName = resp.holderName;
         this.cardType = resp.cardType;
         this.billingAddressId = resp.billingAddressId;
@@ -36,19 +35,13 @@ class Card {
         this.status = resp.status;
         if (this.profile)
             this.profile = new profile_1.Profile(resp.profile);
-        if (resp.error)
-            this.error = new paysafe_error_1.PaysafeError(resp.error);
     }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
     setSingleUseToken(singleUseToken) { this.singleUseToken = singleUseToken; }
     getSingleUseToken() { return this.singleUseToken; }
     setBrand(brand) { this.brand = brand; }
     getBrand() { return this.brand; }
     setNickName(nickName) { this.nickName = nickName; }
     getNickName() { return this.nickName; }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
-    getMerchantRefNum() { return this.merchantRefNum; }
     setHolderName(holderName) { this.holderName = holderName; }
     getHolderName() { return this.holderName; }
     setCardType(cardType) { this.cardType = cardType; }
@@ -80,7 +73,5 @@ class Card {
     getStatus() { return this.status; }
     setProfile(profile) { this.profile = profile; }
     getProfile() { return this.profile; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
 }
 exports.Card = Card;

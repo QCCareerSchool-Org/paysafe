@@ -5,20 +5,15 @@ const create_array_1 = require("../common/create-array");
 const settlement_1 = require("./settlement");
 const acquirer_response_1 = require("./acquirer-response");
 const request_object_1 = require("../request-object");
-const paysafe_error_1 = require("../paysafe-error");
 class Refund extends request_object_1.RequestObject {
     constructor(resp) {
-        super();
+        super(resp);
         if (!resp)
             return;
-        this.id = resp.id;
-        this.merchantRefNum = resp.merchantRefNum;
         this.amount = resp.amount;
         this.childAccountNum = resp.childAccountNum;
         this.dupCheck = resp.dupCheck;
         this.txnTime = resp.txnTime;
-        if (resp.error)
-            this.error = new paysafe_error_1.PaysafeError(resp.error);
         this.status = resp.status;
         this.riskReasonCode = resp.riskReasonCode;
         if (resp.acquirerResponse)
@@ -64,14 +59,7 @@ class Refund extends request_object_1.RequestObject {
     getAcquirerResponse() { return this.acquirerResponse; }
     setRiskReasonCode(riskReasonCode) { this.riskReasonCode = riskReasonCode; }
     getRiskReasonCode() { return this.riskReasonCode; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
     setAmount(amount) { this.amount = amount; }
     getAmount() { return this.amount; }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
-    getMerchantRefNum() { return this.merchantRefNum; }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
-    deleteId() { delete this.id; }
 }
 exports.Refund = Refund;

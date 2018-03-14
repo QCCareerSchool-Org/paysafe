@@ -1,8 +1,8 @@
 export declare class AcquirerResponse {
-    code?: string;
-    responseCode?: string;
-    avsCode?: string;
-    balanceResponse?: string;
+    private code?;
+    private responseCode?;
+    private avsCode?;
+    private balanceResponse?;
     constructor(resp?: AcquirerResponse);
     setBalanceResponse(balanceResponse: string): void;
     getBalanceResponse(): string | undefined;

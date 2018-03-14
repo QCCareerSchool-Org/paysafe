@@ -7,10 +7,7 @@ import { BillingDetails } from './billing-details';
 import { Card } from './card';
 import { MerchantDescriptor } from './merchant-descriptor';
 import { ShippingDetails } from './shipping-details';
-import { PaysafeError } from '../paysafe-error';
 export declare class Verification extends RequestObject {
-    private id?;
-    private merchantRefNum?;
     private childAccountNum?;
     private card?;
     private authCode?;
@@ -23,7 +20,6 @@ export declare class Verification extends RequestObject {
     private currencyCode?;
     private avsResponse?;
     private cvvVerification?;
-    private error?;
     private status?;
     private riskReasonCode?;
     private acquirerResponse?;
@@ -74,10 +70,4 @@ export declare class Verification extends RequestObject {
     getAcquirerResponse(): AcquirerResponse | undefined;
     setRiskReasonCode(riskReasonCode: any): void;
     getRiskReasonCode(): any | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
-    setMerchantRefNum(merchantRefNum: any): void;
-    getMerchantRefNum(): any | undefined;
-    setId(id: any): void;
-    getId(): any | undefined;
 }

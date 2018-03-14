@@ -1,4 +1,5 @@
 import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
 
 import { createArray } from '../common/create-array';
 
@@ -7,13 +8,11 @@ import { CardExpiry } from './card-expiry';
 
 import { Profile } from '../customervault/profile';
 
-export class Card {
+export class Card extends RequestObject {
 
-  private id?: string;
   private singleUseToken?: string;
   private brand?: string;
   private nickName?: string;
-  private merchantRefNum?: string;
   private holderName?: string;
   private cardType?: string;
   private billingAddressId?: string;
@@ -29,16 +28,14 @@ export class Card {
   private track2?: string;
   private status?: string;
   private profile?: Profile;
-  private error?: PaysafeError;
 
   constructor(resp?: Card) {
+    super(resp);
     if (!resp)
       return;
-    this.id = resp.id;
     this.singleUseToken = resp.singleUseToken;
     this.brand = resp.brand;
     this.nickName = resp.nickName;
-    this.merchantRefNum = resp.merchantRefNum;
     this.holderName = resp.holderName;
     this.cardType = resp.cardType;
     this.billingAddressId = resp.billingAddressId;
@@ -61,12 +58,7 @@ export class Card {
     this.status = resp.status;
     if (this.profile)
       this.profile = new Profile(resp.profile);
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
   }
-
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
 
   setSingleUseToken(singleUseToken: string): void { this.singleUseToken = singleUseToken; }
   getSingleUseToken(): string | undefined { return this.singleUseToken; }
@@ -76,9 +68,6 @@ export class Card {
 
   setNickName(nickName: string): void { this.nickName = nickName; }
   getNickName(): string | undefined { return this.nickName; }
-
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   setHolderName(holderName: string): void { this.holderName = holderName; }
   getHolderName(): string | undefined { return this.holderName; }
@@ -124,8 +113,5 @@ export class Card {
 
   setProfile(profile: Profile): void { this.profile = profile; }
   getProfile(): Profile | undefined { return this.profile; }
-
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
 
 }

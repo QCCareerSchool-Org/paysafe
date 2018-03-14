@@ -19,8 +19,6 @@ import { RequestObject } from '../request-object';
 
 export class Authorization extends RequestObject {
 
-  private id?: string;
-  private merchantRefNum?: string;
   private amount?: string;
   private settleWithAuth?: string;
   private availableToSettle?: string;
@@ -50,14 +48,11 @@ export class Authorization extends RequestObject {
   private links?: Link[];
   private auths?: Authorization[];
   private settlements?: Settlement[];
-  private error?: PaysafeError;
 
   constructor(resp?: Authorization) {
-    super();
+    super(resp);
     if (!resp)
       return;
-    this.id = resp.id;
-    this.merchantRefNum = resp.merchantRefNum;
     this.amount = resp.amount;
     this.settleWithAuth = resp.settleWithAuth;
     this.availableToSettle = resp.availableToSettle;
@@ -100,16 +95,7 @@ export class Authorization extends RequestObject {
       this.auths = createArray(resp.auths, Authorization);
     if (resp.settlements)
       this.settlements = createArray(resp.settlements, Settlement);
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
   }
-
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
-  deleteId(): void { delete this.id; }
-
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   setAmount(amount: string): void { this.amount = amount; }
   getAmount(): string | undefined { return this.amount; }
@@ -197,8 +183,5 @@ export class Authorization extends RequestObject {
 
   setSettlements(settlements: Settlement[]): void { this.settlements = settlements; }
   getSettlements(): Settlement[] | undefined { return this.settlements; }
-
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
 
 }

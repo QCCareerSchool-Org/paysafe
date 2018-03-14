@@ -1,9 +1,9 @@
 export class AcquirerResponse {
 
-  code?: string;
-  responseCode?: string;
-  avsCode?: string;
-  balanceResponse?: string;
+  private code?: string;
+  private responseCode?: string;
+  private avsCode?: string;
+  private balanceResponse?: string;
 
   constructor(resp?: AcquirerResponse) {
     if (!resp)

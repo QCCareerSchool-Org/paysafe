@@ -1,4 +1,3 @@
-import { PaysafeError } from '../paysafe-error';
 import { Link } from '../common/link';
 import { AccordD } from './accord-d';
 import { Authentication } from './authentication';
@@ -13,8 +12,6 @@ import { MerchantDescriptor } from './merchant-descriptor';
 import { Settlement } from './settlement';
 import { RequestObject } from '../request-object';
 export declare class Authorization extends RequestObject {
-    private id?;
-    private merchantRefNum?;
     private amount?;
     private settleWithAuth?;
     private availableToSettle?;
@@ -44,13 +41,7 @@ export declare class Authorization extends RequestObject {
     private links?;
     private auths?;
     private settlements?;
-    private error?;
     constructor(resp?: Authorization);
-    setId(id: string): void;
-    getId(): string | undefined;
-    deleteId(): void;
-    setMerchantRefNum(merchantRefNum: string): void;
-    getMerchantRefNum(): string | undefined;
     setAmount(amount: string): void;
     getAmount(): string | undefined;
     setSettleWithAuth(settleWithAuth: string): void;
@@ -109,6 +100,4 @@ export declare class Authorization extends RequestObject {
     getAuths(): Authorization[] | undefined;
     setSettlements(settlements: Settlement[]): void;
     getSettlements(): Settlement[] | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
 }

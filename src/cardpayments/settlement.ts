@@ -3,11 +3,10 @@ import { createArray } from '../common/create-array';
 import { Authorization } from './authorization';
 import { AcquirerResponse } from './acquirer-response';
 import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
 
-export class Settlement {
+export class Settlement extends RequestObject {
 
-  private id?: any;
-  private merchantRefNum?: string;
   private amount?: string;
   private availableToRefund?: string;
   private childAccountNum?: any;
@@ -18,7 +17,6 @@ export class Settlement {
   private acquirerResponse?: AcquirerResponse;
   private authorization?: Authorization;
   private links?: Link[];
-  private error?: PaysafeError;
   private settlements?: Settlement[];
   private originalMerchantRefNum?: string;
   private mode?: any;
@@ -27,10 +25,9 @@ export class Settlement {
   private authType?: any;
 
   constructor(resp?: Settlement) {
+    super(resp);
     if (!resp)
       return;
-    this.id = resp.id;
-    this.merchantRefNum = resp.merchantRefNum;
     this.amount = resp.amount;
     this.availableToRefund = resp.availableToRefund;
     this.childAccountNum = resp.childAccountNum;
@@ -44,8 +41,6 @@ export class Settlement {
       this.authorization = new Authorization(resp.authorization);
     if (resp.links)
       this.links = createArray(resp.links, Link);
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
     if (resp.settlements)
       this.settlements = createArray(resp.settlements, Settlement);
     this.originalMerchantRefNum = resp.originalMerchantRefNum;
@@ -79,9 +74,6 @@ export class Settlement {
   setLinks(links: Link[]): void { this.links = links; }
   getLinks(): Link[] | undefined { return this.links; }
   
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-  
   setAuthorization(authorization: Authorization): void { this.authorization = authorization; }
   getAuthorization(): Authorization | undefined { return this.authorization; }
   deleteAuthorization(): void { delete this.authorization; }
@@ -106,11 +98,5 @@ export class Settlement {
   
   setAmount(amount: string): void { this.amount = amount; }
   getAmount(): string | undefined { return this.amount; }
-  
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
-  
-  setId(id: any): void { this.id = id; }
-  getId(): any | undefined { return this.id; }
-  deleteId(): void { delete this.id; }
+    
 }
