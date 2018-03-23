@@ -1,13 +1,13 @@
-import { PaysafeAPIClient } from './paysafe-api-client';
 import { Authorization } from './cardpayments/authorization';
 import { AuthorizationReversal } from './cardpayments/authorization-reversal';
-import { Settlement } from './cardpayments/settlement';
-import { Refund } from './cardpayments/refund';
 import { Pagination } from './cardpayments/pagination';
+import { Refund } from './cardpayments/refund';
+import { Settlement } from './cardpayments/settlement';
+import { PaysafeAPIClient } from './paysafe-api-client';
 export declare class CardServiceHandler {
     private paysafeApiClient;
     constructor(p: PaysafeAPIClient);
-    /** ? */
+    /** verifies that the service is up and accessible */
     monitor(): Promise<any>;
     /**
      * authorize a credit card transaction
@@ -28,11 +28,11 @@ export declare class CardServiceHandler {
      * reverse an authorization
      * @param authorizationReversal
      */
-    reverseAuth(authorizationReversal: AuthorizationReversal): Promise<Authorization>;
+    reverseAuth(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal>;
     /**
      * settle
      * @param settlement
-      */
+     */
     settlement(settlement: Settlement): Promise<Settlement>;
     /**
      * cancel a settlement
@@ -51,7 +51,6 @@ export declare class CardServiceHandler {
     cancelRefund(refund: Refund): Promise<Refund>;
     getAuth(authorization: Authorization): Promise<Authorization>;
     /**
-     *
      * @param authorizationReversal
      */
     getAuthReversal(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal>;

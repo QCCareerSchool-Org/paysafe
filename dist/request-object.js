@@ -1,20 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const paysafe_error_1 = require("./paysafe-error");
+const ID_MAX_LENGTH = 36;
 class RequestObject {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.id = resp.id;
-        this.merchantRefNum = resp.merchantRefNum;
-        if (typeof resp.error !== 'undefined')
+        }
+        if (typeof resp.id !== 'undefined') {
+            this.id = resp.id;
+        }
+        if (typeof resp.error !== 'undefined') {
             this.error = new paysafe_error_1.PaysafeError(resp.error);
+        }
     }
-    setId(id) { this.id = id; }
+    setId(id) { if (id.length > ID_MAX_LENGTH) {
+        throw new Error('invalid id');
+    } this.id = id; }
     getId() { return this.id; }
     deleteId() { delete this.id; }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
-    getMerchantRefNum() { return this.merchantRefNum; }
     setError(error) { this.error = error; }
     getError() { return this.error; }
 }

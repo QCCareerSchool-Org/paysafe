@@ -2,10 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class CardExpiry {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.month = resp.month;
-        this.year = resp.year;
+        }
+        if (typeof resp.month !== 'undefined') {
+            this.month = resp.month;
+        }
+        if (typeof resp.year !== 'undefined') {
+            this.year = resp.year;
+        }
     }
     setMonth(month) { this.month = month; }
     getMonth() { return this.month; }

@@ -1,19 +1,24 @@
 export class CardExpiry {
 
-  private month?: string;
-  private year?: string;
+  private month?: number;
+  private year?: number;
 
   constructor(resp?: CardExpiry) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.month = resp.month;
-    this.year = resp.year;
+    }
+    if (typeof resp.month !== 'undefined') {
+      this.month = resp.month;
+    }
+    if (typeof resp.year !== 'undefined') {
+      this.year = resp.year;
+    }
   }
 
-  setMonth(month: string): void { this.month = month; }
-  getMonth(): string | undefined { return this.month; }
-  
-  setYear(year: string): void { this.year = year; }
-  getYear(): string | undefined { return this.year; }
+  public setMonth(month: number): void { this.month = month; }
+  public getMonth(): number | undefined { return this.month; }
+
+  public setYear(year: number): void { this.year = year; }
+  public getYear(): number | undefined { return this.year; }
 
 }

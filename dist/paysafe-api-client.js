@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request");
 const paysafe_error_1 = require("./paysafe-error");
 const card_service_handler_1 = require("./card-service-handler");
-const direct_debit_service_handler_1 = require("./direct-debit-service-handler");
 const customer_service_handler_1 = require("./customer-service-handler");
+const direct_debit_service_handler_1 = require("./direct-debit-service-handler");
 const three_d_secure_service_handler_1 = require("./three-d-secure-service-handler");
 const accord_d_1 = require("./cardpayments/accord-d");
 const authentication_1 = require("./cardpayments/authentication");
@@ -109,38 +109,44 @@ class PaysafeAPIClient {
         }
         return this.threeDSecureServiceHandler;
     }
-    processRequest(PaysafeRequest, requestObject) {
+    processRequest(paysafeRequest, requestObject) {
         const options = {
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
+                'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword),
             },
-            uri: PaysafeRequest.buildUrl(this.environment.host),
-            method: PaysafeRequest.method,
-            body: requestObject ? JSON.stringify(requestObject) : '',
+            uri: paysafeRequest.buildUrl(this.environment.host),
+            method: paysafeRequest.method,
+            json: true,
             pool: {
                 maxSockets: this.environment.maxSockets,
             },
             timeout: this.environment.timeout,
         };
+        if (typeof requestObject !== 'undefined') {
+            options.body = requestObject;
+        }
         return new Promise((resolve, reject) => {
             request(options, (err, response, body) => {
                 if (err) {
-                    reject(this.error(err.code, 'Connection error: No internet Connection available: ' + err.syscall));
+                    reject(this.error(err.code, 'Connection error: ' + err.syscall));
                 }
                 else if (response.statusCode === 503) {
                     reject(this.error(response.statusCode, body));
                 }
                 else if (!body) {
-                    resolve({ status: response.statusCode });
+                    resolve();
                 }
                 else {
                     try {
                         body = typeof body === 'string' ? JSON.parse(body) : body;
+                        if (typeof body.error !== 'undefined') {
+                            return reject(new paysafe_error_1.PaysafeError(body.error));
+                        }
                         resolve(body);
                     }
-                    catch (e) {
-                        reject(this.error(e.code, 'Failed to parse body'));
+                    catch (parseError) {
+                        reject(this.error(parseError.code, 'Failed to parse body'));
                     }
                 }
             });
@@ -149,8 +155,7 @@ class PaysafeAPIClient {
 }
 exports.PaysafeAPIClient = PaysafeAPIClient;
 function prepareAPICredential(apiKey, apiPassword) {
-    let apiCredential = apiKey + ":" + apiPassword;
-    let apiCredBuffer = new Buffer(apiCredential);
+    const apiCredential = apiKey + ':' + apiPassword;
+    const apiCredBuffer = new Buffer(apiCredential);
     return apiCredBuffer.toString('Base64');
 }
-;

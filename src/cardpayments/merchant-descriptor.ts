@@ -4,16 +4,31 @@ export class MerchantDescriptor {
   private phone?: string;
 
   constructor(resp?: MerchantDescriptor) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.dynamicDescriptor = resp.dynamicDescriptor;
-    this.phone = resp.phone;
+    }
+    if (typeof resp.dynamicDescriptor !== 'undefined') {
+      this.dynamicDescriptor = resp.dynamicDescriptor;
+    }
+    if (typeof resp.phone !== 'undefined') {
+      this.phone = resp.phone;
+    }
   }
 
-  setDynamicDescriptor(dynamicDescriptor: string): void { this.dynamicDescriptor = dynamicDescriptor; }
-  getDynamicDescriptor(): string | undefined { return this.dynamicDescriptor; }
-  
-  setPhone(phone: string): void { this.phone = phone; }
-  getPhone(): string | undefined { return this.phone; }
+  public setDynamicDescriptor(dynamicDescriptor: string): void {
+    if (dynamicDescriptor.length > 20) {
+      throw new Error('invalid dynamic descriptor--must be 20 characters or less');
+    }
+    this.dynamicDescriptor = dynamicDescriptor;
+  }
+  public getDynamicDescriptor(): string | undefined { return this.dynamicDescriptor; }
+
+  public setPhone(phone: string): void {
+    if (phone.length > 13) {
+      throw new Error('invalid phone number--must be 13 characters or less');
+    }
+    this.phone = phone;
+  }
+  public getPhone(): string | undefined { return this.phone; }
 
 }

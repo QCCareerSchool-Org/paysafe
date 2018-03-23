@@ -10,40 +10,57 @@ export class BillingDetails {
   private useAsShippingAddress?: 'true' | 'false';
 
   constructor(resp?: BillingDetails) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.street = resp.street;
-    this.street2 = resp.street2;
-    this.city = resp.city;
-    this.state = resp.state;
-    this.zip = resp.zip;
-    this.country = resp.country;
-    this.phone = resp.phone;
-    this.useAsShippingAddress = resp.useAsShippingAddress;
+    }
+    if (typeof resp.street !== 'undefined') {
+      this.street = resp.street;
+    }
+    if (typeof resp.street2 !== 'undefined') {
+      this.street2 = resp.street2;
+    }
+    if (typeof resp.city !== 'undefined') {
+      this.city = resp.city;
+    }
+    if (typeof resp.state !== 'undefined') {
+      this.state = resp.state;
+    }
+    if (typeof resp.zip !== 'undefined') {
+      this.zip = resp.zip;
+    }
+    if (typeof resp.country !== 'undefined') {
+      this.country = resp.country;
+    }
+    if (typeof resp.phone !== 'undefined') {
+      this.phone = resp.phone;
+    }
+    if (typeof resp.useAsShippingAddress !== 'undefined') {
+      this.useAsShippingAddress = resp.useAsShippingAddress;
+    }
   }
 
-  setStreet(street: string): void { this.street = street; }
-  getStreet(): string | undefined { return this.street; }
+  public setStreet(street: string): void { this.street = street; }
+  public getStreet(): string | undefined { return this.street; }
 
-  setStreet2(street2: string): void { this.street2 = street2; }
-  getStreet2(): string | undefined { return this.street2; }
+  public setStreet2(street2: string): void { this.street2 = street2; }
+  public getStreet2(): string | undefined { return this.street2; }
 
-  setCity(city: string): void { this.city = city; }
-  getCity(): string | undefined { return this.city; }
+  public setCity(city: string): void { this.city = city; }
+  public getCity(): string | undefined { return this.city; }
 
-  setState(state: string): void { this.state = state; }
-  getState(): string | undefined { return this.state; }
+  public setState(state: string): void { this.state = state; }
+  public getState(): string | undefined { return this.state; }
 
-  setZip(zip: string): void { this.zip = zip; }
-  getZip(): string | undefined { return this.zip; }
+  public setZip(zip: string): void { this.zip = zip; }
+  public getZip(): string | undefined { return this.zip; }
 
-  setCountry(country: string): void { this.country = country; }
-  getCountry(): string | undefined { return this.country; }
+  public setCountry(country: string): void { this.country = country; }
+  public getCountry(): string | undefined { return this.country; }
 
-  setPhone(phone: string): void { this.phone = phone; }
-  getPhone(): string | undefined { return this.phone; }
+  public setPhone(phone: string): void { this.phone = phone; }
+  public getPhone(): string | undefined { return this.phone; }
 
-  setUseAsShippingAddress(useAsShippingAddress: 'true' | 'false'): void { this.useAsShippingAddress = useAsShippingAddress; }
-  getUseAsShippingAddress(): string | undefined { return this.useAsShippingAddress; }
+  public setUseAsShippingAddress(useAsShippingAddress: 'true' | 'false'): void { this.useAsShippingAddress = useAsShippingAddress; }
+  public getUseAsShippingAddress(): string | undefined { return this.useAsShippingAddress; }
 
 }

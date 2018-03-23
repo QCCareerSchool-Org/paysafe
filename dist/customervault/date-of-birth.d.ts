@@ -3,10 +3,10 @@ export declare class DateOfBirth {
     private month?;
     private year?;
     constructor(resp?: DateOfBirth);
-    setDay(day: string): void;
-    getDay(): string | undefined;
-    setMonth(month: string): void;
-    getMonth(): string | undefined;
-    setYear(year: string): void;
-    getYear(): string | undefined;
+    setDay(day: number): void;
+    getDay(): number | undefined;
+    setMonth(month: number): void;
+    getMonth(): number | undefined;
+    setYear(year: number): void;
+    getYear(): number | undefined;
 }

@@ -6,5 +6,3 @@ export declare class Environment {
 }
 export declare const LIVE: Environment;
 export declare const TEST: Environment;
-export declare const LOCALTEST: Environment;
-export declare const SBOXTEST: Environment;

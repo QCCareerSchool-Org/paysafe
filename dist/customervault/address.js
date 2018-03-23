@@ -1,30 +1,50 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const request_object_1 = require("../request-object");
 const profile_1 = require("./profile");
-const paysafe_error_1 = require("../paysafe-error");
-class Address {
+class Address extends request_object_1.RequestObject {
     constructor(resp) {
-        if (!resp)
+        super(resp);
+        if (!resp) {
             return;
-        this.id = resp.id;
-        this.nickName = resp.nickName;
-        this.street = resp.street;
-        this.street2 = resp.street2;
-        this.city = resp.city;
-        this.state = resp.state;
-        this.zip = resp.zip;
-        this.country = resp.country;
-        this.recipientName = resp.recipientName;
-        this.phone = resp.phone;
-        if (resp.profile)
+        }
+        if (typeof resp.nickName !== 'undefined') {
+            this.nickName = resp.nickName;
+        }
+        if (typeof resp.street !== 'undefined') {
+            this.street = resp.street;
+        }
+        if (typeof resp.street2 !== 'undefined') {
+            this.street2 = resp.street2;
+        }
+        if (typeof resp.city !== 'undefined') {
+            this.city = resp.city;
+        }
+        if (typeof resp.state !== 'undefined') {
+            this.state = resp.state;
+        }
+        if (typeof resp.zip !== 'undefined') {
+            this.zip = resp.zip;
+        }
+        if (typeof resp.country !== 'undefined') {
+            this.country = resp.country;
+        }
+        if (typeof resp.recipientName !== 'undefined') {
+            this.recipientName = resp.recipientName;
+        }
+        if (typeof resp.phone !== 'undefined') {
+            this.phone = resp.phone;
+        }
+        if (typeof resp.profile !== 'undefined') {
             this.profile = new profile_1.Profile(resp.profile);
-        if (resp.error)
-            this.error = new paysafe_error_1.PaysafeError(resp.error);
-        this.status = resp.status;
-        this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
+        }
+        if (typeof resp.status !== 'undefined') {
+            this.status = resp.status;
+        }
+        if (typeof resp.defaultShippingAddressIndicator !== 'undefined') {
+            this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
+        }
     }
-    setId(id) { this.id = id; }
-    getId() { return this.id; }
     setNickName(nickName) { this.nickName = nickName; }
     getNickName() { return this.nickName; }
     setStreet(street) { this.street = street; }
@@ -45,8 +65,7 @@ class Address {
     getPhone() { return this.phone; }
     setProfile(profile) { this.profile = profile; }
     getProfile() { return this.profile; }
-    setError(error) { this.error = error; }
-    getError() { return this.error; }
+    deleteProfile() { delete this.profile; }
     setStatus(status) { this.status = status; }
     getStatus() { return this.status; }
     setDefaultShippingAddressIndicator(defaultShippingAddressIndicator) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }

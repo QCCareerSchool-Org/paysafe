@@ -1,28 +1,29 @@
-import { PaysafeError } from "./paysafe-error";
+import { PaysafeError } from './paysafe-error';
+
+const ID_MAX_LENGTH = 36;
 
 export abstract class RequestObject {
 
   private id?: string;
-  private merchantRefNum?: string;
   private error?: PaysafeError;
 
   constructor(resp?: RequestObject) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.id = resp.id;
-    this.merchantRefNum = resp.merchantRefNum;
-    if (typeof resp.error !== 'undefined')
+    }
+    if (typeof resp.id !== 'undefined') {
+      this.id = resp.id;
+    }
+    if (typeof resp.error !== 'undefined') {
       this.error = new PaysafeError(resp.error);
+    }
   }
 
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
-  deleteId(): void { delete this.id; }
+  public setId(id: string): void { if (id.length > ID_MAX_LENGTH) { throw new Error('invalid id'); } this.id = id; }
+  public getId(): string | undefined { return this.id; }
+  public deleteId(): void { delete this.id; }
 
-  setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
-
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
+  public setError(error: PaysafeError): void { this.error = error; }
+  public getError(): PaysafeError | undefined { return this.error; }
 
 }

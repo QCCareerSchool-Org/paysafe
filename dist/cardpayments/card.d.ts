@@ -3,6 +3,7 @@ import { BillingDetails } from './billing-details';
 import { CardExpiry } from './card-expiry';
 import { Profile } from '../customervault/profile';
 export declare class Card extends RequestObject {
+    private merchantRefNum?;
     private singleUseToken?;
     private brand?;
     private nickName?;
@@ -22,6 +23,8 @@ export declare class Card extends RequestObject {
     private status?;
     private profile?;
     constructor(resp?: Card);
+    setMerchantRefNum(merchantRefNum: string): void;
+    getMerchantRefNum(): string | undefined;
     setSingleUseToken(singleUseToken: string): void;
     getSingleUseToken(): string | undefined;
     setBrand(brand: string): void;

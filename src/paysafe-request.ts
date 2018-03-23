@@ -1,15 +1,15 @@
 export class PaysafeRequest {
 
-  apiUrl: string;
-  method: string;
+  public apiUrl: string;
+  public method: string;
 
   constructor(apiUrl: string, method: string) {
     this.apiUrl = apiUrl;
     this.method = method;
-  };
+  }
 
   public buildUrl(apiEndPoint: string): string {
-    return apiEndPoint + "/" + this.apiUrl;
+    return apiEndPoint + '/' + this.apiUrl;
   }
 
 }

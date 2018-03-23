@@ -10,12 +10,18 @@ class PaysafeError extends Error {
             return;
         }
         super(resp.message);
-        this.code = resp.code;
-        if (resp.links)
+        if (typeof resp.code !== 'undefined') {
+            this.code = resp.code;
+        }
+        if (typeof resp.links !== 'undefined') {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
-        if (resp.fieldErrors)
+        }
+        if (typeof resp.fieldErrors !== 'undefined') {
             this.fieldErrors = create_array_1.createArray(resp.fieldErrors, field_error_1.FieldError);
-        this.details = resp.details;
+        }
+        if (typeof resp.details !== 'undefined') {
+            this.details = resp.details;
+        }
     }
     setCode(code) { this.code = code; }
     getCode() { return this.code; }

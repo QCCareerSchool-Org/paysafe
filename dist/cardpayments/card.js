@@ -8,34 +8,74 @@ const profile_1 = require("../customervault/profile");
 class Card extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
-        if (!resp)
+        if (!resp) {
             return;
-        this.singleUseToken = resp.singleUseToken;
-        this.brand = resp.brand;
-        this.nickName = resp.nickName;
-        this.holderName = resp.holderName;
-        this.cardType = resp.cardType;
-        this.billingAddressId = resp.billingAddressId;
-        if (resp.billingDetails) {
-            if (resp.billingDetails instanceof Array)
-                this.billingDetails = create_array_1.createArray(resp.billingDetails, billing_details_1.BillingDetails);
-            else
-                this.billingDetails = new billing_details_1.BillingDetails(resp.billingDetails);
         }
-        this.defaultCardIndicator = resp.defaultCardIndicator;
-        this.paymentToken = resp.paymentToken;
-        this.cardNum = resp.cardNum;
-        this.type = resp.type;
-        this.lastDigits = resp.lastDigits;
-        if (resp.cardExpiry)
+        if (typeof resp.merchantRefNum !== 'undefined') {
+            this.merchantRefNum = resp.merchantRefNum;
+        }
+        if (typeof resp.singleUseToken !== 'undefined') {
+            this.singleUseToken = resp.singleUseToken;
+        }
+        if (typeof resp.brand !== 'undefined') {
+            this.brand = resp.brand;
+        }
+        if (typeof resp.nickName !== 'undefined') {
+            this.nickName = resp.nickName;
+        }
+        if (typeof resp.holderName !== 'undefined') {
+            this.holderName = resp.holderName;
+        }
+        if (typeof resp.cardType !== 'undefined') {
+            this.cardType = resp.cardType;
+        }
+        if (typeof resp.billingAddressId !== 'undefined') {
+            this.billingAddressId = resp.billingAddressId;
+        }
+        if (typeof resp.billingDetails !== 'undefined') {
+            if (resp.billingDetails instanceof Array) {
+                this.billingDetails = create_array_1.createArray(resp.billingDetails, billing_details_1.BillingDetails);
+            }
+            else {
+                this.billingDetails = new billing_details_1.BillingDetails(resp.billingDetails);
+            }
+        }
+        if (typeof resp.defaultCardIndicator !== 'undefined') {
+            this.defaultCardIndicator = resp.defaultCardIndicator;
+        }
+        if (typeof resp.paymentToken !== 'undefined') {
+            this.paymentToken = resp.paymentToken;
+        }
+        if (typeof resp.cardNum !== 'undefined') {
+            this.cardNum = resp.cardNum;
+        }
+        if (typeof resp.type !== 'undefined') {
+            this.type = resp.type;
+        }
+        if (typeof resp.lastDigits !== 'undefined') {
+            this.lastDigits = resp.lastDigits;
+        }
+        if (typeof resp.cardExpiry !== 'undefined') {
             this.cardExpiry = new card_expiry_1.CardExpiry(resp.cardExpiry);
-        this.cvv = resp.cvv;
-        this.track1 = resp.track1;
-        this.track2 = resp.track2;
-        this.status = resp.status;
-        if (this.profile)
+        }
+        if (typeof resp.cvv !== 'undefined') {
+            this.cvv = resp.cvv;
+        }
+        if (typeof resp.track1 !== 'undefined') {
+            this.track1 = resp.track1;
+        }
+        if (typeof resp.track2 !== 'undefined') {
+            this.track2 = resp.track2;
+        }
+        if (typeof resp.status !== 'undefined') {
+            this.status = resp.status;
+        }
+        if (typeof this.profile !== 'undefined') {
             this.profile = new profile_1.Profile(resp.profile);
+        }
     }
+    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
+    getMerchantRefNum() { return this.merchantRefNum; }
     setSingleUseToken(singleUseToken) { this.singleUseToken = singleUseToken; }
     getSingleUseToken() { return this.singleUseToken; }
     setBrand(brand) { this.brand = brand; }

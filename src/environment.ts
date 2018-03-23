@@ -1,8 +1,8 @@
 export class Environment {
 
-  maxSockets: number;
-  timeout: number;
-  host: string;
+  public maxSockets: number;
+  public timeout: number;
+  public host: string;
 
   constructor(host: string, maxSockets: number, timeout: number) {
     this.host = host;
@@ -14,5 +14,3 @@ export class Environment {
 
 export const LIVE = new Environment('https://api.paysafe.com', 10, 30000);
 export const TEST = new Environment('https://api.test.paysafe.com', 10, 30000);
-export const LOCALTEST = new Environment('localhost', 10, 30000);
-export const SBOXTEST = new Environment('https://api.sbox.paysafe.com', 10, 30000);

@@ -1,9 +1,9 @@
-import { Profile } from './profile';
 import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
+import { Profile } from './profile';
 
-export class Address {
+export class Address extends RequestObject {
 
-  private id?: string;
   private nickName?: string;
   private street?: string;
   private street2?: string;
@@ -14,71 +14,87 @@ export class Address {
   private recipientName?: string;
   private phone?: string;
   private profile?: Profile;
-  private error?: PaysafeError;
   private status?: string;
-  private defaultShippingAddressIndicator?: 'true' | 'false';
+  private defaultShippingAddressIndicator?: boolean;
 
   constructor(resp?: Address) {
-    if (!resp)
+    super(resp);
+    if (!resp) {
       return;
-    this.id = resp.id;
-    this.nickName = resp.nickName;
-    this.street = resp.street;
-    this.street2 = resp.street2;
-    this.city = resp.city;
-    this.state = resp.state;
-    this.zip = resp.zip;
-    this.country = resp.country;
-    this.recipientName = resp.recipientName;
-    this.phone = resp.phone;
-    if (resp.profile)
+    }
+    if (typeof resp.nickName !== 'undefined') {
+      this.nickName = resp.nickName;
+    }
+    if (typeof resp.street !== 'undefined') {
+      this.street = resp.street;
+    }
+    if (typeof resp.street2 !== 'undefined') {
+      this.street2 = resp.street2;
+    }
+    if (typeof resp.city !== 'undefined') {
+      this.city = resp.city;
+    }
+    if (typeof resp.state !== 'undefined') {
+      this.state = resp.state;
+    }
+    if (typeof resp.zip !== 'undefined') {
+      this.zip = resp.zip;
+    }
+    if (typeof resp.country !== 'undefined') {
+      this.country = resp.country;
+    }
+    if (typeof resp.recipientName !== 'undefined') {
+      this.recipientName = resp.recipientName;
+    }
+    if (typeof resp.phone !== 'undefined') {
+      this.phone = resp.phone;
+    }
+    if (typeof resp.profile !== 'undefined') {
       this.profile = new Profile(resp.profile);
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
-    this.status = resp.status;
-    this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
+    }
+    if (typeof resp.status !== 'undefined') {
+      this.status = resp.status;
+    }
+    if (typeof resp.defaultShippingAddressIndicator !== 'undefined') {
+      this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
+    }
   }
 
-  setId(id: string) { this.id = id; }
-  getId(): string | undefined { return this.id; }
+  public setNickName(nickName: string) { this.nickName = nickName; }
+  public getNickName(): string | undefined { return this.nickName; }
 
-  setNickName(nickName: string) { this.nickName = nickName; }
-  getNickName(): string | undefined { return this.nickName; }
+  public setStreet(street: string) { this.street = street; }
+  public getStreet(): string | undefined { return this.street; }
 
-  setStreet(street: string) { this.street = street; }
-  getStreet(): string | undefined { return this.street; }
+  public setStreet2(street2: string) { this.street2 = street2; }
+  public getStreet2(): string | undefined { return this.street2; }
 
-  setStreet2(street2: string) { this.street2 = street2; }
-  getStreet2(): string | undefined { return this.street2; }
+  public setCity(city: string) { this.city = city; }
+  public getCity(): string | undefined { return this.city; }
 
-  setCity(city: string) { this.city = city; }
-  getCity(): string | undefined { return this.city; }
+  public setState(state: string) { this.state = state; }
+  public getState(): string | undefined { return this.state; }
 
-  setState(state: string) { this.state = state; }
-  getState(): string | undefined { return this.state; }
+  public setZip(zip: string) { this.zip = zip; }
+  public getZip(): string | undefined { return this.zip; }
 
-  setZip(zip: string) { this.zip = zip; }
-  getZip(): string | undefined { return this.zip; }
+  public setCountry(country: string) { this.country = country; }
+  public getCountry(): string | undefined { return this.country; }
 
-  setCountry(country: string) { this.country = country; }
-  getCountry(): string | undefined { return this.country; }
+  public setRecipientName(recipientName: string) { this.recipientName = recipientName; }
+  public getRecipientName(): string | undefined { return this.recipientName; }
 
-  setRecipientName(recipientName: string) { this.recipientName = recipientName; }
-  getRecipientName(): string | undefined { return this.recipientName; }
+  public setPhone(phone: string) { this.phone = phone; }
+  public getPhone(): string | undefined { return this.phone; }
 
-  setPhone(phone: string) { this.phone = phone; }
-  getPhone(): string | undefined { return this.phone; }
+  public setProfile(profile: Profile) { this.profile = profile; }
+  public getProfile(): Profile | undefined { return this.profile; }
+  public deleteProfile(): void { delete this.profile; }
 
-  setProfile(profile: Profile) { this.profile = profile; }
-  getProfile(): Profile | undefined { return this.profile; }
+  public setStatus(status: string) { this.status = status; }
+  public getStatus(): string | undefined { return this.status; }
 
-  setError(error: PaysafeError) { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-
-  setStatus(status: string) { this.status = status; }
-  getStatus(): string | undefined { return this.status; }
-
-  setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: 'true' | 'false') { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
-  getDefaultShippingAddressIndicator(): 'true' | 'false' | undefined { return this.defaultShippingAddressIndicator; }
+  public setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
+  public getDefaultShippingAddressIndicator(): boolean | undefined { return this.defaultShippingAddressIndicator; }
 
 }

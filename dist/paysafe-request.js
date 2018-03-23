@@ -5,9 +5,8 @@ class PaysafeRequest {
         this.apiUrl = apiUrl;
         this.method = method;
     }
-    ;
     buildUrl(apiEndPoint) {
-        return apiEndPoint + "/" + this.apiUrl;
+        return apiEndPoint + '/' + this.apiUrl;
     }
 }
 exports.PaysafeRequest = PaysafeRequest;

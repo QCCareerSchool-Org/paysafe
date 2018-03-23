@@ -1,10 +1,10 @@
-import { PaysafeAPIClient } from './paysafe-api-client';
 import { Authorization } from './cardpayments/authorization';
 import { AuthorizationReversal } from './cardpayments/authorization-reversal';
-import { Settlement } from './cardpayments/settlement';
-import { Refund } from './cardpayments/refund';
 import { Pagination } from './cardpayments/pagination';
+import { Refund } from './cardpayments/refund';
+import { Settlement } from './cardpayments/settlement';
 import { Verification } from './cardpayments/verification';
+import { PaysafeAPIClient } from './paysafe-api-client';
 
 import * as Constants from './constants';
 import { PaysafeRequest } from './paysafe-request';
@@ -17,7 +17,7 @@ const paths = {
   SETTLEMENT: '/settlements',
   REFUND: '/refunds',
   AUTHORIZATIONREVERSAL: '/voidauths',
-  VERIFICATION: '/verifications'
+  VERIFICATION: '/verifications',
 };
 
 const status = {
@@ -26,13 +26,12 @@ const status = {
   PROCESSING: 'PROCESSING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
 };
-
 
 function prepareURI(path: string, paysafeClient: PaysafeAPIClient) {
-  return URI + "/accounts/" + paysafeClient.getAccountNumber() + path;
-};
+  return URI + '/accounts/' + paysafeClient.getAccountNumber() + path;
+}
 
 export class CardServiceHandler {
 
@@ -42,8 +41,8 @@ export class CardServiceHandler {
     this.paysafeApiClient = p;
   }
 
-  /** ? */
-  monitor(): Promise<any> {
+  /** verifies that the service is up and accessible */
+  public monitor(): Promise<any> {
     const requestObj = new PaysafeRequest(HEALTH_BEAT_URL, Constants.GET);
     return this.paysafeApiClient.processRequest(requestObj);
   }
@@ -52,14 +51,17 @@ export class CardServiceHandler {
    * authorize a credit card transaction
    * @param authorization
    */
-  authorize(authorization: Authorization): Promise<Authorization> {
+  public authorize(authorization: Authorization): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
       const requestObj = new PaysafeRequest(prepareURI(paths.AUTHORIZATION, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
-        resolve(response ? new Authorization(response) : response);
+        if (response) {
+          return resolve(new Authorization(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -71,20 +73,24 @@ export class CardServiceHandler {
    * approve a held authorization
    * @param authorization
    */
-  approveHeldAuth(authorization: Authorization): Promise<Authorization> {
+  public approveHeldAuth(authorization: Authorization): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
       const authorizationId = authorization.getId();
-      if (typeof authorizationId === 'undefined')
+      if (typeof authorizationId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : Auth id is missing in CardServiceHandler : approveHeldAuth'));
+      }
 
       authorization.deleteId();
       authorization.setStatus(status.COMPLETED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
-        resolve(response ? new Authorization(response) : response);
+        if (response) {
+          return resolve(new Authorization(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -97,21 +103,25 @@ export class CardServiceHandler {
    * cancel a held authorization
    * @param authorization
    */
-  cancelHeldAuth(authorization: Authorization): Promise<Authorization> {
+  public cancelHeldAuth(authorization: Authorization): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
       const authorizationId = authorization.getId();
-      if (typeof authorizationId === 'undefined')
+      if (typeof authorizationId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : Auth id is missing in CardServiceHandler : cancelHeldAuth'));
+      }
 
       authorization.deleteId();
       authorization.setStatus(status.CANCELLED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, authorization).then((response) => {
-        resolve(response ? new Authorization(response) : response);
+        if (response) {
+          return resolve(new Authorization(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -124,24 +134,29 @@ export class CardServiceHandler {
    * reverse an authorization
    * @param authorizationReversal
    */
-  reverseAuth(authorizationReversal: AuthorizationReversal): Promise<Authorization> {
+  public reverseAuth(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal> {
 
     return new Promise((resolve, reject) => {
 
       const authorization = authorizationReversal.getAuthorization();
-      if (typeof authorization === 'undefined')
+      if (typeof authorization === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : authReversal.auth is missing in CardServiceHandler : reverseAuth'));
+      }
 
       const authorizationId = authorization.getId();
-      if (typeof authorizationId === 'undefined')
+      if (typeof authorizationId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : authReversal.auth.id is missing in CardServiceHandler : reverseAuth'));
+      }
 
       authorizationReversal.deleteAuthorization();
 
       const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.AUTHORIZATIONREVERSAL}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, authorizationReversal).then((response) => {
-        resolve(response ? new AuthorizationReversal(response) : response);
+        if (response) {
+          return resolve(new AuthorizationReversal(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -153,25 +168,30 @@ export class CardServiceHandler {
   /**
    * settle
    * @param settlement
-    */
-  settlement(settlement: Settlement): Promise<Settlement> {
+   */
+  public settlement(settlement: Settlement): Promise<Settlement> {
 
     return new Promise((resolve, reject) => {
 
       const authorization = settlement.getAuthorization();
-      if (typeof authorization === 'undefined')
+      if (typeof authorization === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : settle.auth is missing in CardServiceHandler : settlement'));
+      }
 
       const authorizationId = authorization.getId();
-      if (typeof authorizationId === 'undefined')
+      if (typeof authorizationId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : settle.auth.id is missing in CardServiceHandler : settlement'));
+      }
 
       settlement.deleteAuthorization();
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.SETTLEMENT}`, this.paysafeApiClient), Constants.POST);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}/${paths.SETTLEMENT}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, settlement).then((response) => {
-        resolve(response ? new Settlement(response) : response);
+        if (response) {
+          return resolve(new Settlement(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -184,12 +204,13 @@ export class CardServiceHandler {
    * cancel a settlement
    * @param settlement
    */
-  cancelSettlement(settlement: Settlement): Promise<Settlement> {
+  public cancelSettlement(settlement: Settlement): Promise<Settlement> {
     return new Promise((resolve, reject) => {
 
       const settlementId = settlement.getId();
-      if (typeof settlementId === 'undefined')
+      if (typeof settlementId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : settlement id is missing in CardServiceHandler : cancelSettlement'));
+      }
 
       settlement.deleteId();
       settlement.setStatus(status.CANCELLED);
@@ -197,7 +218,10 @@ export class CardServiceHandler {
       const requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementId}`, this.paysafeApiClient), Constants.PUT);
 
       this.paysafeApiClient.processRequest(requestObj, settlement).then((response) => {
-        resolve(response ? new Settlement(response) : response);
+        if (response) {
+          return resolve(new Settlement(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -208,26 +232,31 @@ export class CardServiceHandler {
 
   /**
    * refund a credit card
-   * @param refund 
+   * @param refund
    */
-  refund(refund: Refund): Promise<Refund> {
+  public refund(refund: Refund): Promise<Refund> {
 
     return new Promise((resolve, reject) => {
 
       const settlements = refund.getSettlements();
-      if (typeof settlements === 'undefined')
+      if (typeof settlements === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : refund.settlement is missing in CardServiceHandler : refund'));
+      }
 
       const settlementsId = settlements.getId();
-      if (typeof settlementsId === 'undefined')
+      if (typeof settlementsId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : refund.settlement.id is missing in CardServiceHandler : refund'));
+      }
 
       refund.deleteSettlements();
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementsId}/${paths.REFUND}`, this.paysafeApiClient), Constants.POST);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementsId}/${paths.REFUND}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, refund).then((response) => {
-        resolve(response ? new Refund(response) : response);
+        if (response) {
+          return resolve(new Refund(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -238,23 +267,27 @@ export class CardServiceHandler {
 
   /**
    * cancel a refund
-   * @param refund 
+   * @param refund
    */
-  cancelRefund(refund: Refund): Promise<Refund> {
+  public cancelRefund(refund: Refund): Promise<Refund> {
 
     return new Promise((resolve, reject) => {
 
       const refundId = refund.getId();
-      if (typeof refundId === 'undefined')
+      if (typeof refundId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : settlement.id is missing in CardServiceHandler : cancelRefund'));
+      }
 
       refund.deleteId();
       refund.setStatus(status.CANCELLED);
 
-      var requestObj = new PaysafeRequest(prepareURI(`${paths.REFUND}/${refundId}`, this.paysafeApiClient), Constants.POST);
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.REFUND}/${refundId}`, this.paysafeApiClient), Constants.POST);
 
       this.paysafeApiClient.processRequest(requestObj, refund).then((response) => {
-        resolve(response ? new Refund(response) : response);
+        if (response) {
+          return resolve(new Refund(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -263,21 +296,24 @@ export class CardServiceHandler {
 
   }
 
-
-  getAuth(authorization: Authorization): Promise<Authorization> {
+  public getAuth(authorization: Authorization): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
       const authorizationId = authorization.getId();
-      if (typeof authorizationId === 'undefined')
+      if (typeof authorizationId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : authorization.id is missing in CardServiceHandler : getAuth'));
+      }
 
       authorization.deleteId();
 
       const PaysafeRequestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATION}/${authorizationId}`, this.paysafeApiClient), Constants.GET);
 
-      this.paysafeApiClient.processRequest(PaysafeRequestObj).then((response) => {
-        resolve(response ? new Authorization(response) : response);
+      this.paysafeApiClient.processRequest<Authorization>(PaysafeRequestObj).then((response) => {
+        if (response) {
+          return resolve(new Authorization(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -287,21 +323,24 @@ export class CardServiceHandler {
   }
 
   /**
-   * 
-   * @param authorizationReversal 
+   * @param authorizationReversal
    */
-  getAuthReversal(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal> {
+  public getAuthReversal(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal> {
     return new Promise((resolve, reject) => {
 
       const authorizationReversalId = authorizationReversal.getId();
-      if (typeof authorizationReversalId === 'undefined')
+      if (typeof authorizationReversalId === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : Reverse Auth id is missing in CardServiceHandler : getAuthReversal'));
+      }
 
       authorizationReversal.deleteId();
 
       const requestObj = new PaysafeRequest(prepareURI(`${paths.AUTHORIZATIONREVERSAL}/${authorizationReversalId}`, this.paysafeApiClient), Constants.GET);
-      this.paysafeApiClient.processRequest(requestObj).then((response) => {
-        resolve(response ? new AuthorizationReversal(response) : response);
+      this.paysafeApiClient.processRequest<AuthorizationReversal>(requestObj).then((response) => {
+        if (response) {
+          return resolve(new AuthorizationReversal(response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });
@@ -312,38 +351,44 @@ export class CardServiceHandler {
 
   /**
    * prepares a query string for searches by merchantRefNum
-   * @param merchObj 
-   * @param pagination 
+   * @param merchObj
+   * @param pagination
    */
-  searchMerchantRefCommon(merchObj: any, pagination: Pagination) {
-    if (typeof merchObj.merchantRefNum === 'undefined')
+  public searchMerchantRefCommon(merchObj: any, pagination: Pagination) {
+    if (typeof merchObj.merchantRefNum === 'undefined') {
       throw this.paysafeApiClient.error(400, 'merchObj.merchantRefNum is undefined');
-    let toInclude = "merchantRefNum=" + merchObj.merchantRefNum;
+    }
+    let toInclude = 'merchantRefNum=' + merchObj.merchantRefNum;
     if (pagination) {
-      if (pagination.getLimit())
-        toInclude += "&limit=" + pagination.getLimit();
-      if (pagination.getOffset())
-        toInclude += "&offset=" + pagination.getOffset();
-      if (pagination.getStartDate())
-        toInclude += "&startDate=" + pagination.getStartDate();
-      if (pagination.getEndDate())
-        toInclude += "&endDate=" + pagination.getEndDate();
+      if (pagination.getLimit()) {
+        toInclude += '&limit=' + pagination.getLimit();
+      }
+      if (pagination.getOffset()) {
+        toInclude += '&offset=' + pagination.getOffset();
+      }
+      if (pagination.getStartDate()) {
+        toInclude += '&startDate=' + pagination.getStartDate();
+      }
+      if (pagination.getEndDate()) {
+        toInclude += '&endDate=' + pagination.getEndDate();
+      }
     }
     return toInclude;
   }
 
-
-  searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any> {
+  public searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any> {
 
     return new Promise((resolve, reject) => {
 
-      if (typeof (merchObj as any).merchantRefNum === 'undefined')
+      if (typeof (merchObj as any).merchantRefNum === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidRequestException : Please provide merchant ref number for search'));
+      }
 
       const className = merchObj.constructor.name;
-      const searchPath = <string>(<any>paths)[className.toUpperCase()];
-      if (typeof searchPath === 'undefined')
+      const searchPath = (paths as any)[className.toUpperCase()] as string;
+      if (typeof searchPath === 'undefined') {
         return reject(this.paysafeApiClient.error(400, 'InvalidClassException : Please provide valid class name for search'));
+      }
 
       let toInclude: string;
       try {
@@ -352,10 +397,13 @@ export class CardServiceHandler {
         return reject(err);
       }
 
-      const requestObj = new PaysafeRequest(prepareURI(searchPath + "?" + toInclude, this.paysafeApiClient), Constants.GET);
+      const requestObj = new PaysafeRequest(prepareURI(searchPath + '?' + toInclude, this.paysafeApiClient), Constants.GET);
 
       this.paysafeApiClient.processRequest(requestObj).then((response) => {
-        resolve(response ? new this.paysafeApiClient.classes[className](response) : response);
+        if (response) {
+          return resolve(new this.paysafeApiClient.classes[className](response));
+        }
+        reject(new Error('empty response'));
       }).catch((err) => {
         reject(err);
       });

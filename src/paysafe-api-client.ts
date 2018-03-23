@@ -1,13 +1,13 @@
 import * as request from 'request';
 
 import { Environment } from './environment';
-import { RequestObject } from './request-object';
 import { PaysafeError } from './paysafe-error';
 import { PaysafeRequest } from './paysafe-request';
+import { RequestObject } from './request-object';
 
 import { CardServiceHandler } from './card-service-handler';
-import { DirectDebitServiceHandler } from './direct-debit-service-handler';
 import { CustomerServiceHandler } from './customer-service-handler';
+import { DirectDebitServiceHandler } from './direct-debit-service-handler';
 import { ThreeDSecureServiceHandler } from './three-d-secure-service-handler';
 
 import { AccordD } from './cardpayments/accord-d';
@@ -31,6 +31,7 @@ import { Address } from './customervault/address';
 import { DateOfBirth } from './customervault/date-of-birth';
 import { Mandate } from './customervault/mandate';
 import { Profile } from './customervault/profile';
+
 import { ACHBankAccount } from './customervault/ach-bank-account';
 import { BACSBankAccount } from './customervault/bacs-bank-account';
 import { EFTBankAccount } from './customervault/eft-bank-account';
@@ -44,18 +45,8 @@ import { SEPABankAccount } from './customervault/sepa-bank-account';
 
 export class PaysafeAPIClient {
 
-  private apiKey: string;
-  private apiPassword: string;
-  private environment: Environment;
-  private accountNumber: string;
+  public classes: { [key: string]: any } = {
 
-  private cardServiceHandler?: CardServiceHandler;
-  private customerServiceHandler?: CustomerServiceHandler
-  private directDebitServiceHandler?: DirectDebitServiceHandler;
-  private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
-
-  classes: { [key: string]: any } = {
-  
     // card payments
     AccordD,
     Authentication,
@@ -93,6 +84,16 @@ export class PaysafeAPIClient {
     // Authentication3D,
   };
 
+  private apiKey: string;
+  private apiPassword: string;
+  private environment: Environment;
+  private accountNumber: string;
+
+  private cardServiceHandler?: CardServiceHandler;
+  private customerServiceHandler?: CustomerServiceHandler;
+  private directDebitServiceHandler?: DirectDebitServiceHandler;
+  private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
+
   constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
@@ -100,84 +101,92 @@ export class PaysafeAPIClient {
     this.accountNumber = accountNumber;
   }
 
-  updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
+  public updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
     this.environment = environment;
     this.accountNumber = accountNumber;
   }
 
-  error(code: number, message: string): PaysafeError {
+  public error(code: number, message: string): PaysafeError {
     const error = new PaysafeError();
     error.message = message;
     error.setCode(code);
     return error;
   }
 
-  getApiKey(): string { return this.apiKey; }
-  getApiPassword(): string { return this.apiPassword; }
-  getEnvironment(): Environment { return this.environment; }
-  getAccountNumber(): string { return this.accountNumber; }
+  public getApiKey(): string { return this.apiKey; }
+  public getApiPassword(): string { return this.apiPassword; }
+  public getEnvironment(): Environment { return this.environment; }
+  public getAccountNumber(): string { return this.accountNumber; }
 
-  getCardServiceHandler(): CardServiceHandler {
+  public getCardServiceHandler(): CardServiceHandler {
     if (!this.cardServiceHandler) {
       this.cardServiceHandler = new CardServiceHandler(this);
     }
     return this.cardServiceHandler;
   }
 
-  getDirectDebitServiceHandler(): DirectDebitServiceHandler {
+  public getDirectDebitServiceHandler(): DirectDebitServiceHandler {
     if (!this.directDebitServiceHandler) {
       this.directDebitServiceHandler = new DirectDebitServiceHandler(this);
     }
     return this.directDebitServiceHandler;
   }
 
-  getCustomerServiceHandler(): CustomerServiceHandler {
+  public getCustomerServiceHandler(): CustomerServiceHandler {
     if (!this.customerServiceHandler) {
       this.customerServiceHandler = new CustomerServiceHandler(this);
     }
     return this.customerServiceHandler;
   }
 
-  getThreeDSecureServiceHandler(): ThreeDSecureServiceHandler {
+  public getThreeDSecureServiceHandler(): ThreeDSecureServiceHandler {
     if (!this.threeDSecureServiceHandler) {
       this.threeDSecureServiceHandler = new ThreeDSecureServiceHandler(this);
     }
     return this.threeDSecureServiceHandler;
   }
 
-  processRequest(PaysafeRequest: PaysafeRequest, requestObject?: RequestObject): Promise<any> {
+  public processRequest<T extends RequestObject>(paysafeRequest: PaysafeRequest, requestObject?: T): Promise<T> {
 
-    const options = {
+    const options: request.OptionsWithUri = {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword)
+        'Authorization': 'Basic ' + prepareAPICredential(this.apiKey, this.apiPassword),
       },
-      uri: PaysafeRequest.buildUrl(this.environment.host),
-      method: PaysafeRequest.method,
-      body: requestObject ? JSON.stringify(requestObject) : '',
+      uri: paysafeRequest.buildUrl(this.environment.host),
+      method: paysafeRequest.method,
+      json: true,
       pool: {
         maxSockets: this.environment.maxSockets,
       },
       timeout: this.environment.timeout,
     };
 
+    if (typeof requestObject !== 'undefined') {
+      options.body = requestObject;
+    }
+
     return new Promise((resolve, reject) => {
 
       request(options, (err, response, body) => {
+
         if (err) {
-          reject(this.error(err.code, 'Connection error: No internet Connection available: ' + err.syscall));
+          reject(this.error(err.code, 'Connection error: ' + err.syscall));
         } else if (response.statusCode === 503) {
           reject(this.error(response.statusCode, body));
-        } else if (!body) { // for delete method, the response is empty string
-          resolve({ status: response.statusCode });
+        } else if (!body) { // for delete calls, the response is empty string
+          resolve();
         } else {
           try {
             body = typeof body === 'string' ? JSON.parse(body) : body;
+            if (typeof body.error !== 'undefined') { // the entire response is an error
+              return reject(new PaysafeError(body.error));
+            }
             resolve(body);
-          } catch (e) {
-            reject(this.error(e.code, 'Failed to parse body'));
+          } catch (parseError) {
+            reject(this.error(parseError.code, 'Failed to parse body'));
           }
         }
       });
@@ -187,7 +196,7 @@ export class PaysafeAPIClient {
 }
 
 function prepareAPICredential(apiKey: string, apiPassword: string): string {
-  let apiCredential = apiKey + ":" + apiPassword;
-  let apiCredBuffer = new Buffer(apiCredential);
+  const apiCredential = apiKey + ':' + apiPassword;
+  const apiCredBuffer = new Buffer(apiCredential);
   return apiCredBuffer.toString('Base64');
-};
+}

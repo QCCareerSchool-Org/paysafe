@@ -1,13 +1,15 @@
-import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
 import { Card } from '../cardpayments/card';
-import { DateOfBirth } from './date-of-birth';
 import { Address } from './address';
+import { DateOfBirth } from './date-of-birth';
 import { ACHBankAccount } from './ach-bank-account';
-import { EFTBankAccount } from './eft-bank-account';
 import { BACSBankAccount } from './bacs-bank-account';
+import { EFTBankAccount } from './eft-bank-account';
 import { SEPABankAccount } from './sepa-bank-account';
-export declare class Profile {
-    private id?;
+export declare type statusType = 'INITIAL' | 'ACTIVE';
+export declare type localeType = 'en_US' | 'fr_CA' | 'en_GB';
+export declare type genderType = 'M' | 'F';
+export declare class Profile extends RequestObject {
     private status?;
     private merchantCustomerId?;
     private locale?;
@@ -23,20 +25,18 @@ export declare class Profile {
     private cellPhone?;
     private paymentToken?;
     private addresses?;
+    private card?;
     private cards?;
     private achbankaccounts?;
     private bacsbankaccounts?;
     private eftbankaccounts?;
     private sepabankaccounts?;
-    private error?;
     constructor(resp?: Profile);
-    setId(id: string): void;
-    getId(): string | undefined;
-    setStatus(status: string): void;
-    getStatus(): string | undefined;
+    setStatus(status: statusType): void;
+    getStatus(): statusType | undefined;
     setMerchantCustomerId(merchantCustomerId: string): void;
     getMerchantCustomerId(): string | undefined;
-    setLocale(locale: string): void;
+    setLocale(locale: localeType): void;
     getLocale(): string | undefined;
     setFirstName(firstName: string): void;
     getFirstName(): string | undefined;
@@ -48,8 +48,8 @@ export declare class Profile {
     getDateOfBirth(): DateOfBirth | undefined;
     setIp(ip: string): void;
     getIp(): string | undefined;
-    setGender(gender: string): void;
-    getGender(): string | undefined;
+    setGender(gender: genderType): void;
+    getGender(): genderType | undefined;
     setNationality(nationality: string): void;
     getNationality(): string | undefined;
     setEmail(email: string): void;
@@ -62,8 +62,10 @@ export declare class Profile {
     getPaymentToken(): string | undefined;
     setAddresses(addresses: Address | Address[]): void;
     getAddresses(): Address | Address[] | undefined;
-    setCards(cards: Card | Card[]): void;
-    getCards(): Card | Card[] | undefined;
+    setCard(card: Card): void;
+    getCard(): Card | undefined;
+    setCards(cards: Card[]): void;
+    getCards(): Card[] | undefined;
     setACHBankAccounts(achbankaccounts: ACHBankAccount | ACHBankAccount[]): void;
     getACHBankAccounts(): ACHBankAccount | ACHBankAccount[] | undefined;
     setBACSBankAccounts(bacsbankaccounts: BACSBankAccount | BACSBankAccount[]): void;
@@ -72,6 +74,4 @@ export declare class Profile {
     getEFTBankAccounts(): EFTBankAccount | EFTBankAccount[] | undefined;
     setSEPABankAccounts(sepabankaccounts: SEPABankAccount | SEPABankAccount[]): void;
     getSEPABankAccounts(): SEPABankAccount | SEPABankAccount[] | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
 }

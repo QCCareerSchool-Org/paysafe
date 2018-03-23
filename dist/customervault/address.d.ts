@@ -1,7 +1,6 @@
+import { RequestObject } from '../request-object';
 import { Profile } from './profile';
-import { PaysafeError } from '../paysafe-error';
-export declare class Address {
-    private id?;
+export declare class Address extends RequestObject {
     private nickName?;
     private street?;
     private street2?;
@@ -12,12 +11,9 @@ export declare class Address {
     private recipientName?;
     private phone?;
     private profile?;
-    private error?;
     private status?;
     private defaultShippingAddressIndicator?;
     constructor(resp?: Address);
-    setId(id: string): void;
-    getId(): string | undefined;
     setNickName(nickName: string): void;
     getNickName(): string | undefined;
     setStreet(street: string): void;
@@ -38,10 +34,9 @@ export declare class Address {
     getPhone(): string | undefined;
     setProfile(profile: Profile): void;
     getProfile(): Profile | undefined;
-    setError(error: PaysafeError): void;
-    getError(): PaysafeError | undefined;
+    deleteProfile(): void;
     setStatus(status: string): void;
     getStatus(): string | undefined;
-    setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: 'true' | 'false'): void;
-    getDefaultShippingAddressIndicator(): 'true' | 'false' | undefined;
+    setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean): void;
+    getDefaultShippingAddressIndicator(): boolean | undefined;
 }

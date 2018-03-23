@@ -2,16 +2,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class BillingDetails {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.street = resp.street;
-        this.street2 = resp.street2;
-        this.city = resp.city;
-        this.state = resp.state;
-        this.zip = resp.zip;
-        this.country = resp.country;
-        this.phone = resp.phone;
-        this.useAsShippingAddress = resp.useAsShippingAddress;
+        }
+        if (typeof resp.street !== 'undefined') {
+            this.street = resp.street;
+        }
+        if (typeof resp.street2 !== 'undefined') {
+            this.street2 = resp.street2;
+        }
+        if (typeof resp.city !== 'undefined') {
+            this.city = resp.city;
+        }
+        if (typeof resp.state !== 'undefined') {
+            this.state = resp.state;
+        }
+        if (typeof resp.zip !== 'undefined') {
+            this.zip = resp.zip;
+        }
+        if (typeof resp.country !== 'undefined') {
+            this.country = resp.country;
+        }
+        if (typeof resp.phone !== 'undefined') {
+            this.phone = resp.phone;
+        }
+        if (typeof resp.useAsShippingAddress !== 'undefined') {
+            this.useAsShippingAddress = resp.useAsShippingAddress;
+        }
     }
     setStreet(street) { this.street = street; }
     getStreet() { return this.street; }

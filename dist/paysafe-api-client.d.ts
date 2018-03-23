@@ -1,12 +1,15 @@
 import { Environment } from './environment';
-import { RequestObject } from './request-object';
 import { PaysafeError } from './paysafe-error';
 import { PaysafeRequest } from './paysafe-request';
+import { RequestObject } from './request-object';
 import { CardServiceHandler } from './card-service-handler';
-import { DirectDebitServiceHandler } from './direct-debit-service-handler';
 import { CustomerServiceHandler } from './customer-service-handler';
+import { DirectDebitServiceHandler } from './direct-debit-service-handler';
 import { ThreeDSecureServiceHandler } from './three-d-secure-service-handler';
 export declare class PaysafeAPIClient {
+    classes: {
+        [key: string]: any;
+    };
     private apiKey;
     private apiPassword;
     private environment;
@@ -15,9 +18,6 @@ export declare class PaysafeAPIClient {
     private customerServiceHandler?;
     private directDebitServiceHandler?;
     private threeDSecureServiceHandler?;
-    classes: {
-        [key: string]: any;
-    };
     constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string);
     updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string): void;
     error(code: number, message: string): PaysafeError;
@@ -29,5 +29,5 @@ export declare class PaysafeAPIClient {
     getDirectDebitServiceHandler(): DirectDebitServiceHandler;
     getCustomerServiceHandler(): CustomerServiceHandler;
     getThreeDSecureServiceHandler(): ThreeDSecureServiceHandler;
-    processRequest(PaysafeRequest: PaysafeRequest, requestObject?: RequestObject): Promise<any>;
+    processRequest<T extends RequestObject>(paysafeRequest: PaysafeRequest, requestObject?: T): Promise<T>;
 }
