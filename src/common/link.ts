@@ -4,15 +4,20 @@ export class Link {
   private href?: string;
 
   constructor(resp?: Link) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.rel = resp.rel;
-    this.href = resp.href;
+    }
+    if (typeof resp.rel !== 'undefined') {
+      this.rel = resp.rel;
+    }
+    if (typeof resp.href !== 'undefined') {
+      this.href = resp.href;
+    }
   }
 
-  setRel(rel: string): void { this.rel = rel; }
-	getRel(): string | undefined { return this.rel; }
-	setHref(href: string): void { this.href = href; }
-	getHref(): string | undefined { return this.href; }
+  public setRel(rel: string): void { this.rel = rel; }
+  public getRel(): string | undefined { return this.rel; }
+  public setHref(href: string): void { this.href = href; }
+  public getHref(): string | undefined { return this.href; }
 
 }

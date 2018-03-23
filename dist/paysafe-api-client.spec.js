@@ -115,9 +115,9 @@ describe('Paysafe API', () => {
         const merchantCustomerId = randomStr();
         const firstName = randomStr();
         const lastName = randomStr();
-        const day = Math.round(Math.random() * 28);
-        const month = Math.round(Math.random() * 12);
-        const year = Math.round(Math.random() * 117) + 1900;
+        const day = Math.floor(Math.random() * 28) + 1;
+        const month = Math.floor(Math.random() * 12) + 1;
+        const year = Math.floor(Math.random() * 117) + 1900;
         try {
             const profile = new profile_1.Profile();
             profile.setMerchantCustomerId(merchantCustomerId);
