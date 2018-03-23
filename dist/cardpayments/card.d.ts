@@ -1,7 +1,7 @@
+import { Profile } from '../customervault/profile';
 import { RequestObject } from '../request-object';
 import { BillingDetails } from './billing-details';
 import { CardExpiry } from './card-expiry';
-import { Profile } from '../customervault/profile';
 export declare class Card extends RequestObject {
     private merchantRefNum?;
     private singleUseToken?;
@@ -39,8 +39,8 @@ export declare class Card extends RequestObject {
     getBillingAddressId(): string | undefined;
     setBillingDetails(billingDetails: BillingDetails | BillingDetails[]): void;
     getBillingDetails(): BillingDetails | BillingDetails[] | undefined;
-    setDefaultCardIndicator(defaultCardIndicator: 'true' | 'false'): void;
-    getDefaultCardIndicator(): string | undefined;
+    setDefaultCardIndicator(defaultCardIndicator: boolean): void;
+    getDefaultCardIndicator(): boolean | undefined;
     setPaymentToken(paymentToken: string): void;
     getPaymentToken(): string | undefined;
     setCardNum(cardNum: string): void;

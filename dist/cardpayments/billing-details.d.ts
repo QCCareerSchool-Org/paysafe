@@ -22,6 +22,6 @@ export declare class BillingDetails {
     getCountry(): string | undefined;
     setPhone(phone: string): void;
     getPhone(): string | undefined;
-    setUseAsShippingAddress(useAsShippingAddress: 'true' | 'false'): void;
-    getUseAsShippingAddress(): string | undefined;
+    setUseAsShippingAddress(useAsShippingAddress: boolean): void;
+    getUseAsShippingAddress(): boolean | undefined;
 }

@@ -1,29 +1,38 @@
 export class MasterPass {
 
-  private payPassWalletIndicator?: any;
-	private authenticationMethod?: any;
-	private cardEnrollmentMethod?: any;
-	private masterCardAssignedId?: any;
+  private payPassWalletIndicator?: string;
+  private authenticationMethod?: string;
+  private cardEnrollmentMethod?: string;
+  private masterCardAssignedId?: string;
 
   constructor(resp?: MasterPass) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.payPassWalletIndicator = resp.payPassWalletIndicator;
-    this.authenticationMethod = resp.authenticationMethod;
-    this.cardEnrollmentMethod = resp.cardEnrollmentMethod;
-    this.masterCardAssignedId = resp.masterCardAssignedId;
+    }
+    if (typeof resp.payPassWalletIndicator !== 'undefined') {
+      this.payPassWalletIndicator = resp.payPassWalletIndicator;
+    }
+    if (typeof resp.authenticationMethod !== 'undefined') {
+      this.authenticationMethod = resp.authenticationMethod;
+    }
+    if (typeof resp.cardEnrollmentMethod !== 'undefined') {
+      this.cardEnrollmentMethod = resp.cardEnrollmentMethod;
+    }
+    if (typeof resp.masterCardAssignedId !== 'undefined') {
+      this.masterCardAssignedId = resp.masterCardAssignedId;
+    }
   }
-    
-  setCardEnrollmentMethod(cardEnrollmentMethod: any): void { this.cardEnrollmentMethod = cardEnrollmentMethod; }
-  getCardEnrollmentMethod(): any | undefined { return this.cardEnrollmentMethod; }
-  
-  setMasterCardAssignedId(masterCardAssignedId: any): void { this.masterCardAssignedId = masterCardAssignedId; }
-  getMasterCardAssignedId(): any | undefined { return this.masterCardAssignedId; }
-  
-  setPayPassWalletIndicator(payPassWalletIndicator: any): void { this.payPassWalletIndicator = payPassWalletIndicator; }
-  getPayPassWalletIndicator(): any | undefined { return this.payPassWalletIndicator; }
-  
-  setAuthenticationMethod(authenticationMethod: any): void { this.authenticationMethod = authenticationMethod; }
-  getAuthenticationMethod(): any | undefined { return this.authenticationMethod; }
+
+  public setCardEnrollmentMethod(cardEnrollmentMethod: string): void { this.cardEnrollmentMethod = cardEnrollmentMethod; }
+  public getCardEnrollmentMethod(): string | undefined { return this.cardEnrollmentMethod; }
+
+  public setMasterCardAssignedId(masterCardAssignedId: string): void { this.masterCardAssignedId = masterCardAssignedId; }
+  public getMasterCardAssignedId(): string | undefined { return this.masterCardAssignedId; }
+
+  public setPayPassWalletIndicator(payPassWalletIndicator: string): void { this.payPassWalletIndicator = payPassWalletIndicator; }
+  public getPayPassWalletIndicator(): string | undefined { return this.payPassWalletIndicator; }
+
+  public setAuthenticationMethod(authenticationMethod: string): void { this.authenticationMethod = authenticationMethod; }
+  public getAuthenticationMethod(): string | undefined { return this.authenticationMethod; }
 
 }

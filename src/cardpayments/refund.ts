@@ -1,97 +1,124 @@
-import { Link } from '../common/link';
 import { createArray } from '../common/create-array';
-import { Settlement } from './settlement';
-import { AcquirerResponse } from './acquirer-response';
-import { RequestObject } from '../request-object';
+import { Link } from '../common/link';
 import { PaysafeError } from '../paysafe-error';
+import { RequestObject } from '../request-object';
+import { AcquirerResponse } from './acquirer-response';
+import { Settlement } from './settlement';
 
 export class Refund extends RequestObject {
 
-  private amount?: string;
-  private childAccountNum?: any;
-  private dupCheck?: any;
-  private txnTime?: any;
-  private status?: any;
-  private riskReasonCode?: any;
+  private amount?: number;
+  private childAccountNum?: string;
+  private dupCheck?: boolean;
+  private txnTime?: string;
+  private status?: string;
+  private riskReasonCode?: string;
   private acquirerResponse?: AcquirerResponse;
   private settlements?: Settlement;
   private links?: Link[];
   private refunds?: Refund[];
   private currencyCode?: string;
   private originalMerchantRefNum?: string;
-  private mode: any;
-  private authType: any;
-  private confirmationNumber: any;
+  private mode?: string;
+  private authType?: string;
+  private confirmationNumber?: string;
 
   constructor(resp?: Refund) {
     super(resp);
-    if (!resp)
+    if (!resp) {
       return;
-    this.amount = resp.amount;
-    this.childAccountNum = resp.childAccountNum;
-    this.dupCheck = resp.dupCheck;
-    this.txnTime = resp.txnTime;
-    this.status = resp.status;
-    this.riskReasonCode = resp.riskReasonCode;
-    if (resp.acquirerResponse)
+    }
+    if (typeof resp.amount !== 'undefined') {
+      this.amount = resp.amount;
+    }
+    if (typeof resp.childAccountNum !== 'undefined') {
+      this.childAccountNum = resp.childAccountNum;
+    }
+    if (typeof resp.dupCheck !== 'undefined') {
+      this.dupCheck = resp.dupCheck;
+    }
+    if (typeof resp.txnTime !== 'undefined') {
+      this.txnTime = resp.txnTime;
+    }
+    if (typeof resp.status !== 'undefined') {
+      this.status = resp.status;
+    }
+    if (typeof resp.riskReasonCode !== 'undefined') {
+      this.riskReasonCode = resp.riskReasonCode;
+    }
+    if (typeof resp.acquirerResponse !== 'undefined') {
       this.acquirerResponse = new AcquirerResponse(resp.acquirerResponse);
-    if (resp.settlements)
+    }
+    if (typeof resp.settlements !== 'undefined') {
       this.settlements = new Settlement(resp.settlements);
-    if (resp.links)
+    }
+    if (typeof resp.links !== 'undefined') {
       this.links = createArray(resp.links, Link);
-    if (resp.refunds)
+    }
+    if (typeof resp.refunds !== 'undefined') {
       this.refunds = createArray(resp.refunds, Refund);
-    this.currencyCode = resp.currencyCode;
-    this.originalMerchantRefNum = resp.originalMerchantRefNum;
-    this.mode = resp.mode;
-    this.authType = resp.authType;
-    this.confirmationNumber = resp.confirmationNumber;
+    }
+    if (typeof resp.currencyCode !== 'undefined') {
+      this.currencyCode = resp.currencyCode;
+    }
+    if (typeof resp.originalMerchantRefNum !== 'undefined') {
+      this.originalMerchantRefNum = resp.originalMerchantRefNum;
+    }
+    if (typeof resp.mode !== 'undefined') {
+      this.mode = resp.mode;
+    }
+    if (typeof resp.authType !== 'undefined') {
+      this.authType = resp.authType;
+    }
+    if (typeof resp.confirmationNumber !== 'undefined') {
+      this.confirmationNumber = resp.confirmationNumber;
+    }
   }
 
-  setConfirmationNumber(confirmationNumber: any): void { this.confirmationNumber = confirmationNumber; }
-  getConfirmationNumber(): any | undefined { return this.confirmationNumber; }
+  public setAmount(amount: number): void { this.amount = amount; }
+  public getAmount(): number | undefined { return this.amount; }
 
-  setAuthType(authType: any): void { this.authType = authType; }
-  getAuthType(): any | undefined { return this.authType; }
+  public setChildAccountNum(childAccountNum: string): void { this.childAccountNum = childAccountNum; }
+  public getChildAccountNum(): string | undefined { return this.childAccountNum; }
 
-  setMode(mode: any): void { this.mode = mode; }
-  getMode(): any | undefined { return this.mode; }
+  public setDupCheck(dupCheck: boolean): void { this.dupCheck = dupCheck; }
+  public getDupCheck(): boolean | undefined { return this.dupCheck; }
 
-  setOriginalMerchantRefNum(originalMerchantRefNum: string): void { this.originalMerchantRefNum = originalMerchantRefNum; }
-  getOriginalMerchantRefNum(): string | undefined { return this.originalMerchantRefNum; }
+  public setTxnTime(txnTime: string): void { this.txnTime = txnTime; }
+  public getTxnTime(): string | undefined { return this.txnTime; }
 
-  setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
-  getCurrencyCode(): string | undefined { return this.currencyCode; }
+  public setStatus(status: string): void { this.status = status; }
+  public getStatus(): string | undefined { return this.status; }
 
-  setRefunds(refunds: Refund[]): void { this.refunds = refunds; }
-  getRefunds(): Refund[] | undefined { return this.refunds; }
+  public setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
+  public getRiskReasonCode(): string | undefined { return this.riskReasonCode; }
 
-  setStatus(status: any): void { this.status = status; }
-  getStatus(): any | undefined { return this.status; }
+  public setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
+  public getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
 
-  setLinks(links: Link[]): void { this.links = links; }
-  getLinks(): Link[] | undefined { return this.links; }
+  public setSettlements(settlements: Settlement): void { this.settlements = settlements; }
+  public getSettlements(): Settlement | undefined { return this.settlements; }
+  public deleteSettlements(): void { delete this.settlements; }
 
-  setSettlements(settlements: Settlement): void { this.settlements = settlements; }
-  getSettlements(): Settlement | undefined { return this.settlements; }
-  deleteSettlements(): void { delete this.settlements; }
+  public setLinks(links: Link[]): void { this.links = links; }
+  public getLinks(): Link[] | undefined { return this.links; }
 
-  setTxnTime(txnTime: any): void { this.txnTime = txnTime; }
-  getTxnTime(): any | undefined { return this.txnTime; }
+  public setRefunds(refunds: Refund[]): void { this.refunds = refunds; }
+  public getRefunds(): Refund[] | undefined { return this.refunds; }
 
-  setDupCheck(dupCheck: any): void { this.dupCheck = dupCheck; }
-  getDupCheck(): any | undefined { return this.dupCheck; }
+  public setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
+  public getCurrencyCode(): string | undefined { return this.currencyCode; }
 
-  setChildAccountNum(childAccountNum: any): void { this.childAccountNum = childAccountNum; }
-  getChildAccountNum(): any | undefined { return this.childAccountNum; }
+  public setOriginalMerchantRefNum(originalMerchantRefNum: string): void { this.originalMerchantRefNum = originalMerchantRefNum; }
+  public getOriginalMerchantRefNum(): string | undefined { return this.originalMerchantRefNum; }
 
-  setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
-  getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
+  public setMode(mode: string): void { this.mode = mode; }
+  public getMode(): string | undefined { return this.mode; }
 
-  setRiskReasonCode(riskReasonCode: any): void { this.riskReasonCode = riskReasonCode; }
-  getRiskReasonCode(): any | undefined { return this.riskReasonCode; }
+  public setAuthType(authType: string): void { this.authType = authType; }
+  public getAuthType(): string | undefined { return this.authType; }
 
-  setAmount(amount: string): void { this.amount = amount; }
-  getAmount(): string | undefined { return this.amount; }
+  public setConfirmationNumber(confirmationNumber: string): void { this.confirmationNumber = confirmationNumber; }
+  public getConfirmationNumber(): string | undefined { return this.confirmationNumber; }
 
 }

@@ -1,70 +1,97 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const link_1 = require("../common/link");
 const create_array_1 = require("../common/create-array");
-const authorization_1 = require("./authorization");
-const acquirer_response_1 = require("./acquirer-response");
+const link_1 = require("../common/link");
 const request_object_1 = require("../request-object");
+const acquirer_response_1 = require("./acquirer-response");
+const authorization_1 = require("./authorization");
 class Settlement extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
-        if (!resp)
+        if (!resp) {
             return;
-        this.amount = resp.amount;
-        this.availableToRefund = resp.availableToRefund;
-        this.childAccountNum = resp.childAccountNum;
-        this.txnTime = resp.txnTime;
-        this.dupCheck = resp.dupCheck;
-        this.status = resp.status;
-        this.riskReasonCode = resp.riskReasonCode;
-        if (resp.acquirerResponse)
+        }
+        if (typeof resp.amount !== 'undefined') {
+            this.amount = resp.amount;
+        }
+        if (typeof resp.availableToRefund !== 'undefined') {
+            this.availableToRefund = resp.availableToRefund;
+        }
+        if (typeof resp.childAccountNum !== 'undefined') {
+            this.childAccountNum = resp.childAccountNum;
+        }
+        if (typeof resp.txnTime !== 'undefined') {
+            this.txnTime = resp.txnTime;
+        }
+        if (typeof resp.dupCheck !== 'undefined') {
+            this.dupCheck = resp.dupCheck;
+        }
+        if (typeof resp.status !== 'undefined') {
+            this.status = resp.status;
+        }
+        if (typeof resp.riskReasonCode !== 'undefined') {
+            this.riskReasonCode = resp.riskReasonCode;
+        }
+        if (typeof resp.acquirerResponse !== 'undefined') {
             this.acquirerResponse = new acquirer_response_1.AcquirerResponse(resp.acquirerResponse);
-        if (resp.authorization)
+        }
+        if (typeof resp.authorization !== 'undefined') {
             this.authorization = new authorization_1.Authorization(resp.authorization);
-        if (resp.links)
+        }
+        if (typeof resp.links !== 'undefined') {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
-        if (resp.settlements)
+        }
+        if (typeof resp.settlements !== 'undefined') {
             this.settlements = create_array_1.createArray(resp.settlements, Settlement);
-        this.originalMerchantRefNum = resp.originalMerchantRefNum;
-        this.mode = resp.mode;
-        this.currencyCode = resp.currencyCode;
-        this.confirmationNumber = resp.confirmationNumber;
-        this.authType = resp.authType;
+        }
+        if (typeof resp.originalMerchantRefNum !== 'undefined') {
+            this.originalMerchantRefNum = resp.originalMerchantRefNum;
+        }
+        if (typeof resp.mode !== 'undefined') {
+            this.mode = resp.mode;
+        }
+        if (typeof resp.currencyCode !== 'undefined') {
+            this.currencyCode = resp.currencyCode;
+        }
+        if (typeof resp.confirmationNumber !== 'undefined') {
+            this.confirmationNumber = resp.confirmationNumber;
+        }
+        if (typeof resp.authType !== 'undefined') {
+            this.authType = resp.authType;
+        }
     }
-    setOriginalMerchantRefNum(originalMerchantRefNum) { this.originalMerchantRefNum = originalMerchantRefNum; }
-    getOriginalMerchantRefNum() { return this.originalMerchantRefNum; }
-    ;
-    setAuthType(authType) { this.authType = authType; }
-    getAuthType() { return this.authType; }
-    setConfirmationNumber(confirmationNumber) { this.confirmationNumber = confirmationNumber; }
-    getConfirmationNumber() { return this.confirmationNumber; }
-    setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
-    getCurrencyCode() { return this.currencyCode; }
-    setMode(mode) { this.mode = mode; }
-    getMode() { return this.mode; }
-    setSettlements(settlements) { this.settlements = settlements; }
-    getSettlements() { return this.settlements; }
-    ;
-    setStatus(status) { this.status = status; }
-    getStatus() { return this.status; }
-    setLinks(links) { this.links = links; }
-    getLinks() { return this.links; }
-    setAuthorization(authorization) { this.authorization = authorization; }
-    getAuthorization() { return this.authorization; }
-    deleteAuthorization() { delete this.authorization; }
+    setAmount(amount) { this.amount = amount; }
+    getAmount() { return this.amount; }
     setAvailableToRefund(availableToRefund) { this.availableToRefund = availableToRefund; }
     getAvailableToRefund() { return this.availableToRefund; }
+    setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }
+    getChildAccountNum() { return this.childAccountNum; }
     setTxnTime(txnTime) { this.txnTime = txnTime; }
     getTxnTime() { return this.txnTime; }
     setDupCheck(dupCheck) { this.dupCheck = dupCheck; }
     getDupCheck() { return this.dupCheck; }
-    setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }
-    getChildAccountNum() { return this.childAccountNum; }
-    setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
-    getAcquirerResponse() { return this.acquirerResponse; }
+    setStatus(status) { this.status = status; }
+    getStatus() { return this.status; }
     setRiskReasonCode(riskReasonCode) { this.riskReasonCode = riskReasonCode; }
     getRiskReasonCode() { return this.riskReasonCode; }
-    setAmount(amount) { this.amount = amount; }
-    getAmount() { return this.amount; }
+    setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
+    getAcquirerResponse() { return this.acquirerResponse; }
+    setAuthorization(authorization) { this.authorization = authorization; }
+    getAuthorization() { return this.authorization; }
+    deleteAuthorization() { delete this.authorization; }
+    setLinks(links) { this.links = links; }
+    getLinks() { return this.links; }
+    setSettlements(settlements) { this.settlements = settlements; }
+    getSettlements() { return this.settlements; }
+    setMode(mode) { this.mode = mode; }
+    getMode() { return this.mode; }
+    setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
+    getCurrencyCode() { return this.currencyCode; }
+    setAuthType(authType) { this.authType = authType; }
+    getAuthType() { return this.authType; }
+    setConfirmationNumber(confirmationNumber) { this.confirmationNumber = confirmationNumber; }
+    getConfirmationNumber() { return this.confirmationNumber; }
+    setOriginalMerchantRefNum(originalMerchantRefNum) { this.originalMerchantRefNum = originalMerchantRefNum; }
+    getOriginalMerchantRefNum() { return this.originalMerchantRefNum; }
 }
 exports.Settlement = Settlement;

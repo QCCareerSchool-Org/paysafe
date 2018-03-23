@@ -2,25 +2,46 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class ShippingDetails {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.carrier = resp.carrier;
-        this.shipMethod = resp.shipMethod;
-        this.recipientName = resp.recipientName;
-        this.street = resp.street;
-        this.street2 = resp.street2;
-        this.city = resp.city;
-        this.state = resp.state;
-        this.country = resp.country;
-        this.zip = resp.zip;
-        this.phone = resp.phone;
+        }
+        if (typeof resp.carrier !== 'undefined') {
+            this.carrier = resp.carrier;
+        }
+        if (typeof resp.shipMethod !== 'undefined') {
+            this.shipMethod = resp.shipMethod;
+        }
+        if (typeof resp.recipientName !== 'undefined') {
+            this.recipientName = resp.recipientName;
+        }
+        if (typeof resp.street !== 'undefined') {
+            this.street = resp.street;
+        }
+        if (typeof resp.street2 !== 'undefined') {
+            this.street2 = resp.street2;
+        }
+        if (typeof resp.city !== 'undefined') {
+            this.city = resp.city;
+        }
+        if (typeof resp.state !== 'undefined') {
+            this.state = resp.state;
+        }
+        if (typeof resp.zip !== 'undefined') {
+            this.zip = resp.zip;
+        }
+        if (typeof resp.country !== 'undefined') {
+            this.country = resp.country;
+        }
+        if (typeof resp.phone !== 'undefined') {
+            this.phone = resp.phone;
+        }
     }
     setCarrier(carrier) { this.carrier = carrier; }
     getCarrier() { return this.carrier; }
+    setShipMethod(shipMethod) { this.shipMethod = shipMethod; }
+    getShipMethod() { return this.shipMethod; }
     setRecipientName(recipientName) { this.recipientName = recipientName; }
     getRecipientName() { return this.recipientName; }
-    setPhone(phone) { this.phone = phone; }
-    getPhone() { return this.phone; }
     setStreet(street) { this.street = street; }
     getStreet() { return this.street; }
     setStreet2(street2) { this.street2 = street2; }
@@ -29,9 +50,11 @@ class ShippingDetails {
     getCity() { return this.city; }
     setState(state) { this.state = state; }
     getState() { return this.state; }
-    setCountry(country) { this.country = country; }
-    getCountry() { return this.country; }
     setZip(zip) { this.zip = zip; }
     getZip() { return this.zip; }
+    setCountry(country) { this.country = country; }
+    getCountry() { return this.country; }
+    setPhone(phone) { this.phone = phone; }
+    getPhone() { return this.phone; }
 }
 exports.ShippingDetails = ShippingDetails;

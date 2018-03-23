@@ -2,12 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class MasterPass {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.payPassWalletIndicator = resp.payPassWalletIndicator;
-        this.authenticationMethod = resp.authenticationMethod;
-        this.cardEnrollmentMethod = resp.cardEnrollmentMethod;
-        this.masterCardAssignedId = resp.masterCardAssignedId;
+        }
+        if (typeof resp.payPassWalletIndicator !== 'undefined') {
+            this.payPassWalletIndicator = resp.payPassWalletIndicator;
+        }
+        if (typeof resp.authenticationMethod !== 'undefined') {
+            this.authenticationMethod = resp.authenticationMethod;
+        }
+        if (typeof resp.cardEnrollmentMethod !== 'undefined') {
+            this.cardEnrollmentMethod = resp.cardEnrollmentMethod;
+        }
+        if (typeof resp.masterCardAssignedId !== 'undefined') {
+            this.masterCardAssignedId = resp.masterCardAssignedId;
+        }
     }
     setCardEnrollmentMethod(cardEnrollmentMethod) { this.cardEnrollmentMethod = cardEnrollmentMethod; }
     getCardEnrollmentMethod() { return this.cardEnrollmentMethod; }

@@ -1,8 +1,7 @@
 import { createArray } from '../common/create-array';
 import { Link } from '../common/link';
-import { PaysafeError } from '../paysafe-error';
-
 import { Profile } from '../customervault/profile';
+import { PaysafeError } from '../paysafe-error';
 import { RequestObject } from '../request-object';
 import { AccordD } from './accord-d';
 import { AcquirerResponse } from './acquirer-response';

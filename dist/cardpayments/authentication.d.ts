@@ -1,4 +1,4 @@
-import { RequestObject } from "../request-object";
+import { RequestObject } from '../request-object';
 export declare class Authentication extends RequestObject {
     private eci?;
     private cavv?;

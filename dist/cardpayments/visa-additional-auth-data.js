@@ -3,13 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const recipient_date_of_birth_1 = require("./recipient-date-of-birth");
 class VisaAdditionalAuthData {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        if (resp.recipientDateOfBirth)
+        }
+        if (typeof resp.recipientDateOfBirth !== 'undefined') {
             this.recipientDateOfBirth = new recipient_date_of_birth_1.RecipientDateOfBirth(resp.recipientDateOfBirth);
-        this.recipientZip = resp.recipientZip;
-        this.recipientLastName = resp.recipientLastName;
-        this.recipientAccountNumber = resp.recipientAccountNumber;
+        }
+        if (typeof resp.recipientZip !== 'undefined') {
+            this.recipientZip = resp.recipientZip;
+        }
+        if (typeof resp.recipientLastName !== 'undefined') {
+            this.recipientLastName = resp.recipientLastName;
+        }
+        if (typeof resp.recipientAccountNumber !== 'undefined') {
+            this.recipientAccountNumber = resp.recipientAccountNumber;
+        }
     }
     setrecipientDateOfBirth(recipientDateOfBirth) { this.recipientDateOfBirth = recipientDateOfBirth; }
     getrecipientDateOfBirth() { return this.recipientDateOfBirth; }

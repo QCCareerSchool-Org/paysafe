@@ -1,3 +1,6 @@
+const DYNAMIC_DESCRIPTOR_MAX_LENGTH = 20;
+const PHONE_MAX_LENGTH = 13;
+
 export class MerchantDescriptor {
 
   private dynamicDescriptor?: string;
@@ -16,7 +19,7 @@ export class MerchantDescriptor {
   }
 
   public setDynamicDescriptor(dynamicDescriptor: string): void {
-    if (dynamicDescriptor.length > 20) {
+    if (dynamicDescriptor.length > DYNAMIC_DESCRIPTOR_MAX_LENGTH) {
       throw new Error('invalid dynamic descriptor--must be 20 characters or less');
     }
     this.dynamicDescriptor = dynamicDescriptor;
@@ -24,7 +27,7 @@ export class MerchantDescriptor {
   public getDynamicDescriptor(): string | undefined { return this.dynamicDescriptor; }
 
   public setPhone(phone: string): void {
-    if (phone.length > 13) {
+    if (phone.length > PHONE_MAX_LENGTH) {
       throw new Error('invalid phone number--must be 13 characters or less');
     }
     this.phone = phone;

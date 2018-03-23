@@ -52,6 +52,8 @@ const expiryYear = new Date().getFullYear() + 1;
 
 const timeout = 30000;
 
+/* tslint:disable:no-magic-numbers */
+
 describe('Paysafe API', () => {
 
   let singleUseToken: string;

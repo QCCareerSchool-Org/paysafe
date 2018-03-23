@@ -8,25 +8,33 @@ export class VisaAdditionalAuthData {
   private recipientAccountNumber?: string;
 
   constructor(resp?: VisaAdditionalAuthData) {
-    if (!resp)
+    if (!resp) {
       return;
-    if (resp.recipientDateOfBirth)
+    }
+    if (typeof resp.recipientDateOfBirth !== 'undefined') {
       this.recipientDateOfBirth = new RecipientDateOfBirth(resp.recipientDateOfBirth);
-    this.recipientZip = resp.recipientZip;
-    this.recipientLastName = resp.recipientLastName;
-    this.recipientAccountNumber = resp.recipientAccountNumber;
+    }
+    if (typeof resp.recipientZip !== 'undefined') {
+      this.recipientZip = resp.recipientZip;
+    }
+    if (typeof resp.recipientLastName !== 'undefined') {
+      this.recipientLastName = resp.recipientLastName;
+    }
+    if (typeof resp.recipientAccountNumber !== 'undefined') {
+      this.recipientAccountNumber = resp.recipientAccountNumber;
+    }
   }
 
-  setrecipientDateOfBirth(recipientDateOfBirth: RecipientDateOfBirth): void { this.recipientDateOfBirth = recipientDateOfBirth; }
-  getrecipientDateOfBirth(): RecipientDateOfBirth | undefined { return this.recipientDateOfBirth; }
-  
-  setrecipientZip(recipientZip: string): void { this.recipientZip = recipientZip; }
-  getrecipientZip(): string | undefined { return this.recipientZip; }
-  
-  setrecipientLastName(recipientLastName: string): void { this.recipientLastName = recipientLastName; }
-  getrecipientLastName(): string | undefined { return this.recipientLastName; }
-  
-  setrecipientAccountNumber(recipientAccountNumber: string): void { this.recipientAccountNumber = recipientAccountNumber; }
-  getrecipientAccountNumber(): string | undefined { return this.recipientAccountNumber; }
+  public setrecipientDateOfBirth(recipientDateOfBirth: RecipientDateOfBirth): void { this.recipientDateOfBirth = recipientDateOfBirth; }
+  public getrecipientDateOfBirth(): RecipientDateOfBirth | undefined { return this.recipientDateOfBirth; }
+
+  public setrecipientZip(recipientZip: string): void { this.recipientZip = recipientZip; }
+  public getrecipientZip(): string | undefined { return this.recipientZip; }
+
+  public setrecipientLastName(recipientLastName: string): void { this.recipientLastName = recipientLastName; }
+  public getrecipientLastName(): string | undefined { return this.recipientLastName; }
+
+  public setrecipientAccountNumber(recipientAccountNumber: string): void { this.recipientAccountNumber = recipientAccountNumber; }
+  public getrecipientAccountNumber(): string | undefined { return this.recipientAccountNumber; }
 
 }

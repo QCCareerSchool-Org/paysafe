@@ -171,10 +171,10 @@ export class PaysafeAPIClient {
     return new Promise((resolve, reject) => {
 
       request(options, (err, response, body) => {
-
+        const SERVICE_NOT_AVAILABLE = 503;
         if (err) {
           reject(this.error(err.code, 'Connection error: ' + err.syscall));
-        } else if (response.statusCode === 503) {
+        } else if (response.statusCode === SERVICE_NOT_AVAILABLE) {
           reject(this.error(response.statusCode, body));
         } else if (!body) { // for delete calls, the response is empty string
           resolve();

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const request_object_1 = require("../request-object");
 const create_array_1 = require("../common/create-array");
+const profile_1 = require("../customervault/profile");
+const request_object_1 = require("../request-object");
 const billing_details_1 = require("./billing-details");
 const card_expiry_1 = require("./card-expiry");
-const profile_1 = require("../customervault/profile");
 class Card extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
@@ -33,7 +33,7 @@ class Card extends request_object_1.RequestObject {
             this.billingAddressId = resp.billingAddressId;
         }
         if (typeof resp.billingDetails !== 'undefined') {
-            if (resp.billingDetails instanceof Array) {
+            if (Array.isArray(resp.billingDetails)) {
                 this.billingDetails = create_array_1.createArray(resp.billingDetails, billing_details_1.BillingDetails);
             }
             else {
@@ -89,7 +89,6 @@ class Card extends request_object_1.RequestObject {
     setBillingAddressId(billingAddressId) { this.billingAddressId = billingAddressId; }
     getBillingAddressId() { return this.billingAddressId; }
     setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
-    ;
     getBillingDetails() { return this.billingDetails; }
     setDefaultCardIndicator(defaultCardIndicator) { this.defaultCardIndicator = defaultCardIndicator; }
     getDefaultCardIndicator() { return this.defaultCardIndicator; }

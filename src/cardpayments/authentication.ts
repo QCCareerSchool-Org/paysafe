@@ -1,42 +1,55 @@
-import { RequestObject } from "../request-object";
+import { RequestObject } from '../request-object';
 
 export class Authentication extends RequestObject {
 
-  private eci?: string | undefined;
-  private cavv?: string | undefined;
-  private xid?: string | undefined;
-  private threeDEnrollment?: string | undefined;
-  private threeDResult?: string | undefined;
-  private signatureStatus?: string | undefined;
+  private eci?: string;
+  private cavv?: string;
+  private xid?: string;
+  private threeDEnrollment?: string;
+  private threeDResult?: string;
+  private signatureStatus?: string;
 
   constructor(resp?: Authentication) {
     super(resp);
-    if (!resp)
+    if (!resp) {
       return;
-    this.eci = resp.eci;
-    this.cavv = resp.cavv;
-    this.xid = resp.xid;
-    this.threeDEnrollment = resp.threeDEnrollment;
-    this.threeDResult = resp.threeDResult;
-    this.signatureStatus = resp.signatureStatus;
+    }
+    if (typeof resp.eci !== 'undefined') {
+      this.eci = resp.eci;
+    }
+    if (typeof resp.cavv !== 'undefined') {
+      this.cavv = resp.cavv;
+    }
+    if (typeof resp.xid !== 'undefined') {
+      this.xid = resp.xid;
+    }
+    if (typeof resp.threeDEnrollment !== 'undefined') {
+      this.threeDEnrollment = resp.threeDEnrollment;
+    }
+    if (typeof resp.threeDResult !== 'undefined') {
+      this.threeDResult = resp.threeDResult;
+    }
+    if (typeof resp.signatureStatus !== 'undefined') {
+      this.signatureStatus = resp.signatureStatus;
+    }
   }
 
-  setEci(eci: string): void { this.eci = eci; }
-  getEci(): string | undefined { return this.eci; }
+  public setEci(eci: string): void { this.eci = eci; }
+  public getEci(): string | undefined { return this.eci; }
 
-  setCavv(cavv: string): void { this.cavv = cavv; }
-  getCavv(): string | undefined { return this.cavv; }
+  public setCavv(cavv: string): void { this.cavv = cavv; }
+  public getCavv(): string | undefined { return this.cavv; }
 
-  setXid(xid: string): void { this.xid = xid; }
-  getXid(): string | undefined { return this.xid; }
+  public setXid(xid: string): void { this.xid = xid; }
+  public getXid(): string | undefined { return this.xid; }
 
-  setThreeDEnrollment(threeDEnrollment: string): void { this.threeDEnrollment = threeDEnrollment; }
-  getThreeDEnrollment(): string | undefined { return this.threeDEnrollment; }
+  public setThreeDEnrollment(threeDEnrollment: string): void { this.threeDEnrollment = threeDEnrollment; }
+  public getThreeDEnrollment(): string | undefined { return this.threeDEnrollment; }
 
-  setThreeDResult(threeDResult: string): void { this.threeDResult = threeDResult; }
-  getThreeDResult(): string | undefined { return this.threeDResult; }
+  public setThreeDResult(threeDResult: string): void { this.threeDResult = threeDResult; }
+  public getThreeDResult(): string | undefined { return this.threeDResult; }
 
-  setSignatureStatus(signatureStatus: string): void { this.signatureStatus = signatureStatus; }
-  getSignatureStatus(): string | undefined { return this.signatureStatus; }
+  public setSignatureStatus(signatureStatus: string): void { this.signatureStatus = signatureStatus; }
+  public getSignatureStatus(): string | undefined { return this.signatureStatus; }
 
 }

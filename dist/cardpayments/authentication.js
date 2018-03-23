@@ -4,14 +4,27 @@ const request_object_1 = require("../request-object");
 class Authentication extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
-        if (!resp)
+        if (!resp) {
             return;
-        this.eci = resp.eci;
-        this.cavv = resp.cavv;
-        this.xid = resp.xid;
-        this.threeDEnrollment = resp.threeDEnrollment;
-        this.threeDResult = resp.threeDResult;
-        this.signatureStatus = resp.signatureStatus;
+        }
+        if (typeof resp.eci !== 'undefined') {
+            this.eci = resp.eci;
+        }
+        if (typeof resp.cavv !== 'undefined') {
+            this.cavv = resp.cavv;
+        }
+        if (typeof resp.xid !== 'undefined') {
+            this.xid = resp.xid;
+        }
+        if (typeof resp.threeDEnrollment !== 'undefined') {
+            this.threeDEnrollment = resp.threeDEnrollment;
+        }
+        if (typeof resp.threeDResult !== 'undefined') {
+            this.threeDResult = resp.threeDResult;
+        }
+        if (typeof resp.signatureStatus !== 'undefined') {
+            this.signatureStatus = resp.signatureStatus;
+        }
     }
     setEci(eci) { this.eci = eci; }
     getEci() { return this.eci; }

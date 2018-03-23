@@ -6,16 +6,16 @@ export declare class ShippingDetails {
     private street2?;
     private city?;
     private state?;
-    private country?;
     private zip?;
+    private country?;
     private phone?;
     constructor(resp?: ShippingDetails);
     setCarrier(carrier: string): void;
     getCarrier(): string | undefined;
+    setShipMethod(shipMethod: string): void;
+    getShipMethod(): string | undefined;
     setRecipientName(recipientName: string): void;
     getRecipientName(): string | undefined;
-    setPhone(phone: string): void;
-    getPhone(): string | undefined;
     setStreet(street: string): void;
     getStreet(): string | undefined;
     setStreet2(street2: string): void;
@@ -24,8 +24,10 @@ export declare class ShippingDetails {
     getCity(): string | undefined;
     setState(state: string): void;
     getState(): string | undefined;
-    setCountry(country: string): void;
-    getCountry(): string | undefined;
     setZip(zip: string): void;
     getZip(): string | undefined;
+    setCountry(country: string): void;
+    getCountry(): string | undefined;
+    setPhone(phone: string): void;
+    getPhone(): string | undefined;
 }

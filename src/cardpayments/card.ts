@@ -1,12 +1,9 @@
+import { createArray } from '../common/create-array';
+import { Profile } from '../customervault/profile';
 import { PaysafeError } from '../paysafe-error';
 import { RequestObject } from '../request-object';
-
-import { createArray } from '../common/create-array';
-
 import { BillingDetails } from './billing-details';
 import { CardExpiry } from './card-expiry';
-
-import { Profile } from '../customervault/profile';
 
 export class Card extends RequestObject {
 
@@ -18,7 +15,7 @@ export class Card extends RequestObject {
   private cardType?: string;
   private billingAddressId?: string;
   private billingDetails?: BillingDetails | BillingDetails[];
-  private defaultCardIndicator?: 'true' | 'false';
+  private defaultCardIndicator?: boolean;
   private paymentToken?: string;
   private cardNum?: string;
   private type?: string;
@@ -57,7 +54,7 @@ export class Card extends RequestObject {
       this.billingAddressId = resp.billingAddressId;
     }
     if (typeof resp.billingDetails !== 'undefined') {
-      if (resp.billingDetails instanceof Array) {
+      if (Array.isArray(resp.billingDetails)) {
         this.billingDetails = createArray(resp.billingDetails, BillingDetails);
       } else {
         this.billingDetails = new BillingDetails(resp.billingDetails);
@@ -119,11 +116,11 @@ export class Card extends RequestObject {
   public setBillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
   public getBillingAddressId(): string | undefined { return this.billingAddressId; }
 
-  public setBillingDetails(billingDetails: BillingDetails | BillingDetails[]): void { this.billingDetails = billingDetails };
+  public setBillingDetails(billingDetails: BillingDetails | BillingDetails[]): void { this.billingDetails = billingDetails; }
   public getBillingDetails(): BillingDetails | BillingDetails[] | undefined { return this.billingDetails; }
 
-  public setDefaultCardIndicator(defaultCardIndicator: 'true' | 'false'): void { this.defaultCardIndicator = defaultCardIndicator; }
-  public getDefaultCardIndicator(): string | undefined { return this.defaultCardIndicator; }
+  public setDefaultCardIndicator(defaultCardIndicator: boolean): void { this.defaultCardIndicator = defaultCardIndicator; }
+  public getDefaultCardIndicator(): boolean | undefined { return this.defaultCardIndicator; }
 
   public setPaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
   public getPaymentToken(): string | undefined { return this.paymentToken; }

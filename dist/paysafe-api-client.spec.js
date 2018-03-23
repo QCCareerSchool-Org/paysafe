@@ -39,6 +39,7 @@ const creditCardNumber = '4510150000000321';
 const expiryMonth = 12;
 const expiryYear = new Date().getFullYear() + 1;
 const timeout = 30000;
+/* tslint:disable:no-magic-numbers */
 describe('Paysafe API', () => {
     let singleUseToken;
     before((done) => {

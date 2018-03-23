@@ -4,12 +4,12 @@ export declare class MasterPass {
     private cardEnrollmentMethod?;
     private masterCardAssignedId?;
     constructor(resp?: MasterPass);
-    setCardEnrollmentMethod(cardEnrollmentMethod: any): void;
-    getCardEnrollmentMethod(): any | undefined;
-    setMasterCardAssignedId(masterCardAssignedId: any): void;
-    getMasterCardAssignedId(): any | undefined;
-    setPayPassWalletIndicator(payPassWalletIndicator: any): void;
-    getPayPassWalletIndicator(): any | undefined;
-    setAuthenticationMethod(authenticationMethod: any): void;
-    getAuthenticationMethod(): any | undefined;
+    setCardEnrollmentMethod(cardEnrollmentMethod: string): void;
+    getCardEnrollmentMethod(): string | undefined;
+    setMasterCardAssignedId(masterCardAssignedId: string): void;
+    getMasterCardAssignedId(): string | undefined;
+    setPayPassWalletIndicator(payPassWalletIndicator: string): void;
+    getPayPassWalletIndicator(): string | undefined;
+    setAuthenticationMethod(authenticationMethod: string): void;
+    getAuthenticationMethod(): string | undefined;
 }
