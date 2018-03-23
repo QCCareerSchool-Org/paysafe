@@ -6,24 +6,33 @@ export class Pagination {
   private endDate?: string;
 
   constructor(resp?: Pagination) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.limit = resp.limit;
-    this.offset = resp.offset;
-    this.startDate = resp.startDate;
-    this.endDate = resp.endDate;
+    }
+    if (typeof resp.limit !== 'undefined') {
+      this.limit = resp.limit;
+    }
+    if (typeof resp.offset !== 'undefined') {
+      this.offset = resp.offset;
+    }
+    if (typeof resp.startDate !== 'undefined') {
+      this.startDate = resp.startDate;
+    }
+    if (typeof resp.endDate !== 'undefined') {
+      this.endDate = resp.endDate;
+    }
   }
 
-  setLimit(limit: number) { this.limit = limit }
-  getLimit(): number | undefined { return this.limit; }
-  
-  setOffset(offset: number) { this.offset = offset; }
-  getOffset(): number | undefined { return this.offset; }
-  
-  setStartDate(startDate: string) { this.startDate = startDate; }
-  getStartDate(): string | undefined { return this.startDate; }
-  
-  setEndDate(endDate: string) { this.endDate = endDate; }
-  getEndDate(): string | undefined { return this.endDate; }
+  public setLimit(limit: number) { this.limit = limit; }
+  public getLimit(): number | undefined { return this.limit; }
+
+  public setOffset(offset: number) { this.offset = offset; }
+  public getOffset(): number | undefined { return this.offset; }
+
+  public setStartDate(startDate: string) { this.startDate = startDate; }
+  public getStartDate(): string | undefined { return this.startDate; }
+
+  public setEndDate(endDate: string) { this.endDate = endDate; }
+  public getEndDate(): string | undefined { return this.endDate; }
 
 }

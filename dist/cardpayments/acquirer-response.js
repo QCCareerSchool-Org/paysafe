@@ -2,20 +2,29 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class AcquirerResponse {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.code = resp.code;
-        this.responseCode = resp.responseCode;
-        this.avsCode = resp.avsCode;
-        this.balanceResponse = resp.balanceResponse;
+        }
+        if (typeof resp.code !== 'undefined') {
+            this.code = resp.code;
+        }
+        if (typeof resp.responseCode !== 'undefined') {
+            this.responseCode = resp.responseCode;
+        }
+        if (typeof resp.avsCode !== 'undefined') {
+            this.avsCode = resp.avsCode;
+        }
+        if (typeof resp.balanceResponse !== 'undefined') {
+            this.balanceResponse = resp.balanceResponse;
+        }
     }
-    setBalanceResponse(balanceResponse) { this.balanceResponse = balanceResponse; }
-    getBalanceResponse() { return this.balanceResponse; }
-    setAvsCode(avsCode) { this.avsCode = avsCode; }
-    getAvsCode() { return this.avsCode; }
-    setResponseCode(responseCode) { this.responseCode = responseCode; }
-    getResponseCode() { return this.responseCode; }
     setCode(code) { this.code = code; }
     getCode() { return this.code; }
+    setResponseCode(responseCode) { this.responseCode = responseCode; }
+    getResponseCode() { return this.responseCode; }
+    setAvsCode(avsCode) { this.avsCode = avsCode; }
+    getAvsCode() { return this.avsCode; }
+    setBalanceResponse(balanceResponse) { this.balanceResponse = balanceResponse; }
+    getBalanceResponse() { return this.balanceResponse; }
 }
 exports.AcquirerResponse = AcquirerResponse;

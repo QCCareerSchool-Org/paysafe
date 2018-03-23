@@ -2,12 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Pagination {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.limit = resp.limit;
-        this.offset = resp.offset;
-        this.startDate = resp.startDate;
-        this.endDate = resp.endDate;
+        }
+        if (typeof resp.limit !== 'undefined') {
+            this.limit = resp.limit;
+        }
+        if (typeof resp.offset !== 'undefined') {
+            this.offset = resp.offset;
+        }
+        if (typeof resp.startDate !== 'undefined') {
+            this.startDate = resp.startDate;
+        }
+        if (typeof resp.endDate !== 'undefined') {
+            this.endDate = resp.endDate;
+        }
     }
     setLimit(limit) { this.limit = limit; }
     getLimit() { return this.limit; }
