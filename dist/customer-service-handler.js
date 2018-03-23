@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Constants = require("./constants");
 const paysafe_request_1 = require("./paysafe-request");
+const card_1 = require("./cardpayments/card");
 const address_1 = require("./customervault/address");
 const profile_1 = require("./customervault/profile");
 const HEALTH_BEAT_URL = 'customervault/monitor';
@@ -99,6 +100,31 @@ class CustomerServiceHandler {
             this.paysafeApiClient.processRequest(requestObj, address).then((response) => {
                 if (response) {
                     return resolve(new address_1.Address(response));
+                }
+                reject(new Error('empty response'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+    createCard(card) {
+        return new Promise((resolve, reject) => {
+            if (typeof card === 'undefined') {
+                throw new Error('card is undefined');
+            }
+            const profile = card.getProfile();
+            if (typeof profile === 'undefined') {
+                throw new Error('card.profile is undefined');
+            }
+            const profileId = profile.getId();
+            if (typeof profileId === 'undefined') {
+                throw new Error('card.profile.id is undefined');
+            }
+            card.deleteProfile();
+            const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}`, this.paysafeApiClient), Constants.POST);
+            this.paysafeApiClient.processRequest(requestObj, card).then((response) => {
+                if (response) {
+                    return resolve(new card_1.Card(response));
                 }
                 reject(new Error('empty response'));
             }).catch((err) => {

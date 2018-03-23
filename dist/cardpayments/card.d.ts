@@ -61,4 +61,5 @@ export declare class Card extends RequestObject {
     getStatus(): string | undefined;
     setProfile(profile: Profile): void;
     getProfile(): Profile | undefined;
+    deleteProfile(): void;
 }

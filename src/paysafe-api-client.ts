@@ -1,6 +1,11 @@
+/**
+ * Paysafe
+ *
+ * Ideas: remove "fake" fields such as profile from Card and profile from Address and alter the service handler functions to take the profile id directly
+ */
 import * as request from 'request';
 
-import { Environment } from './environment';
+import * as Environments from './environment';
 import { PaysafeError } from './paysafe-error';
 import { PaysafeRequest } from './paysafe-request';
 import { RequestObject } from './request-object';
@@ -86,7 +91,7 @@ export class PaysafeAPIClient {
 
   private apiKey: string;
   private apiPassword: string;
-  private environment: Environment;
+  private environment: Environments.Environment;
   private accountNumber: string;
 
   private cardServiceHandler?: CardServiceHandler;
@@ -94,14 +99,14 @@ export class PaysafeAPIClient {
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
 
-  constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
+  constructor(apiKey: string, apiPassword: string, environment: 'TEST' | 'LIVE', accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
-    this.environment = environment;
+    this.environment = Environments[environment];
     this.accountNumber = accountNumber;
   }
 
-  public updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
+  public updateConfig(apiKey: string, apiPassword: string, environment: Environments.Environment, accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
     this.environment = environment;
@@ -117,7 +122,7 @@ export class PaysafeAPIClient {
 
   public getApiKey(): string { return this.apiKey; }
   public getApiPassword(): string { return this.apiPassword; }
-  public getEnvironment(): Environment { return this.environment; }
+  public getEnvironment(): Environments.Environment { return this.environment; }
   public getAccountNumber(): string { return this.accountNumber; }
 
   public getCardServiceHandler(): CardServiceHandler {

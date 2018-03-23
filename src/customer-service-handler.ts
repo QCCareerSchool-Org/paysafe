@@ -2,6 +2,7 @@ import * as Constants from './constants';
 import { PaysafeAPIClient } from './paysafe-api-client';
 import { PaysafeRequest } from './paysafe-request';
 
+import { Card } from './cardpayments/card';
 import { Address } from './customervault/address';
 import { Profile } from './customervault/profile';
 import { PaysafeError } from './paysafe-error';
@@ -137,6 +138,38 @@ export class CustomerServiceHandler {
       });
     });
 
+  }
+
+  public createCard(card: Card): Promise<Card> {
+    return new Promise((resolve, reject) => {
+
+      if (typeof card === 'undefined') {
+        throw new Error('card is undefined');
+      }
+
+      const profile = card.getProfile();
+      if (typeof profile === 'undefined') {
+        throw new Error('card.profile is undefined');
+      }
+
+      const profileId = profile.getId();
+      if (typeof profileId === 'undefined') {
+        throw new Error('card.profile.id is undefined');
+      }
+
+      card.deleteProfile();
+
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}`, this.paysafeApiClient), Constants.POST);
+
+      this.paysafeApiClient.processRequest(requestObj, card).then((response) => {
+        if (response) {
+          return resolve(new Card(response));
+        }
+        reject(new Error('empty response'));
+      }).catch((err) => {
+        reject(err);
+      });
+    });
   }
 
 }

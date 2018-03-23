@@ -112,5 +112,6 @@ class Card extends request_object_1.RequestObject {
     getStatus() { return this.status; }
     setProfile(profile) { this.profile = profile; }
     getProfile() { return this.profile; }
+    deleteProfile() { delete this.profile; }
 }
 exports.Card = Card;

@@ -151,5 +151,5 @@ export class Card extends RequestObject {
 
   public setProfile(profile: Profile): void { this.profile = profile; }
   public getProfile(): Profile | undefined { return this.profile; }
-
+  public deleteProfile(): void { delete this.profile; }
 }

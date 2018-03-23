@@ -1,4 +1,4 @@
-import { Environment } from './environment';
+import * as Environments from './environment';
 import { PaysafeError } from './paysafe-error';
 import { PaysafeRequest } from './paysafe-request';
 import { RequestObject } from './request-object';
@@ -18,12 +18,12 @@ export declare class PaysafeAPIClient {
     private customerServiceHandler?;
     private directDebitServiceHandler?;
     private threeDSecureServiceHandler?;
-    constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string);
-    updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string): void;
+    constructor(apiKey: string, apiPassword: string, environment: 'TEST' | 'LIVE', accountNumber: string);
+    updateConfig(apiKey: string, apiPassword: string, environment: Environments.Environment, accountNumber: string): void;
     error(code: number, message: string): PaysafeError;
     getApiKey(): string;
     getApiPassword(): string;
-    getEnvironment(): Environment;
+    getEnvironment(): Environments.Environment;
     getAccountNumber(): string;
     getCardServiceHandler(): CardServiceHandler;
     getDirectDebitServiceHandler(): DirectDebitServiceHandler;

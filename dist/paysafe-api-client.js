@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Paysafe
+ *
+ * Ideas: remove "fake" fields such as profile from Card and profile from Address and alter the service handler functions to take the profile id directly
+ */
 const request = require("request");
+const Environments = require("./environment");
 const paysafe_error_1 = require("./paysafe-error");
 const card_service_handler_1 = require("./card-service-handler");
 const customer_service_handler_1 = require("./customer-service-handler");
@@ -66,7 +72,7 @@ class PaysafeAPIClient {
         };
         this.apiKey = apiKey;
         this.apiPassword = apiPassword;
-        this.environment = environment;
+        this.environment = Environments[environment];
         this.accountNumber = accountNumber;
     }
     updateConfig(apiKey, apiPassword, environment, accountNumber) {

@@ -11,7 +11,6 @@ const merchant_descriptor_1 = require("./cardpayments/merchant-descriptor");
 const address_1 = require("./customervault/address");
 const date_of_birth_1 = require("./customervault/date-of-birth");
 const profile_1 = require("./customervault/profile");
-const environment = require("./environment");
 const paysafe_api_client_1 = require("./paysafe-api-client");
 dotenv.config();
 if (typeof process.env.SINGLE_USE_API_KEY === 'undefined') {
@@ -34,7 +33,7 @@ if (typeof process.env.ACCOUNT_NUMBER === 'undefined') {
     throw new Error('ACCOUNT_NUMBER is undefined');
 }
 const accountNumber = process.env.ACCOUNT_NUMBER;
-const paysafeAPIClient = new paysafe_api_client_1.PaysafeAPIClient(apiKey, apiPassword, environment.TEST, accountNumber);
+const paysafeAPIClient = new paysafe_api_client_1.PaysafeAPIClient(apiKey, apiPassword, 'TEST', accountNumber);
 const creditCardNumber = '4510150000000321';
 const expiryMonth = 12;
 const expiryYear = new Date().getFullYear() + 1;
@@ -62,6 +61,7 @@ describe('Paysafe API', () => {
         const gender = Math.random() < 0.5 ? 'M' : 'F';
         const emailAddress = randomEmail();
         const phoneNumber = randomStr();
+        const nationality = 'Canadian';
         /*
           private nationality?: string;
           private email?: string;
@@ -81,6 +81,7 @@ describe('Paysafe API', () => {
             profile.setGender(gender);
             profile.setEmail(emailAddress);
             profile.setPhone(phoneNumber);
+            profile.setNationality(nationality);
             const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
             customerServiceHandler.createProfile(profile).then((profileResult) => {
                 chai_1.expect(profileResult.getId()).to.not.be.an('undefined');
@@ -91,6 +92,7 @@ describe('Paysafe API', () => {
                 chai_1.expect(profileResult.getGender()).to.equal(gender);
                 chai_1.expect(profileResult.getEmail()).to.equal(emailAddress);
                 chai_1.expect(profileResult.getPhone()).to.equal(phoneNumber);
+                chai_1.expect(profileResult.getNationality()).to.equal(nationality);
                 profileId = profileResult.getId(); // for future tests
                 done();
             }).catch(done);
@@ -151,7 +153,44 @@ describe('Paysafe API', () => {
             done(err);
         }
     }).timeout(timeout);
-    it('should add an address to a profile', (done) => {
+    it('should create a profile with a card using a single-use token', (done) => {
+        const merchantCustomerId = randomStr();
+        const firstName = randomStr();
+        const lastName = randomStr();
+        try {
+            const profile = new profile_1.Profile();
+            profile.setMerchantCustomerId(merchantCustomerId);
+            profile.setLocale('en_US');
+            profile.setFirstName(firstName);
+            profile.setLastName(lastName);
+            const card = new card_1.Card();
+            card.setSingleUseToken(singleUseToken);
+            profile.setCard(card);
+            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
+            // console.log('REQ 4', profile);
+            customerServiceHandler.createProfile(profile).then((profileResult) => {
+                // console.log('RES 4', profileResult);
+                chai_1.expect(profileResult.getFirstName()).to.equal(firstName);
+                chai_1.expect(profileResult.getLastName()).to.equal(lastName);
+                chai_1.expect(profileResult.getCards()).to.not.be.an('undefined');
+                const cards = profileResult.getCards();
+                chai_1.expect(cards).to.not.be.an('undefined');
+                chai_1.expect(cards).to.be.an('array').of.length(1);
+                chai_1.expect(cards[0].getLastDigits()).to.not.be.an('undefined');
+                chai_1.expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+                paymentToken = cards[0].getPaymentToken(); // needed for future test
+                const expiry = cards[0].getCardExpiry();
+                chai_1.expect(expiry).to.not.be.an('undefined');
+                chai_1.expect(expiry.getMonth()).to.equal(expiryMonth);
+                chai_1.expect(expiry.getYear()).to.equal(expiryYear);
+                done();
+            }).catch(done);
+        }
+        catch (err) {
+            done(err);
+        }
+    }).timeout(timeout);
+    it('should add an address to an existing profile', (done) => {
         const nickName = randomStr();
         const recipientName = randomStr();
         const street = randomStr();
@@ -225,36 +264,38 @@ describe('Paysafe API', () => {
             done(err);
         }
     }).timeout(timeout);
-    it('should create a profile with a card using a single-use token', (done) => {
-        const merchantCustomerId = randomStr();
-        const firstName = randomStr();
-        const lastName = randomStr();
+    it('should add a card to an existing profile', (done) => {
         try {
-            const profile = new profile_1.Profile();
-            profile.setMerchantCustomerId(merchantCustomerId);
-            profile.setLocale('en_US');
-            profile.setFirstName(firstName);
-            profile.setLastName(lastName);
             const card = new card_1.Card();
             card.setSingleUseToken(singleUseToken);
-            profile.setCard(card);
+            const profile = new profile_1.Profile();
+            profile.setId(profileId);
+            card.setProfile(profile);
+            let cardId;
             const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            // console.log('REQ 4', profile);
-            customerServiceHandler.createProfile(profile).then((profileResult) => {
-                // console.log('RES 4', profileResult);
-                chai_1.expect(profileResult.getFirstName()).to.equal(firstName);
-                chai_1.expect(profileResult.getLastName()).to.equal(lastName);
+            customerServiceHandler.createCard(card).then((cardResult) => {
+                chai_1.expect(cardResult).to.not.be.an('undefined');
+                chai_1.expect(cardResult).to.be.instanceof(card_1.Card);
+                chai_1.expect(cardResult.getId()).to.not.be.an('undefined');
+                cardId = cardResult.getId();
+                return customerServiceHandler.getProfile(profile, ['cards']);
+            }).then((profileResult) => {
+                chai_1.expect(profileResult).to.not.be.an('undefined');
+                chai_1.expect(profileResult).to.be.instanceof(profile_1.Profile);
                 chai_1.expect(profileResult.getCards()).to.not.be.an('undefined');
-                const cards = profileResult.getCards();
-                chai_1.expect(cards).to.not.be.an('undefined');
-                chai_1.expect(cards).to.be.an('array').of.length(1);
-                chai_1.expect(cards[0].getLastDigits()).to.not.be.an('undefined');
-                chai_1.expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-                paymentToken = cards[0].getPaymentToken(); // needed for future test
-                const expiry = cards[0].getCardExpiry();
-                chai_1.expect(expiry).to.not.be.an('undefined');
-                chai_1.expect(expiry.getMonth()).to.equal(expiryMonth);
-                chai_1.expect(expiry.getYear()).to.equal(expiryYear);
+                chai_1.expect(profileResult.getCards()).to.be.an('array');
+                let found = false;
+                for (const c of profileResult.getCards()) {
+                    chai_1.expect(c.getId()).to.not.be.an('undefined');
+                    if (c.getId() === cardId) {
+                        found = true;
+                        chai_1.expect(c.getCardExpiry()).to.not.be.an('undefined');
+                        chai_1.expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+                        chai_1.expect(c.getCardExpiry().getMonth()).to.equal(expiryMonth);
+                        chai_1.expect(c.getCardExpiry().getYear()).to.equal(expiryYear);
+                    }
+                }
+                chai_1.expect(found).to.equal(true);
                 done();
             }).catch(done);
         }
