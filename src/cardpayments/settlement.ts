@@ -7,6 +7,7 @@ import { Authorization } from './authorization';
 
 export class Settlement extends RequestObject {
 
+  private merchantRefNum?: string;
   private amount?: number;
   private availableToRefund?: number;
   private childAccountNum?: string;
@@ -28,6 +29,9 @@ export class Settlement extends RequestObject {
     super(resp);
     if (!resp) {
       return;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
     }
     if (typeof resp.amount !== 'undefined') {
       this.amount = resp.amount;
@@ -78,6 +82,9 @@ export class Settlement extends RequestObject {
       this.authType = resp.authType;
     }
   }
+
+  public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public setAmount(amount: number): void { this.amount = amount; }
   public getAmount(): number | undefined { return this.amount; }

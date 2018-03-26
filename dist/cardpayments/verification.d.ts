@@ -8,7 +8,9 @@ import { BillingDetails } from './billing-details';
 import { Card } from './card';
 import { MerchantDescriptor } from './merchant-descriptor';
 import { ShippingDetails } from './shipping-details';
+export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 export declare class Verification extends RequestObject {
+    private merchantRefNum?;
     private childAccountNum?;
     private card?;
     private authCode?;
@@ -31,6 +33,8 @@ export declare class Verification extends RequestObject {
     private shippingDetails?;
     private authentication?;
     constructor(resp?: Verification);
+    setMerchantRefNum(merchantRefNum: string): void;
+    getMerchantRefNum(): string | undefined;
     setAccordD(accordD: AccordD): void;
     getAccordD(): AccordD | undefined;
     setMerchantDescriptor(merchantDescriptor: MerchantDescriptor): void;
@@ -69,6 +73,8 @@ export declare class Verification extends RequestObject {
     getChildAccountNum(): string | undefined;
     setAcquirerResponse(acquirerResponse: AcquirerResponse): void;
     getAcquirerResponse(): AcquirerResponse | undefined;
+    setStatus(status: statusType): void;
+    getStatus(): statusType | undefined;
     setRiskReasonCode(riskReasonCode: string): void;
     getRiskReasonCode(): string | undefined;
 }

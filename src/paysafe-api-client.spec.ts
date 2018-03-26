@@ -16,6 +16,7 @@ import { DateOfBirth } from './customervault/date-of-birth';
 import { Profile } from './customervault/profile';
 import { PaysafeAPIClient } from './paysafe-api-client';
 import { PaysafeError } from './paysafe-error';
+import { Verification } from './cardpayments/verification';
 
 dotenv.config();
 
@@ -266,6 +267,36 @@ describe('Paysafe API with Single-Use Tokens', () => {
     });
   });
 
+  it('should verify a single-use token', (done) => {
+
+    const merchantRefNum = randomStr();
+
+    try {
+
+      const verification = new Verification();
+      verification.setMerchantRefNum(merchantRefNum);
+
+      const card = new Card();
+      card.setPaymentToken(singleUseToken);
+      verification.setCard(card);
+
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      verification.setBillingDetails(billingDetails);
+
+      paysafeAPIClient.getCardServiceHandler().verify(verification).then((verificationResult) => {
+        expect(verificationResult.getId()).to.not.be.an('undefined');
+        expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+        expect(verificationResult.getStatus()).to.equal('COMPLETED');
+        done();
+      }).catch(done);
+
+    } catch (err) {
+      done(err);
+    }
+
+  }).timeout(timeout);
+
   it('should add a card to an existing profile using a single-use token', (done) => {
 
     try {
@@ -278,13 +309,12 @@ describe('Paysafe API with Single-Use Tokens', () => {
 
       let cardId: string;
 
-      const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-      customerServiceHandler.createCard(card).then((cardResult) => {
+      paysafeAPIClient.getCustomerServiceHandler().createCard(card).then((cardResult) => {
         expect(cardResult).to.not.be.an('undefined');
         expect(cardResult).to.be.instanceof(Card);
         expect(cardResult.getId()).to.not.be.an('undefined');
         cardId = cardResult.getId() as string;
-        return customerServiceHandler.getProfile(profile, ['cards']);
+        return paysafeAPIClient.getCustomerServiceHandler().getProfile(profile, ['cards']);
       }).then((profileResult) => {
         expect(profileResult).to.not.be.an('undefined');
         expect(profileResult).to.be.instanceof(Profile);
@@ -325,9 +355,8 @@ describe('Paysafe API with Single-Use Tokens', () => {
       card.setSingleUseToken(singleUseToken);
       profile.setCard(card);
 
-      const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
       // console.log('REQ 4', profile);
-      customerServiceHandler.createProfile(profile).then((profileResult) => {
+      paysafeAPIClient.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
         // console.log('RES 4', profileResult);
         expect(profileResult.getFirstName()).to.equal(firstName);
         expect(profileResult.getLastName()).to.equal(lastName);
@@ -370,8 +399,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
       billingDetails.setZip('K1L 6R2');
       authorization.setBillingDetails(billingDetails);
 
-      const customerServiceHandler = paysafeAPIClient.getCardServiceHandler();
-      customerServiceHandler.authorize(authorization).then((authorizationResult) => {
+      paysafeAPIClient.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
         expect(authorizationResult.getId()).to.not.be.an('undefined');
         expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
         expect(authorizationResult.getAmount()).to.equal(amount);

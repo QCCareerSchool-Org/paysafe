@@ -3,6 +3,7 @@ import { RequestObject } from '../request-object';
 import { AcquirerResponse } from './acquirer-response';
 import { Authorization } from './authorization';
 export declare class Settlement extends RequestObject {
+    private merchantRefNum?;
     private amount?;
     private availableToRefund?;
     private childAccountNum?;
@@ -20,6 +21,8 @@ export declare class Settlement extends RequestObject {
     private confirmationNumber?;
     private authType?;
     constructor(resp?: Settlement);
+    setMerchantRefNum(merchantRefNum: string): void;
+    getMerchantRefNum(): string | undefined;
     setAmount(amount: number): void;
     getAmount(): number | undefined;
     setAvailableToRefund(availableToRefund: number): void;

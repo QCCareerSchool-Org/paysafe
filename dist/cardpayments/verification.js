@@ -17,6 +17,9 @@ class Verification extends request_object_1.RequestObject {
         if (!resp) {
             return;
         }
+        if (typeof resp.merchantRefNum !== 'undefined') {
+            this.merchantRefNum = resp.merchantRefNum;
+        }
         if (typeof resp.childAccountNum !== 'undefined') {
             this.childAccountNum = resp.childAccountNum;
         }
@@ -81,6 +84,8 @@ class Verification extends request_object_1.RequestObject {
             this.authentication = new authentication_1.Authentication(resp.authentication);
         }
     }
+    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
+    getMerchantRefNum() { return this.merchantRefNum; }
     setAccordD(accordD) { this.accordD = accordD; }
     getAccordD() { return this.accordD; }
     setMerchantDescriptor(merchantDescriptor) { this.merchantDescriptor = merchantDescriptor; }
@@ -119,6 +124,8 @@ class Verification extends request_object_1.RequestObject {
     getChildAccountNum() { return this.childAccountNum; }
     setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
     getAcquirerResponse() { return this.acquirerResponse; }
+    setStatus(status) { this.status = status; }
+    getStatus() { return this.status; }
     setRiskReasonCode(riskReasonCode) { this.riskReasonCode = riskReasonCode; }
     getRiskReasonCode() { return this.riskReasonCode; }
 }

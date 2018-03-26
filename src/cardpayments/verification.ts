@@ -11,8 +11,11 @@ import { Card } from './card';
 import { MerchantDescriptor } from './merchant-descriptor';
 import { ShippingDetails } from './shipping-details';
 
+export type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
+
 export class Verification extends RequestObject {
 
+  private merchantRefNum?: string;
   private childAccountNum?: string;
   private card?: Card;
   private authCode?: string;
@@ -25,7 +28,7 @@ export class Verification extends RequestObject {
   private currencyCode?: string;
   private avsResponse?: string;
   private cvvVerification?: string;
-  private status?: string;
+  private status?: statusType;
   private riskReasonCode?: string;
   private acquirerResponse?: AcquirerResponse;
   private links?: Link[];
@@ -39,6 +42,9 @@ export class Verification extends RequestObject {
     super(resp);
     if (!resp) {
       return;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
     }
     if (typeof resp.childAccountNum !== 'undefined') {
       this.childAccountNum = resp.childAccountNum;
@@ -105,6 +111,9 @@ export class Verification extends RequestObject {
     }
   }
 
+  public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
+
   public setAccordD(accordD: AccordD): void { this.accordD = accordD; }
   public getAccordD(): AccordD | undefined { return this.accordD; }
 
@@ -161,6 +170,9 @@ export class Verification extends RequestObject {
 
   public setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
   public getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
+
+  public setStatus(status: statusType): void { this.status = status; }
+  public getStatus(): statusType | undefined { return this.status; }
 
   public setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
   public getRiskReasonCode(): string | undefined { return this.riskReasonCode; }

@@ -3,6 +3,7 @@ import { RequestObject } from '../request-object';
 import { AcquirerResponse } from './acquirer-response';
 import { Settlement } from './settlement';
 export declare class Refund extends RequestObject {
+    private merchantRefNum?;
     private amount?;
     private childAccountNum?;
     private dupCheck?;
@@ -19,6 +20,8 @@ export declare class Refund extends RequestObject {
     private authType?;
     private confirmationNumber?;
     constructor(resp?: Refund);
+    setMerchantRefNum(merchantRefNum: string): void;
+    getMerchantRefNum(): string | undefined;
     setAmount(amount: number): void;
     getAmount(): number | undefined;
     setChildAccountNum(childAccountNum: string): void;

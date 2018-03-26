@@ -381,7 +381,7 @@ class CardServiceHandler {
         return new Promise((resolve, reject) => {
             const verificationId = verification.getId();
             if (typeof verificationId === 'undefined') {
-                return reject(this.paysafeApiClient.error(BAD_REQUEST, 'InvalidRequestException : Refund id is missing in CardServiceHandler : getRefund'));
+                return reject(this.paysafeApiClient.error(BAD_REQUEST, 'InvalidRequestException : Verification id is missing in CardServiceHandler : getVerification'));
             }
             verification.deleteId();
             const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.VERIFICATION}/${verificationId}`, this.paysafeApiClient), Constants.GET);

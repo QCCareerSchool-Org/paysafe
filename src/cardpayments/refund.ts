@@ -7,6 +7,7 @@ import { Settlement } from './settlement';
 
 export class Refund extends RequestObject {
 
+  private merchantRefNum?: string;
   private amount?: number;
   private childAccountNum?: string;
   private dupCheck?: boolean;
@@ -27,6 +28,9 @@ export class Refund extends RequestObject {
     super(resp);
     if (!resp) {
       return;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
     }
     if (typeof resp.amount !== 'undefined') {
       this.amount = resp.amount;
@@ -74,6 +78,9 @@ export class Refund extends RequestObject {
       this.confirmationNumber = resp.confirmationNumber;
     }
   }
+
+  public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public setAmount(amount: number): void { this.amount = amount; }
   public getAmount(): number | undefined { return this.amount; }

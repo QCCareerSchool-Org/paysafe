@@ -13,6 +13,7 @@ const address_1 = require("./customervault/address");
 const date_of_birth_1 = require("./customervault/date-of-birth");
 const profile_1 = require("./customervault/profile");
 const paysafe_api_client_1 = require("./paysafe-api-client");
+const verification_1 = require("./cardpayments/verification");
 dotenv.config();
 if (typeof process.env.SINGLE_USE_API_KEY === 'undefined') {
     throw new Error('SINGLE_USE_API_KEY is undefined');
@@ -230,6 +231,26 @@ describe('Paysafe API with Single-Use Tokens', () => {
             done();
         });
     });
+    it('should verify a single-use token', (done) => {
+        const merchantRefNum = randomStr();
+        try {
+            const verification = new verification_1.Verification();
+            verification.setMerchantRefNum(merchantRefNum);
+            const card = new card_1.Card();
+            card.setPaymentToken(singleUseToken);
+            verification.setCard(card);
+            const billingDetails = new billing_details_1.BillingDetails();
+            billingDetails.setZip('K1L 6R2');
+            verification.setBillingDetails(billingDetails);
+            paysafeAPIClient.getCardServiceHandler().verify(verification).then((verificationResult) => {
+                console.log(verificationResult);
+                done();
+            }).catch(done);
+        }
+        catch (err) {
+            done(err);
+        }
+    }).timeout(timeout);
     it('should add a card to an existing profile using a single-use token', (done) => {
         try {
             const card = new card_1.Card();
@@ -238,13 +259,12 @@ describe('Paysafe API with Single-Use Tokens', () => {
             profile.setId(profileId);
             card.setProfile(profile);
             let cardId;
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            customerServiceHandler.createCard(card).then((cardResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createCard(card).then((cardResult) => {
                 chai_1.expect(cardResult).to.not.be.an('undefined');
                 chai_1.expect(cardResult).to.be.instanceof(card_1.Card);
                 chai_1.expect(cardResult.getId()).to.not.be.an('undefined');
                 cardId = cardResult.getId();
-                return customerServiceHandler.getProfile(profile, ['cards']);
+                return paysafeAPIClient.getCustomerServiceHandler().getProfile(profile, ['cards']);
             }).then((profileResult) => {
                 chai_1.expect(profileResult).to.not.be.an('undefined');
                 chai_1.expect(profileResult).to.be.instanceof(profile_1.Profile);
@@ -282,9 +302,8 @@ describe('Paysafe API with Single-Use Tokens', () => {
             const card = new card_1.Card();
             card.setSingleUseToken(singleUseToken);
             profile.setCard(card);
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
             // console.log('REQ 4', profile);
-            customerServiceHandler.createProfile(profile).then((profileResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
                 // console.log('RES 4', profileResult);
                 chai_1.expect(profileResult.getFirstName()).to.equal(firstName);
                 chai_1.expect(profileResult.getLastName()).to.equal(lastName);
@@ -320,8 +339,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
             const billingDetails = new billing_details_1.BillingDetails();
             billingDetails.setZip('K1L 6R2');
             authorization.setBillingDetails(billingDetails);
-            const customerServiceHandler = paysafeAPIClient.getCardServiceHandler();
-            customerServiceHandler.authorize(authorization).then((authorizationResult) => {
+            paysafeAPIClient.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
                 chai_1.expect(authorizationResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
                 chai_1.expect(authorizationResult.getAmount()).to.equal(amount);

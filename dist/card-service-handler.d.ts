@@ -76,5 +76,5 @@ export declare class CardServiceHandler {
     getSettlement(settlement: Settlement): Promise<Settlement>;
     getRefund(refund: Refund): Promise<Refund>;
     verify(verification: Verification): Promise<Verification>;
-    getVerification(verification: Refund): Promise<Verification>;
+    getVerification(verification: Verification): Promise<Verification>;
 }
