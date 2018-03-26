@@ -5,13 +5,16 @@ import { RequestObject } from '../request-object';
 import { AcquirerResponse } from './acquirer-response';
 import { Authorization } from './authorization';
 
+export type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
+
 export class AuthorizationReversal extends RequestObject {
 
+  private merchantRefNum?: string;
   private amount?: number;
   private childAccountNum?: string;
   private dupCheck?: boolean;
   private txnTime?: string;
-  private status?: string;
+  private status?: statusType;
   private riskReasonCode?: string;
   private acquirerResponse?: AcquirerResponse;
   private links?: Link[];
@@ -22,6 +25,9 @@ export class AuthorizationReversal extends RequestObject {
     super(resp);
     if (!resp) {
       return;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
     }
     if (typeof resp.amount !== 'undefined') {
       this.amount = resp.amount;
@@ -55,6 +61,9 @@ export class AuthorizationReversal extends RequestObject {
     }
   }
 
+  public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
+
   public setAmount(amount: number): void { this.amount = amount; }
   public getAmount(): number | undefined { return this.amount; }
 
@@ -67,8 +76,8 @@ export class AuthorizationReversal extends RequestObject {
   public setTxnTime(txnTime: string): void { this.txnTime = txnTime; }
   public getTxnTime(): string | undefined { return this.txnTime; }
 
-  public setStatus(status: string): void { this.status = status; }
-  public getStatus(): string | undefined { return this.status; }
+  public setStatus(status: statusType): void { this.status = status; }
+  public getStatus(): statusType | undefined { return this.status; }
 
   public setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
   public getRiskReasonCode(): string | undefined { return this.riskReasonCode; }

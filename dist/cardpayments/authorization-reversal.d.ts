@@ -2,7 +2,9 @@ import { Link } from '../common/link';
 import { RequestObject } from '../request-object';
 import { AcquirerResponse } from './acquirer-response';
 import { Authorization } from './authorization';
+export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 export declare class AuthorizationReversal extends RequestObject {
+    private merchantRefNum?;
     private amount?;
     private childAccountNum?;
     private dupCheck?;
@@ -14,6 +16,8 @@ export declare class AuthorizationReversal extends RequestObject {
     private voidAuths?;
     private authorization?;
     constructor(resp?: AuthorizationReversal);
+    setMerchantRefNum(merchantRefNum: string): void;
+    getMerchantRefNum(): string | undefined;
     setAmount(amount: number): void;
     getAmount(): number | undefined;
     setChildAccountNum(childAccountNum: string): void;
@@ -22,8 +26,8 @@ export declare class AuthorizationReversal extends RequestObject {
     getDupCheck(): boolean | undefined;
     setTxnTime(txnTime: string): void;
     getTxnTime(): string | undefined;
-    setStatus(status: string): void;
-    getStatus(): string | undefined;
+    setStatus(status: statusType): void;
+    getStatus(): statusType | undefined;
     setRiskReasonCode(riskReasonCode: string): void;
     getRiskReasonCode(): string | undefined;
     setAcquirerResponse(acquirerResponse: AcquirerResponse): void;

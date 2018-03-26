@@ -3,6 +3,7 @@ import { AuthorizationReversal } from './cardpayments/authorization-reversal';
 import { Pagination } from './cardpayments/pagination';
 import { Refund } from './cardpayments/refund';
 import { Settlement } from './cardpayments/settlement';
+import { Verification } from './cardpayments/verification';
 import { PaysafeAPIClient } from './paysafe-api-client';
 export declare class CardServiceHandler {
     private paysafeApiClient;
@@ -49,8 +50,13 @@ export declare class CardServiceHandler {
      * @param refund
      */
     cancelRefund(refund: Refund): Promise<Refund>;
+    /**
+     * retreive an authorization
+     * @param authorization
+     */
     getAuth(authorization: Authorization): Promise<Authorization>;
     /**
+     * retrieve an authorization reversal
      * @param authorizationReversal
      */
     getAuthReversal(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal>;
@@ -60,5 +66,15 @@ export declare class CardServiceHandler {
      * @param pagination
      */
     searchMerchantRefCommon(merchObj: any, pagination: Pagination): string;
+    /**
+     * Find all entities of a particular type by their merchant reference number.
+     * E.g., pass in an Authorization to find Authorizations.
+     * @param merchObj
+     * @param pagination
+     */
     searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any>;
+    getSettlement(settlement: Settlement): Promise<Settlement>;
+    getRefund(refund: Refund): Promise<Refund>;
+    verify(verification: Verification): Promise<Verification>;
+    getVerification(verification: Refund): Promise<Verification>;
 }

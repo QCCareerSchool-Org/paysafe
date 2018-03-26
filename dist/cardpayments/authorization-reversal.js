@@ -11,6 +11,9 @@ class AuthorizationReversal extends request_object_1.RequestObject {
         if (!resp) {
             return;
         }
+        if (typeof resp.merchantRefNum !== 'undefined') {
+            this.merchantRefNum = resp.merchantRefNum;
+        }
         if (typeof resp.amount !== 'undefined') {
             this.amount = resp.amount;
         }
@@ -42,6 +45,8 @@ class AuthorizationReversal extends request_object_1.RequestObject {
             this.authorization = new authorization_1.Authorization(resp.authorization);
         }
     }
+    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
+    getMerchantRefNum() { return this.merchantRefNum; }
     setAmount(amount) { this.amount = amount; }
     getAmount() { return this.amount; }
     setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }

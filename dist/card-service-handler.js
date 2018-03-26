@@ -4,6 +4,7 @@ const authorization_1 = require("./cardpayments/authorization");
 const authorization_reversal_1 = require("./cardpayments/authorization-reversal");
 const refund_1 = require("./cardpayments/refund");
 const settlement_1 = require("./cardpayments/settlement");
+const verification_1 = require("./cardpayments/verification");
 const Constants = require("./constants");
 const paysafe_request_1 = require("./paysafe-request");
 const HEALTH_BEAT_URL = 'cardpayments/monitor';
@@ -223,6 +224,10 @@ class CardServiceHandler {
             });
         });
     }
+    /**
+     * retreive an authorization
+     * @param authorization
+     */
     getAuth(authorization) {
         return new Promise((resolve, reject) => {
             const authorizationId = authorization.getId();
@@ -242,6 +247,7 @@ class CardServiceHandler {
         });
     }
     /**
+     * retrieve an authorization reversal
      * @param authorizationReversal
      */
     getAuthReversal(authorizationReversal) {
@@ -288,6 +294,12 @@ class CardServiceHandler {
         }
         return toInclude;
     }
+    /**
+     * Find all entities of a particular type by their merchant reference number.
+     * E.g., pass in an Authorization to find Authorizations.
+     * @param merchObj
+     * @param pagination
+     */
     searchByMerchantRef(merchObj, pagination) {
         return new Promise((resolve, reject) => {
             if (typeof merchObj.merchantRefNum === 'undefined') {
@@ -309,6 +321,73 @@ class CardServiceHandler {
             this.paysafeApiClient.processRequest(requestObj).then((response) => {
                 if (response) {
                     return resolve(new this.paysafeApiClient.classes[className](response));
+                }
+                reject(new Error('empty response'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+    getSettlement(settlement) {
+        return new Promise((resolve, reject) => {
+            const settlementId = settlement.getId();
+            if (typeof settlementId === 'undefined') {
+                return reject(this.paysafeApiClient.error(BAD_REQUEST, 'InvalidRequestException : Settlement id is missing in CardServiceHandler : getSettlement'));
+            }
+            settlement.deleteId();
+            const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.SETTLEMENT}/${settlementId}`, this.paysafeApiClient), Constants.GET);
+            this.paysafeApiClient.processRequest(requestObj).then((response) => {
+                if (response) {
+                    return resolve(new settlement_1.Settlement(response));
+                }
+                reject(new Error('empty response'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+    getRefund(refund) {
+        return new Promise((resolve, reject) => {
+            const refundId = refund.getId();
+            if (typeof refundId === 'undefined') {
+                return reject(this.paysafeApiClient.error(BAD_REQUEST, 'InvalidRequestException : Refund id is missing in CardServiceHandler : getRefund'));
+            }
+            refund.deleteId();
+            const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.REFUND}/${refundId}`, this.paysafeApiClient), Constants.GET);
+            this.paysafeApiClient.processRequest(requestObj).then((response) => {
+                if (response) {
+                    return resolve(new refund_1.Refund(response));
+                }
+                reject(new Error('empty response'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+    verify(verification) {
+        return new Promise((resolve, reject) => {
+            const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.VERIFICATION}`, this.paysafeApiClient), Constants.POST);
+            this.paysafeApiClient.processRequest(requestObj, verification).then((response) => {
+                if (response) {
+                    return resolve(new verification_1.Verification(response));
+                }
+                reject(new Error('empty response'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+    getVerification(verification) {
+        return new Promise((resolve, reject) => {
+            const verificationId = verification.getId();
+            if (typeof verificationId === 'undefined') {
+                return reject(this.paysafeApiClient.error(BAD_REQUEST, 'InvalidRequestException : Refund id is missing in CardServiceHandler : getRefund'));
+            }
+            verification.deleteId();
+            const requestObj = new paysafe_request_1.PaysafeRequest(prepareURI(`${paths.VERIFICATION}/${verificationId}`, this.paysafeApiClient), Constants.GET);
+            this.paysafeApiClient.processRequest(requestObj).then((response) => {
+                if (response) {
+                    return resolve(new verification_1.Verification(response));
                 }
                 reject(new Error('empty response'));
             }).catch((err) => {

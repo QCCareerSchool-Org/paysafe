@@ -14,6 +14,9 @@ import { Settlement } from './settlement';
 import { ShippingDetails } from './shipping-details';
 import { VisaAdditionalAuthData } from './visa-additional-auth-data';
 
+export type statusType = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
+export type recurringType = 'INITIAL' | 'RECURRING';
+
 export class Authorization extends RequestObject {
 
   private merchantRefNum?: string;
@@ -27,7 +30,7 @@ export class Authorization extends RequestObject {
   private profile?: Profile;
   private billingDetails?: BillingDetails;
   private shippingDetails?: ShippingDetails;
-  private recurring?: string;
+  private recurring?: recurringType;
   private customerIp?: string;
   private dupCheck?: string;
   private keywords?: string;
@@ -39,7 +42,7 @@ export class Authorization extends RequestObject {
   private currencyCode?: string;
   private avsResponse?: string;
   private cvvVerification?: string;
-  private status?: string;
+  private status?: statusType;
   private riskReasonCode?: string;
   private acquirerResponse?: AcquirerResponse;
   private visaAdditionalAuthData?: VisaAdditionalAuthData;
@@ -177,8 +180,8 @@ export class Authorization extends RequestObject {
   public setShippingDetails(shippingDetails: ShippingDetails): void { this.shippingDetails = shippingDetails; }
   public getShippingDetails(): ShippingDetails | undefined { return this.shippingDetails; }
 
-  public setRecurring(recurring: string): void { this.recurring = recurring; }
-  public getRecurring(): string | undefined { return this.recurring; }
+  public setRecurring(recurring: recurringType): void { this.recurring = recurring; }
+  public getRecurring(): recurringType | undefined { return this.recurring; }
 
   public setCustomerIp(customerIp: string): void { this.customerIp = customerIp; }
   public getCustomerIp(): string | undefined { return this.customerIp; }
@@ -213,8 +216,8 @@ export class Authorization extends RequestObject {
   public setCvvVerification(cvvVerification: string): void { this.cvvVerification = cvvVerification; }
   public getCvvVerification(): string | undefined { return this.cvvVerification; }
 
-  public setStatus(status: string): void { this.status = status; }
-  public getStatus(): string | undefined { return this.status; }
+  public setStatus(status: statusType): void { this.status = status; }
+  public getStatus(): statusType | undefined { return this.status; }
 
   public setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
   public getRiskReasonCode(): string | undefined { return this.riskReasonCode; }

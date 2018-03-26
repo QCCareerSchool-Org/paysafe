@@ -11,6 +11,8 @@ import { MerchantDescriptor } from './merchant-descriptor';
 import { Settlement } from './settlement';
 import { ShippingDetails } from './shipping-details';
 import { VisaAdditionalAuthData } from './visa-additional-auth-data';
+export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
+export declare type recurringType = 'INITIAL' | 'RECURRING';
 export declare class Authorization extends RequestObject {
     private merchantRefNum?;
     private amount?;
@@ -65,8 +67,8 @@ export declare class Authorization extends RequestObject {
     getBillingDetails(): BillingDetails | undefined;
     setShippingDetails(shippingDetails: ShippingDetails): void;
     getShippingDetails(): ShippingDetails | undefined;
-    setRecurring(recurring: string): void;
-    getRecurring(): string | undefined;
+    setRecurring(recurring: recurringType): void;
+    getRecurring(): recurringType | undefined;
     setCustomerIp(customerIp: string): void;
     getCustomerIp(): string | undefined;
     setDupCheck(dupCheck: string): void;
@@ -89,8 +91,8 @@ export declare class Authorization extends RequestObject {
     getAvsResponse(): string | undefined;
     setCvvVerification(cvvVerification: string): void;
     getCvvVerification(): string | undefined;
-    setStatus(status: string): void;
-    getStatus(): string | undefined;
+    setStatus(status: statusType): void;
+    getStatus(): statusType | undefined;
     setRiskReasonCode(riskReasonCode: string): void;
     getRiskReasonCode(): string | undefined;
     setAcquirerResponse(acquirerResponse: AcquirerResponse): void;
