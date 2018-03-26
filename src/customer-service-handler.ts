@@ -172,4 +172,74 @@ export class CustomerServiceHandler {
     });
   }
 
+  public getCard(card: Card): Promise<Card> {
+
+    return new Promise((resolve, reject) => {
+
+      const cardId = card.getId();
+      if (typeof cardId === 'undefined') {
+        throw new Error('card id is missing');
+      }
+
+      const profile = card.getProfile();
+      if (typeof profile === 'undefined') {
+        throw new Error('profile is missing');
+      }
+
+      const profileId = profile.getId();
+      if (typeof profileId === 'undefined') {
+        throw new Error('profile id is missing');
+      }
+
+      card.deleteProfile();
+
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}/${cardId}`, this.paysafeApiClient), Constants.GET);
+
+      this.paysafeApiClient.processRequest<Card>(requestObj).then((response) => {
+        if (response) {
+          return resolve(new Card(response));
+        }
+        reject(new Error('empty response'));
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+
+  }
+
+  public updateCard(card: Card): Promise<Card> {
+
+    return new Promise((resolve, reject) => {
+
+      const cardId = card.getId();
+      if (typeof cardId === 'undefined') {
+        throw new Error('card id is missing');
+      }
+
+      const profile = card.getProfile();
+      if (typeof profile === 'undefined') {
+        throw new Error('profile is missing');
+      }
+
+      const profileId = profile.getId();
+      if (typeof profileId === 'undefined') {
+        throw new Error('profile id is missing');
+      }
+
+      card.deleteProfile();
+
+      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}/${cardId}`, this.paysafeApiClient), Constants.PUT);
+
+      this.paysafeApiClient.processRequest(requestObj, card).then((response) => {
+        if (response) {
+          return resolve(new Card(response));
+        }
+        reject(new Error('empty response'));
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+
+  }
+
 }

@@ -24,4 +24,6 @@ export declare class CustomerServiceHandler {
      */
     createAddress(address: Address): Promise<Address>;
     createCard(card: Card): Promise<Card>;
+    getCard(card: Card): Promise<Card>;
+    updateCard(card: Card): Promise<Card>;
 }
