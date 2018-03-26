@@ -17,6 +17,8 @@ import { VisaAdditionalAuthData } from './visa-additional-auth-data';
 export type statusType = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
 export type recurringType = 'INITIAL' | 'RECURRING';
 
+const MERCHANT_REF_NUM_MAX_LENGTH = 255;
+
 export class Authorization extends RequestObject {
 
   private merchantRefNum?: string;
@@ -147,7 +149,12 @@ export class Authorization extends RequestObject {
     }
   }
 
-  public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public setMerchantRefNum(merchantRefNum: string): void {
+    if (merchantRefNum.length > MERCHANT_REF_NUM_MAX_LENGTH) {
+      throw new Error('invalid merchantRefNum');
+    }
+    this.merchantRefNum = merchantRefNum;
+  }
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public setAmount(amount: number): void { this.amount = amount; }

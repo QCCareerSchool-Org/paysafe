@@ -14,6 +14,7 @@ const merchant_descriptor_1 = require("./merchant-descriptor");
 const settlement_1 = require("./settlement");
 const shipping_details_1 = require("./shipping-details");
 const visa_additional_auth_data_1 = require("./visa-additional-auth-data");
+const MERCHANT_REF_NUM_MAX_LENGTH = 255;
 class Authorization extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
@@ -111,7 +112,12 @@ class Authorization extends request_object_1.RequestObject {
             this.settlements = create_array_1.createArray(resp.settlements, settlement_1.Settlement);
         }
     }
-    setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
+    setMerchantRefNum(merchantRefNum) {
+        if (merchantRefNum.length > MERCHANT_REF_NUM_MAX_LENGTH) {
+            throw new Error('invalid merchantRefNum');
+        }
+        this.merchantRefNum = merchantRefNum;
+    }
     getMerchantRefNum() { return this.merchantRefNum; }
     setAmount(amount) { this.amount = amount; }
     getAmount() { return this.amount; }
