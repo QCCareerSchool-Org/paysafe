@@ -83,8 +83,8 @@ export declare class Authorization extends RequestObject {
     getDescription(): string | undefined;
     setMasterPass(masterPass: MasterPass): void;
     getMasterPass(): MasterPass | undefined;
-    setTxnTime(txnTime: string): void;
-    getTxnTime(): string | undefined;
+    setTxnTime(txnTime: Date): void;
+    getTxnTime(): Date | undefined;
     setCurrencyCode(currencyCode: string): void;
     getCurrencyCode(): string | undefined;
     setAvsResponse(avsResponse: string): void;

@@ -349,6 +349,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
                 chai_1.expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
                 chai_1.expect(authorizationResult.getAmount()).to.equal(amount);
                 chai_1.expect(authorizationResult.getStatus()).to.equal('COMPLETED');
+                chai_1.expect(authorizationResult.getTxnTime()).to.be.a('Date');
                 const c = authorizationResult.getCard();
                 chai_1.expect(c).to.not.be.an('undefined');
                 chai_1.expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));

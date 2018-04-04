@@ -40,7 +40,7 @@ export class Authorization extends RequestObject {
   private accordD?: AccordD;
   private description?: string;
   private masterPass?: MasterPass;
-  private txnTime?: string;
+  private txnTime?: Date;
   private currencyCode?: string;
   private avsResponse?: string;
   private cvvVerification?: string;
@@ -115,7 +115,7 @@ export class Authorization extends RequestObject {
       this.masterPass = new MasterPass(resp.masterPass);
     }
     if (typeof resp.txnTime !== 'undefined') {
-      this.txnTime = resp.txnTime;
+      this.txnTime = new Date(resp.txnTime);
     }
     if (typeof resp.currencyCode !== 'undefined') {
       this.currencyCode = resp.currencyCode;
@@ -211,8 +211,8 @@ export class Authorization extends RequestObject {
   public setMasterPass(masterPass: MasterPass): void { this.masterPass = masterPass; }
   public getMasterPass(): MasterPass | undefined { return this.masterPass; }
 
-  public setTxnTime(txnTime: string): void { this.txnTime = txnTime; }
-  public getTxnTime(): string | undefined { return this.txnTime; }
+  public setTxnTime(txnTime: Date): void { this.txnTime = new Date(txnTime); }
+  public getTxnTime(): Date | undefined { return this.txnTime; }
 
   public setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
   public getCurrencyCode(): string | undefined { return this.currencyCode; }

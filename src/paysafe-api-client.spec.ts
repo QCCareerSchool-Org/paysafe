@@ -407,6 +407,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
         expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
         expect(authorizationResult.getAmount()).to.equal(amount);
         expect(authorizationResult.getStatus()).to.equal('COMPLETED');
+        expect(authorizationResult.getTxnTime()).to.be.a('Date');
         const c = authorizationResult.getCard();
         expect(c).to.not.be.an('undefined');
         expect((c as Card).getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));

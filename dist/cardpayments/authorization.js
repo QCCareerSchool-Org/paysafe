@@ -79,7 +79,7 @@ class Authorization extends request_object_1.RequestObject {
             this.masterPass = new master_pass_1.MasterPass(resp.masterPass);
         }
         if (typeof resp.txnTime !== 'undefined') {
-            this.txnTime = resp.txnTime;
+            this.txnTime = new Date(resp.txnTime);
         }
         if (typeof resp.currencyCode !== 'undefined') {
             this.currencyCode = resp.currencyCode;
@@ -155,7 +155,7 @@ class Authorization extends request_object_1.RequestObject {
     getDescription() { return this.description; }
     setMasterPass(masterPass) { this.masterPass = masterPass; }
     getMasterPass() { return this.masterPass; }
-    setTxnTime(txnTime) { this.txnTime = txnTime; }
+    setTxnTime(txnTime) { this.txnTime = new Date(txnTime); }
     getTxnTime() { return this.txnTime; }
     setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
     getCurrencyCode() { return this.currencyCode; }
