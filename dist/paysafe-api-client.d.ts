@@ -18,6 +18,7 @@ export declare class PaysafeAPIClient {
     private customerServiceHandler?;
     private directDebitServiceHandler?;
     private threeDSecureServiceHandler?;
+    private baseRequest;
     constructor(apiKey: string, apiPassword: string, environment: 'TEST' | 'LIVE', accountNumber: string);
     updateConfig(apiKey: string, apiPassword: string, environment: Environments.Environment, accountNumber: string): void;
     error(code: number, message: string): PaysafeError;

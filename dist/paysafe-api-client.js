@@ -74,6 +74,9 @@ class PaysafeAPIClient {
         this.apiPassword = apiPassword;
         this.environment = Environments[environment];
         this.accountNumber = accountNumber;
+        this.baseRequest = request.defaults({
+            pool: { maxSockets: this.environment.maxSockets },
+        });
     }
     updateConfig(apiKey, apiPassword, environment, accountNumber) {
         this.apiKey = apiKey;
@@ -124,31 +127,33 @@ class PaysafeAPIClient {
             uri: paysafeRequest.buildUrl(this.environment.host),
             method: paysafeRequest.method,
             json: true,
-            pool: {
-                maxSockets: this.environment.maxSockets,
-            },
             timeout: this.environment.timeout,
         };
         if (typeof requestObject !== 'undefined') {
             options.body = requestObject;
         }
         return new Promise((resolve, reject) => {
-            request(options, (err, response, body) => {
+            this.baseRequest(options, (err, response, body) => {
                 const CLIENT_ERROR = 400;
                 const SERVER_ERROR = 500;
                 if (err) {
-                    reject(this.error(err.code, 'Connection error: ' + err.syscall));
+                    if (err.code === 'ETIMEDOUT' || err.code === 'ESOCKETTIMEDOUT') {
+                        reject(this.error(-1, err.code));
+                    }
+                    else {
+                        reject(this.error(-1, JSON.stringify(err)));
+                    }
                 }
                 else if (response.statusCode >= SERVER_ERROR) {
                     reject(this.error(response.statusCode, body));
                 }
-                else if (!body) {
+                else if (!body) { // for delete calls, the response is empty string
                     resolve();
                 }
                 else {
                     try {
                         body = typeof body === 'string' ? JSON.parse(body) : body;
-                        if (typeof body.error !== 'undefined') {
+                        if (typeof body.error !== 'undefined') { // the entire response is an error
                             return reject(new paysafe_error_1.PaysafeError(body.error));
                         }
                         resolve(body);

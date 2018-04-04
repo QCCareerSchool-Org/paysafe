@@ -99,11 +99,16 @@ export class PaysafeAPIClient {
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
 
+  private baseRequest: request.RequestAPI<request.Request, request.CoreOptions, request.RequiredUriUrl>;
+
   constructor(apiKey: string, apiPassword: string, environment: 'TEST' | 'LIVE', accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
     this.environment = Environments[environment];
     this.accountNumber = accountNumber;
+    this.baseRequest = request.defaults({
+      pool: { maxSockets: this.environment.maxSockets },
+    });
   }
 
   public updateConfig(apiKey: string, apiPassword: string, environment: Environments.Environment, accountNumber: string) {
@@ -163,9 +168,6 @@ export class PaysafeAPIClient {
       uri: paysafeRequest.buildUrl(this.environment.host),
       method: paysafeRequest.method,
       json: true,
-      pool: {
-        maxSockets: this.environment.maxSockets,
-      },
       timeout: this.environment.timeout,
     };
 
@@ -175,11 +177,15 @@ export class PaysafeAPIClient {
 
     return new Promise((resolve, reject) => {
 
-      request(options, (err, response, body) => {
+      this.baseRequest(options, (err, response, body) => {
         const CLIENT_ERROR = 400;
         const SERVER_ERROR = 500;
         if (err) {
-          reject(this.error(err.code, 'Connection error: ' + err.syscall));
+          if (err.code === 'ETIMEDOUT' || err.code === 'ESOCKETTIMEDOUT') {
+            reject(this.error(-1, err.code));
+          } else {
+            reject(this.error(-1, JSON.stringify(err)));
+          }
         } else if (response.statusCode >= SERVER_ERROR) {
           reject(this.error(response.statusCode, body));
         } else if (!body) { // for delete calls, the response is empty string
