@@ -1,31 +1,32 @@
-import { Link } from "../common/link";
-import { Mandate } from "./mandate";
-import { PaysafeError } from "../paysafe-error";
-import { Profile } from "./profile";
-import { createArray } from "../common/create-array";
+import { createArray } from '../common/create-array';
+import { Link } from '../common/link';
+import { PaysafeError } from '../paysafe-error';
+import { Mandate } from './mandate';
+import { Profile } from './profile';
 
 export class SEPABankAccount {
 
-  id?: string;
-  nickName?: string;
-  merchantRefNum?: string;
-  status?: string;
-  statusReason?: string;
-  iban?: string;
-  accountHolderName?: string;
-  bic?: string;
-  mandates?: Mandate | Mandate[];
-  lastDigits?: string;
-  billingAddressId?: string;
-  paymentToken?: string;
-  mandateReference?: string;
-  error?: PaysafeError;
-  profile?: Profile;
-  links?: Link[];
+  private id?: string;
+  private nickName?: string;
+  private merchantRefNum?: string;
+  private status?: string;
+  private statusReason?: string;
+  private iban?: string;
+  private accountHolderName?: string;
+  private bic?: string;
+  private mandates?: Mandate | Mandate[];
+  private lastDigits?: string;
+  private billingAddressId?: string;
+  private paymentToken?: string;
+  private mandateReference?: string;
+  private error?: PaysafeError;
+  private profile?: Profile;
+  private links?: Link[];
 
   constructor(resp?: SEPABankAccount) {
-    if (!resp)
+    if (!resp) {
       return;
+    }
     this.id = resp.id;
     this.nickName = resp.nickName;
     this.merchantRefNum = resp.merchantRefNum;
@@ -35,69 +36,73 @@ export class SEPABankAccount {
     this.accountHolderName = resp.accountHolderName;
     this.bic = resp.bic;
     if (resp.mandates) {
-      if (resp.mandates instanceof Array)
+      if (resp.mandates instanceof Array) {
         this.mandates = createArray(resp.mandates, Mandate);
-      else
+      } else {
         this.mandates = new Mandate(resp.mandates);
+      }
     }
     this.lastDigits = resp.lastDigits;
     this.billingAddressId = resp.billingAddressId;
     this.paymentToken = resp.paymentToken;
     this.mandateReference = resp.mandateReference;
-    if (resp.error)
+    if (resp.error) {
       this.error = new PaysafeError(resp.error);
-    if (resp.profile)
+    }
+    if (resp.profile) {
       this.profile = new Profile(resp.profile);
-    if (resp.links)
+    }
+    if (resp.links) {
       this.links = createArray(resp.links, Link);
+    }
   }
 
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
+  public setId(id: string): void { this.id = id; }
+  public getId(): string | undefined { return this.id; }
 
-  setnickName(nickName: string): void { this.nickName = nickName; }
-  getnickName(): string | undefined { return this.nickName; }
+  public setnickName(nickName: string): void { this.nickName = nickName; }
+  public getnickName(): string | undefined { return this.nickName; }
 
-  setmerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getmerchantRefNum(): string | undefined { return this.merchantRefNum; }
+  public setmerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getmerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
-  setStatus(status: string): void { this.status = status; }
-  getStatus(): string | undefined { return this.status; }
+  public setStatus(status: string): void { this.status = status; }
+  public getStatus(): string | undefined { return this.status; }
 
-  setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
-  getstatusReason(): string | undefined { return this.statusReason; }
+  public setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
+  public getstatusReason(): string | undefined { return this.statusReason; }
 
-  setiban(iban: string): void { this.iban = iban; }
-  getiban(): string | undefined { return this.iban; }
+  public setiban(iban: string): void { this.iban = iban; }
+  public getiban(): string | undefined { return this.iban; }
 
-  setaccountHolderName(accountHolderName: string): void { this.accountHolderName = accountHolderName; }
-  getaccountHolderName() { return this.accountHolderName; }
+  public setaccountHolderName(accountHolderName: string): void { this.accountHolderName = accountHolderName; }
+  public getaccountHolderName() { return this.accountHolderName; }
 
-  setbic(bic: string): void { this.bic = bic; }
-  getbic(): string | undefined { return this.bic; }
+  public setbic(bic: string): void { this.bic = bic; }
+  public getbic(): string | undefined { return this.bic; }
 
-  setmandates(mandates: Mandate | Mandate[]): void { this.mandates = mandates; }
-  getmandates(): Mandate | Mandate[] | undefined { return this.mandates; }
+  public setmandates(mandates: Mandate | Mandate[]): void { this.mandates = mandates; }
+  public getmandates(): Mandate | Mandate[] | undefined { return this.mandates; }
 
-  setlastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
-  getlastDigits(): string | undefined { return this.lastDigits; }
+  public setlastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
+  public getlastDigits(): string | undefined { return this.lastDigits; }
 
-  setbillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
-  getbillingAddressId(): string | undefined { return this.billingAddressId; }
+  public setbillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
+  public getbillingAddressId(): string | undefined { return this.billingAddressId; }
 
-  setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
-  getpaymentToken(): string | undefined { return this.paymentToken; }
+  public setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
+  public getpaymentToken(): string | undefined { return this.paymentToken; }
 
-  setProfile(profile: Profile): void { this.profile = profile; }
-  getProfile(): Profile | undefined { return this.profile; }
+  public setProfile(profile: Profile): void { this.profile = profile; }
+  public getProfile(): Profile | undefined { return this.profile; }
 
-  setmandateReference(mandateReference: string): void { this.mandateReference = mandateReference; }
-  getmandateReference(): string | undefined { return this.mandateReference; }
+  public setmandateReference(mandateReference: string): void { this.mandateReference = mandateReference; }
+  public getmandateReference(): string | undefined { return this.mandateReference; }
 
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
+  public setError(error: PaysafeError): void { this.error = error; }
+  public getError(): PaysafeError | undefined { return this.error; }
 
-  setLinks(links: Link[]): void { this.links = links; }
-  getLinks(): Link[] | undefined { return this.links; }
+  public setLinks(links: Link[]): void { this.links = links; }
+  public getLinks(): Link[] | undefined { return this.links; }
 
 }

@@ -7,7 +7,7 @@ export class BillingDetails {
   private zip?: string;
   private country?: string;
   private phone?: string;
-  private useAsShippingAddress?: boolean;
+  // private useAsShippingAddress?: boolean;
 
   constructor(resp?: BillingDetails) {
     if (!resp) {
@@ -34,9 +34,9 @@ export class BillingDetails {
     if (typeof resp.phone !== 'undefined') {
       this.phone = resp.phone;
     }
-    if (typeof resp.useAsShippingAddress !== 'undefined') {
-      this.useAsShippingAddress = resp.useAsShippingAddress;
-    }
+    // if (typeof resp.useAsShippingAddress !== 'undefined') {
+    //   this.useAsShippingAddress = resp.useAsShippingAddress;
+    // }
   }
 
   public setStreet(street: string): void { this.street = street; }
@@ -60,7 +60,7 @@ export class BillingDetails {
   public setPhone(phone: string): void { this.phone = phone; }
   public getPhone(): string | undefined { return this.phone; }
 
-  public setUseAsShippingAddress(useAsShippingAddress: boolean): void { this.useAsShippingAddress = useAsShippingAddress; }
-  public getUseAsShippingAddress(): boolean | undefined { return this.useAsShippingAddress; }
+  // public setUseAsShippingAddress(useAsShippingAddress: boolean): void { this.useAsShippingAddress = useAsShippingAddress; }
+  // public getUseAsShippingAddress(): boolean | undefined { return this.useAsShippingAddress; }
 
 }

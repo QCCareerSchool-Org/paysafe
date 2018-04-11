@@ -10,8 +10,10 @@
   "author": "Dave Welsh",
   "license": "MIT",
   "dependencies": {
+    "@types/debug": "0.0.30",
     "@types/node": "^9.4.7",
     "@types/request": "^2.47.0",
+    "debug": "^3.1.0",
     "request": "^2.83.0"
   },
   "devDependencies": {

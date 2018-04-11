@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
 const request_object_1 = require("../request-object");
-const acquirer_response_1 = require("./acquirer-response");
-const settlement_1 = require("./settlement");
+const acquirer_response_1 = require("./lib/acquirer-response");
+const splitpay_1 = require("./lib/splitpay");
 class Refund extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
@@ -30,34 +30,21 @@ class Refund extends request_object_1.RequestObject {
             this.status = resp.status;
         }
         if (typeof resp.riskReasonCode !== 'undefined') {
-            this.riskReasonCode = resp.riskReasonCode;
+            this.riskReasonCode = resp.riskReasonCode.slice(0);
         }
         if (typeof resp.acquirerResponse !== 'undefined') {
             this.acquirerResponse = new acquirer_response_1.AcquirerResponse(resp.acquirerResponse);
         }
-        if (typeof resp.settlements !== 'undefined') {
-            this.settlements = new settlement_1.Settlement(resp.settlements);
+        if (typeof resp.splitpay !== 'undefined') {
+            if (Array.isArray(resp.splitpay)) {
+                this.splitpay = create_array_1.createArray(resp.splitpay, splitpay_1.Splitpay);
+            }
+            else {
+                this.splitpay = new splitpay_1.Splitpay(resp.splitpay);
+            }
         }
         if (typeof resp.links !== 'undefined') {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
-        }
-        if (typeof resp.refunds !== 'undefined') {
-            this.refunds = create_array_1.createArray(resp.refunds, Refund);
-        }
-        if (typeof resp.currencyCode !== 'undefined') {
-            this.currencyCode = resp.currencyCode;
-        }
-        if (typeof resp.originalMerchantRefNum !== 'undefined') {
-            this.originalMerchantRefNum = resp.originalMerchantRefNum;
-        }
-        if (typeof resp.mode !== 'undefined') {
-            this.mode = resp.mode;
-        }
-        if (typeof resp.authType !== 'undefined') {
-            this.authType = resp.authType;
-        }
-        if (typeof resp.confirmationNumber !== 'undefined') {
-            this.confirmationNumber = resp.confirmationNumber;
         }
     }
     setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
@@ -76,22 +63,9 @@ class Refund extends request_object_1.RequestObject {
     getRiskReasonCode() { return this.riskReasonCode; }
     setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
     getAcquirerResponse() { return this.acquirerResponse; }
-    setSettlements(settlements) { this.settlements = settlements; }
-    getSettlements() { return this.settlements; }
-    deleteSettlements() { delete this.settlements; }
+    setSplitpay(splitpay) { this.splitpay = splitpay; }
+    getSplitpay() { return this.splitpay; }
     setLinks(links) { this.links = links; }
     getLinks() { return this.links; }
-    setRefunds(refunds) { this.refunds = refunds; }
-    getRefunds() { return this.refunds; }
-    setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
-    getCurrencyCode() { return this.currencyCode; }
-    setOriginalMerchantRefNum(originalMerchantRefNum) { this.originalMerchantRefNum = originalMerchantRefNum; }
-    getOriginalMerchantRefNum() { return this.originalMerchantRefNum; }
-    setMode(mode) { this.mode = mode; }
-    getMode() { return this.mode; }
-    setAuthType(authType) { this.authType = authType; }
-    getAuthType() { return this.authType; }
-    setConfirmationNumber(confirmationNumber) { this.confirmationNumber = confirmationNumber; }
-    getConfirmationNumber() { return this.confirmationNumber; }
 }
 exports.Refund = Refund;

@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
-const profile_1 = require("../customervault/profile");
 const request_object_1 = require("../request-object");
-const accord_d_1 = require("./accord-d");
-const acquirer_response_1 = require("./acquirer-response");
-const authentication_1 = require("./authentication");
-const billing_details_1 = require("./billing-details");
-const card_1 = require("./card");
-const merchant_descriptor_1 = require("./merchant-descriptor");
-const shipping_details_1 = require("./shipping-details");
+const accord_d_1 = require("./lib/accord-d");
+const acquirer_response_1 = require("./lib/acquirer-response");
+const authentication_1 = require("./lib/authentication");
+const billing_details_1 = require("./lib/billing-details");
+const card_1 = require("./lib/card");
+const merchant_descriptor_1 = require("./lib/merchant-descriptor");
+const profile_1 = require("./lib/profile");
+const shipping_details_1 = require("./lib/shipping-details");
 class Verification extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);

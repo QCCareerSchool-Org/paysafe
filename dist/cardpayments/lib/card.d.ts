@@ -1,0 +1,32 @@
+import { CardExpiry } from '../../common/card-expiry';
+export declare type cardType = 'AM' | 'DC' | 'JC' | 'MC' | 'MD' | 'SO' | 'VI' | 'VD' | 'VE';
+export declare class Card {
+    private paymentToken?;
+    private singleUseToken?;
+    private cardNum?;
+    private type?;
+    private lastDigits?;
+    private cardExpiry?;
+    private cvv?;
+    private track1?;
+    private track2?;
+    constructor(resp?: Card);
+    setPaymentToken(paymentToken: string): void;
+    getPaymentToken(): string | undefined;
+    setSingleUseToken(singleUseToken: string): void;
+    getSingleUseToken(): string | undefined;
+    setCardNum(cardNum: string): void;
+    getCardNum(): string | undefined;
+    setType(type: cardType): void;
+    getType(): cardType | undefined;
+    setLastDigits(lastDigits: string): void;
+    getLastDigits(): string | undefined;
+    setCardExpiry(cardExpiry: CardExpiry): void;
+    getCardExpiry(): CardExpiry | undefined;
+    setCvv(cvv: string): void;
+    getCvv(): string | undefined;
+    setTrack1(track1: string): void;
+    getTrack1(): string | undefined;
+    settrack2(track2: string): void;
+    gettrack2(): string | undefined;
+}

@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const request_object_1 = require("../request-object");
-class Authentication extends request_object_1.RequestObject {
+class Authentication {
     constructor(resp) {
-        super(resp);
         if (!resp) {
             return;
         }

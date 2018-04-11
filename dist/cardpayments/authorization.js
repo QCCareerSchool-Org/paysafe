@@ -2,24 +2,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
-const profile_1 = require("../customervault/profile");
 const request_object_1 = require("../request-object");
-const accord_d_1 = require("./accord-d");
-const acquirer_response_1 = require("./acquirer-response");
-const authentication_1 = require("./authentication");
-const billing_details_1 = require("./billing-details");
-const card_1 = require("./card");
-const master_pass_1 = require("./master-pass");
-const merchant_descriptor_1 = require("./merchant-descriptor");
 const settlement_1 = require("./settlement");
-const shipping_details_1 = require("./shipping-details");
-const visa_additional_auth_data_1 = require("./visa-additional-auth-data");
+const accord_d_1 = require("./lib/accord-d");
+const acquirer_response_1 = require("./lib/acquirer-response");
+const authentication_1 = require("./lib/authentication");
+const billing_details_1 = require("./lib/billing-details");
+const card_1 = require("./lib/card");
+const level2level3_1 = require("./lib/level2level3");
+// import { MasterPass } from './lib/master-pass';
+const merchant_descriptor_1 = require("./lib/merchant-descriptor");
+const profile_1 = require("./lib/profile");
+const recipient_1 = require("./lib/recipient");
+const shipping_details_1 = require("./lib/shipping-details");
+const splitpay_1 = require("./lib/splitpay");
 const MERCHANT_REF_NUM_MAX_LENGTH = 255;
 class Authorization extends request_object_1.RequestObject {
+    //  private childAccountNum?: string;
+    //  private masterPass?: MasterPass;
+    //  private visaAdditionalAuthData?: VisaAdditionalAuthData;
+    //  private auths?: Authorization[];
     constructor(resp) {
         super(resp);
         if (!resp) {
             return;
+        }
+        if (typeof resp.card !== 'undefined') {
+            this.card = new card_1.Card(resp.card);
         }
         if (typeof resp.merchantRefNum !== 'undefined') {
             this.merchantRefNum = resp.merchantRefNum;
@@ -27,23 +36,8 @@ class Authorization extends request_object_1.RequestObject {
         if (typeof resp.amount !== 'undefined') {
             this.amount = resp.amount;
         }
-        if (typeof resp.settleWithAuth !== 'undefined') {
-            this.settleWithAuth = resp.settleWithAuth;
-        }
-        if (typeof resp.availableToSettle !== 'undefined') {
-            this.availableToSettle = resp.availableToSettle;
-        }
-        if (typeof resp.childAccountNum !== 'undefined') {
-            this.childAccountNum = resp.childAccountNum;
-        }
-        if (typeof resp.card !== 'undefined') {
-            this.card = new card_1.Card(resp.card);
-        }
         if (typeof resp.authentication !== 'undefined') {
             this.authentication = new authentication_1.Authentication(resp.authentication);
-        }
-        if (typeof resp.authCode !== 'undefined') {
-            this.authCode = resp.authCode;
         }
         if (typeof resp.profile !== 'undefined') {
             this.profile = new profile_1.Profile(resp.profile);
@@ -64,7 +58,7 @@ class Authorization extends request_object_1.RequestObject {
             this.dupCheck = resp.dupCheck;
         }
         if (typeof resp.keywords !== 'undefined') {
-            this.keywords = resp.keywords;
+            this.keywords = resp.keywords.slice(0);
         }
         if (typeof resp.merchantDescriptor !== 'undefined') {
             this.merchantDescriptor = new merchant_descriptor_1.MerchantDescriptor(resp.merchantDescriptor);
@@ -75,8 +69,20 @@ class Authorization extends request_object_1.RequestObject {
         if (typeof resp.description !== 'undefined') {
             this.description = resp.description;
         }
-        if (typeof resp.masterPass !== 'undefined') {
-            this.masterPass = new master_pass_1.MasterPass(resp.masterPass);
+        if (typeof resp.recipient !== 'undefined') {
+            this.recipient = new recipient_1.Recipient(resp.recipient);
+        }
+        if (typeof resp.level2level3 !== 'undefined') {
+            this.level2level3 = new level2level3_1.Level2level3(resp.level2level3);
+        }
+        if (typeof resp.settleWithAuth !== 'undefined') {
+            this.settleWithAuth = resp.settleWithAuth;
+        }
+        if (typeof resp.availableToSettle !== 'undefined') {
+            this.availableToSettle = resp.availableToSettle;
+        }
+        if (typeof resp.authCode !== 'undefined') {
+            this.authCode = resp.authCode;
         }
         if (typeof resp.txnTime !== 'undefined') {
             this.txnTime = new Date(resp.txnTime);
@@ -94,24 +100,37 @@ class Authorization extends request_object_1.RequestObject {
             this.status = resp.status;
         }
         if (typeof resp.riskReasonCode !== 'undefined') {
-            this.riskReasonCode = resp.riskReasonCode;
+            this.riskReasonCode = resp.riskReasonCode.slice(0);
         }
         if (typeof resp.acquirerResponse !== 'undefined') {
             this.acquirerResponse = new acquirer_response_1.AcquirerResponse(resp.acquirerResponse);
         }
-        if (typeof resp.visaAdditionalAuthData !== 'undefined') {
-            this.visaAdditionalAuthData = new visa_additional_auth_data_1.VisaAdditionalAuthData(resp.visaAdditionalAuthData);
+        if (typeof resp.splitpay !== 'undefined') {
+            this.splitpay = new splitpay_1.Splitpay(resp.splitpay);
         }
         if (typeof resp.links !== 'undefined') {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
         }
-        if (typeof resp.auths !== 'undefined') {
-            this.auths = create_array_1.createArray(resp.auths, Authorization);
-        }
         if (typeof resp.settlements !== 'undefined') {
             this.settlements = create_array_1.createArray(resp.settlements, settlement_1.Settlement);
         }
+        /*
+        if (typeof resp.childAccountNum !== 'undefined') {
+          this.childAccountNum = resp.childAccountNum;
+        }
+        if (typeof resp.masterPass !== 'undefined') {
+          this.masterPass = new MasterPass(resp.masterPass);
+        }
+        if (typeof resp.visaAdditionalAuthData !== 'undefined') {
+          this.visaAdditionalAuthData = new VisaAdditionalAuthData(resp.visaAdditionalAuthData);
+        }
+        if (typeof resp.auths !== 'undefined') {
+          this.auths = createArray(resp.auths, Authorization);
+        }
+        */
     }
+    setCard(card) { this.card = card; }
+    getCard() { return this.card; }
     setMerchantRefNum(merchantRefNum) {
         if (merchantRefNum.length > MERCHANT_REF_NUM_MAX_LENGTH) {
             throw new Error('invalid merchantRefNum');
@@ -121,18 +140,8 @@ class Authorization extends request_object_1.RequestObject {
     getMerchantRefNum() { return this.merchantRefNum; }
     setAmount(amount) { this.amount = amount; }
     getAmount() { return this.amount; }
-    setSettleWithAuth(settleWithAuth) { this.settleWithAuth = settleWithAuth; }
-    getSettleWithAuth() { return this.settleWithAuth; }
-    setAvailableToSettle(availableToSettle) { this.availableToSettle = availableToSettle; }
-    getAvailableToSettle() { return this.availableToSettle; }
-    setChildAccountNum(childAccountNum) { this.childAccountNum = childAccountNum; }
-    getChildAccountNum() { return this.childAccountNum; }
-    setCard(card) { this.card = card; }
-    getCard() { return this.card; }
     setAuthentication(authentication) { this.authentication = authentication; }
     getAuthentication() { return this.authentication; }
-    setAuthCode(authCode) { this.authCode = authCode; }
-    getAuthCode() { return this.authCode; }
     setProfile(profile) { this.profile = profile; }
     getProfile() { return this.profile; }
     setBillingDetails(billingDetails) { this.billingDetails = billingDetails; }
@@ -153,8 +162,16 @@ class Authorization extends request_object_1.RequestObject {
     getAccordD() { return this.accordD; }
     setDescription(description) { this.description = description; }
     getDescription() { return this.description; }
-    setMasterPass(masterPass) { this.masterPass = masterPass; }
-    getMasterPass() { return this.masterPass; }
+    setRecipient(recipient) { this.recipient = recipient; }
+    getRecipient() { return this.recipient; }
+    setLevel2level3(level2level3) { this.level2level3 = level2level3; }
+    getLevel2level3() { return this.level2level3; }
+    setSettleWithAuth(settleWithAuth) { this.settleWithAuth = settleWithAuth; }
+    getSettleWithAuth() { return this.settleWithAuth; }
+    setAvailableToSettle(availableToSettle) { this.availableToSettle = availableToSettle; }
+    getAvailableToSettle() { return this.availableToSettle; }
+    setAuthCode(authCode) { this.authCode = authCode; }
+    getAuthCode() { return this.authCode; }
     setTxnTime(txnTime) { this.txnTime = new Date(txnTime); }
     getTxnTime() { return this.txnTime; }
     setCurrencyCode(currencyCode) { this.currencyCode = currencyCode; }
@@ -169,12 +186,10 @@ class Authorization extends request_object_1.RequestObject {
     getRiskReasonCode() { return this.riskReasonCode; }
     setAcquirerResponse(acquirerResponse) { this.acquirerResponse = acquirerResponse; }
     getAcquirerResponse() { return this.acquirerResponse; }
-    setVisaAdditionalAuthData(visaAdditionalAuthData) { this.visaAdditionalAuthData = visaAdditionalAuthData; }
-    getVisaAdditionalAuthData() { return this.visaAdditionalAuthData; }
+    setSplitpay(splitpay) { this.splitpay = splitpay; }
+    getSplitpay() { return this.splitpay; }
     setLinks(links) { this.links = links; }
     getLinks() { return this.links; }
-    setAuths(auths) { this.auths = auths; }
-    getAuths() { return this.auths; }
     setSettlements(settlements) { this.settlements = settlements; }
     getSettlements() { return this.settlements; }
 }

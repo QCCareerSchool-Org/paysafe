@@ -6,7 +6,6 @@ export declare class BillingDetails {
     private zip?;
     private country?;
     private phone?;
-    private useAsShippingAddress?;
     constructor(resp?: BillingDetails);
     setStreet(street: string): void;
     getStreet(): string | undefined;
@@ -22,6 +21,4 @@ export declare class BillingDetails {
     getCountry(): string | undefined;
     setPhone(phone: string): void;
     getPhone(): string | undefined;
-    setUseAsShippingAddress(useAsShippingAddress: boolean): void;
-    getUseAsShippingAddress(): boolean | undefined;
 }

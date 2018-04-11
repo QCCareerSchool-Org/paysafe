@@ -1,15 +1,10 @@
 import * as Environments from './environment';
-import { PaysafeError } from './paysafe-error';
-import { PaysafeRequest } from './paysafe-request';
 import { RequestObject } from './request-object';
 import { CardServiceHandler } from './card-service-handler';
 import { CustomerServiceHandler } from './customer-service-handler';
 import { DirectDebitServiceHandler } from './direct-debit-service-handler';
 import { ThreeDSecureServiceHandler } from './three-d-secure-service-handler';
 export declare class PaysafeAPIClient {
-    classes: {
-        [key: string]: any;
-    };
     private apiKey;
     private apiPassword;
     private environment;
@@ -21,7 +16,6 @@ export declare class PaysafeAPIClient {
     private baseRequest;
     constructor(apiKey: string, apiPassword: string, environment: 'TEST' | 'LIVE', accountNumber: string);
     updateConfig(apiKey: string, apiPassword: string, environment: Environments.Environment, accountNumber: string): void;
-    error(code: number, message: string): PaysafeError;
     getApiKey(): string;
     getApiPassword(): string;
     getEnvironment(): Environments.Environment;
@@ -30,5 +24,9 @@ export declare class PaysafeAPIClient {
     getDirectDebitServiceHandler(): DirectDebitServiceHandler;
     getCustomerServiceHandler(): CustomerServiceHandler;
     getThreeDSecureServiceHandler(): ThreeDSecureServiceHandler;
-    processRequest<T extends RequestObject>(paysafeRequest: PaysafeRequest, requestObject?: T): Promise<T>;
+    get<T extends RequestObject>(uri: string, requestObject?: T): Promise<T>;
+    post<T extends RequestObject>(uri: string, requestObject?: T): Promise<T>;
+    put<T extends RequestObject>(uri: string, requestObject?: T): Promise<T>;
+    delete<T extends RequestObject>(uri: string, requestObject?: T): Promise<T>;
+    private process<T>(method, uri, requestObject?);
 }

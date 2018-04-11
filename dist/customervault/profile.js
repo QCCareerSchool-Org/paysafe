@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const create_array_1 = require("../common/create-array");
+const date_of_birth_1 = require("../common/date-of-birth");
 const request_object_1 = require("../request-object");
-const card_1 = require("../cardpayments/card");
 const address_1 = require("./address");
-const date_of_birth_1 = require("./date-of-birth");
+const card_1 = require("./card");
 const ach_bank_account_1 = require("./ach-bank-account");
 const bacs_bank_account_1 = require("./bacs-bank-account");
 const eft_bank_account_1 = require("./eft-bank-account");

@@ -1,9 +1,8 @@
 import { Link } from '../common/link';
 import { RequestObject } from '../request-object';
-import { AcquirerResponse } from './acquirer-response';
-import { Authorization } from './authorization';
+import { AcquirerResponse } from './lib/acquirer-response';
 export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
-export declare class AuthorizationReversal extends RequestObject {
+export declare class VoidAuth extends RequestObject {
     private merchantRefNum?;
     private amount?;
     private childAccountNum?;
@@ -13,9 +12,7 @@ export declare class AuthorizationReversal extends RequestObject {
     private riskReasonCode?;
     private acquirerResponse?;
     private links?;
-    private voidAuths?;
-    private authorization?;
-    constructor(resp?: AuthorizationReversal);
+    constructor(resp?: VoidAuth);
     setMerchantRefNum(merchantRefNum: string): void;
     getMerchantRefNum(): string | undefined;
     setAmount(amount: number): void;
@@ -34,9 +31,4 @@ export declare class AuthorizationReversal extends RequestObject {
     getAcquirerResponse(): AcquirerResponse | undefined;
     setLinks(links: Link[]): void;
     getLinks(): Link[] | undefined;
-    setVoidAuths(voidAuths: AuthorizationReversal[]): void;
-    getVoidAuths(): AuthorizationReversal[] | undefined;
-    setAuthorization(authorization: Authorization): void;
-    getAuthorization(): Authorization | undefined;
-    deleteAuthorization(): void;
 }

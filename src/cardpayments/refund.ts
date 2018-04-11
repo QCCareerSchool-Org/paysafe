@@ -2,8 +2,13 @@ import { createArray } from '../common/create-array';
 import { Link } from '../common/link';
 import { PaysafeError } from '../paysafe-error';
 import { RequestObject } from '../request-object';
-import { AcquirerResponse } from './acquirer-response';
+
 import { Settlement } from './settlement';
+
+import { AcquirerResponse } from './lib/acquirer-response';
+import { Splitpay } from './lib/splitpay';
+
+export type statusType = 'RECEIVED' | 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
 
 export class Refund extends RequestObject {
 
@@ -12,17 +17,11 @@ export class Refund extends RequestObject {
   private childAccountNum?: string;
   private dupCheck?: boolean;
   private txnTime?: string;
-  private status?: string;
-  private riskReasonCode?: string;
+  private status?: statusType;
+  private riskReasonCode?: number[];
   private acquirerResponse?: AcquirerResponse;
-  private settlements?: Settlement;
+  private splitpay?: Splitpay | Splitpay[];
   private links?: Link[];
-  private refunds?: Refund[];
-  private currencyCode?: string;
-  private originalMerchantRefNum?: string;
-  private mode?: string;
-  private authType?: string;
-  private confirmationNumber?: string;
 
   constructor(resp?: Refund) {
     super(resp);
@@ -48,34 +47,20 @@ export class Refund extends RequestObject {
       this.status = resp.status;
     }
     if (typeof resp.riskReasonCode !== 'undefined') {
-      this.riskReasonCode = resp.riskReasonCode;
+      this.riskReasonCode = resp.riskReasonCode.slice(0);
     }
     if (typeof resp.acquirerResponse !== 'undefined') {
       this.acquirerResponse = new AcquirerResponse(resp.acquirerResponse);
     }
-    if (typeof resp.settlements !== 'undefined') {
-      this.settlements = new Settlement(resp.settlements);
+    if (typeof resp.splitpay !== 'undefined') {
+      if (Array.isArray(resp.splitpay)) {
+        this.splitpay = createArray(resp.splitpay, Splitpay);
+      } else {
+        this.splitpay = new Splitpay(resp.splitpay);
+      }
     }
     if (typeof resp.links !== 'undefined') {
       this.links = createArray(resp.links, Link);
-    }
-    if (typeof resp.refunds !== 'undefined') {
-      this.refunds = createArray(resp.refunds, Refund);
-    }
-    if (typeof resp.currencyCode !== 'undefined') {
-      this.currencyCode = resp.currencyCode;
-    }
-    if (typeof resp.originalMerchantRefNum !== 'undefined') {
-      this.originalMerchantRefNum = resp.originalMerchantRefNum;
-    }
-    if (typeof resp.mode !== 'undefined') {
-      this.mode = resp.mode;
-    }
-    if (typeof resp.authType !== 'undefined') {
-      this.authType = resp.authType;
-    }
-    if (typeof resp.confirmationNumber !== 'undefined') {
-      this.confirmationNumber = resp.confirmationNumber;
     }
   }
 
@@ -94,38 +79,19 @@ export class Refund extends RequestObject {
   public setTxnTime(txnTime: string): void { this.txnTime = txnTime; }
   public getTxnTime(): string | undefined { return this.txnTime; }
 
-  public setStatus(status: string): void { this.status = status; }
-  public getStatus(): string | undefined { return this.status; }
+  public setStatus(status: statusType): void { this.status = status; }
+  public getStatus(): statusType | undefined { return this.status; }
 
-  public setRiskReasonCode(riskReasonCode: string): void { this.riskReasonCode = riskReasonCode; }
-  public getRiskReasonCode(): string | undefined { return this.riskReasonCode; }
+  public setRiskReasonCode(riskReasonCode: number[]): void { this.riskReasonCode = riskReasonCode; }
+  public getRiskReasonCode(): number[] | undefined { return this.riskReasonCode; }
 
   public setAcquirerResponse(acquirerResponse: AcquirerResponse): void { this.acquirerResponse = acquirerResponse; }
   public getAcquirerResponse(): AcquirerResponse | undefined { return this.acquirerResponse; }
 
-  public setSettlements(settlements: Settlement): void { this.settlements = settlements; }
-  public getSettlements(): Settlement | undefined { return this.settlements; }
-  public deleteSettlements(): void { delete this.settlements; }
+  public setSplitpay(splitpay: Splitpay | Splitpay[]): void { this.splitpay = splitpay; }
+  public getSplitpay(): Splitpay | Splitpay[] | undefined { return this.splitpay; }
 
   public setLinks(links: Link[]): void { this.links = links; }
   public getLinks(): Link[] | undefined { return this.links; }
-
-  public setRefunds(refunds: Refund[]): void { this.refunds = refunds; }
-  public getRefunds(): Refund[] | undefined { return this.refunds; }
-
-  public setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
-  public getCurrencyCode(): string | undefined { return this.currencyCode; }
-
-  public setOriginalMerchantRefNum(originalMerchantRefNum: string): void { this.originalMerchantRefNum = originalMerchantRefNum; }
-  public getOriginalMerchantRefNum(): string | undefined { return this.originalMerchantRefNum; }
-
-  public setMode(mode: string): void { this.mode = mode; }
-  public getMode(): string | undefined { return this.mode; }
-
-  public setAuthType(authType: string): void { this.authType = authType; }
-  public getAuthType(): string | undefined { return this.authType; }
-
-  public setConfirmationNumber(confirmationNumber: string): void { this.confirmationNumber = confirmationNumber; }
-  public getConfirmationNumber(): string | undefined { return this.confirmationNumber; }
 
 }

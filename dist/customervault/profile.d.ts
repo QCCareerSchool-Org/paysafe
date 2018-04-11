@@ -1,7 +1,7 @@
+import { DateOfBirth } from '../common/date-of-birth';
 import { RequestObject } from '../request-object';
-import { Card } from '../cardpayments/card';
 import { Address } from './address';
-import { DateOfBirth } from './date-of-birth';
+import { Card } from './card';
 import { ACHBankAccount } from './ach-bank-account';
 import { BACSBankAccount } from './bacs-bank-account';
 import { EFTBankAccount } from './eft-bank-account';

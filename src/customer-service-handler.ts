@@ -1,14 +1,9 @@
-import * as Constants from './constants';
 import { PaysafeAPIClient } from './paysafe-api-client';
-import { PaysafeRequest } from './paysafe-request';
 
-import { Card } from './cardpayments/card';
 import { Address } from './customervault/address';
+import { Card } from './customervault/card';
 import { Profile } from './customervault/profile';
 import { PaysafeError } from './paysafe-error';
-
-const HEALTH_BEAT_URL = 'customervault/monitor';
-const URI = 'customervault/v1';
 
 const paths = {
   PROFILE: '/profiles',
@@ -20,10 +15,6 @@ const paths = {
   EFT_BANK_ACCOUNT: '/eftbankaccounts',
   MANDATE: '/mandates',
 };
-
-function prepareURI(path: string, paysafeClient: PaysafeAPIClient) {
-  return URI + path;
-}
 
 function createQuerystring(fields: string[]) {
   if (!fields.length) {
@@ -42,8 +33,7 @@ export class CustomerServiceHandler {
 
   /** verifies that the service is up and accessible */
   public monitor(): Promise<any> {
-    const requestObj = new PaysafeRequest(HEALTH_BEAT_URL, Constants.GET);
-    return this.paysafeApiClient.processRequest(requestObj);
+    return this.paysafeApiClient.get(this.paysafeApiClient.getEnvironment().host + '/customervault/monitor');
   }
 
   /**
@@ -54,9 +44,9 @@ export class CustomerServiceHandler {
 
     return new Promise((resolve, reject) => {
 
-      const requestObj = new PaysafeRequest(prepareURI(paths.PROFILE, this.paysafeApiClient), Constants.POST);
+      const uri = this.getURI(paths.PROFILE);
 
-      this.paysafeApiClient.processRequest(requestObj, profile).then((response) => {
+      this.paysafeApiClient.post(uri, profile).then((response) => {
         if (response) {
           return resolve(new Profile(response));
         }
@@ -73,24 +63,19 @@ export class CustomerServiceHandler {
    * @param profile the profile to search for--must include id
    * @param fields an optional array of strings--possible strings are 'cards', 'addresses', 'achbankaccounts', 'bacsbankaccounts', 'eftbankaccounts', 'sepabankaccounts'
    */
-  public getProfile(profile: Profile, fields?: string[]): Promise<Profile> {
+  public getProfile(profileId: string, fields?: string[]): Promise<Profile> {
 
     return new Promise((resolve, reject) => {
 
-      if (typeof profile === 'undefined') {
-        throw new Error('profile is undefined');
-      }
-
-      const profileId = profile.getId();
       if (typeof profileId === 'undefined') {
-        throw new Error('profile.id is undefined');
+        throw new Error('profileId is undefined');
       }
 
       const querystring = typeof fields !== 'undefined' ? createQuerystring(fields) : '';
 
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${querystring}`, this.paysafeApiClient), Constants.GET);
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}${querystring}`);
 
-      this.paysafeApiClient.processRequest(requestObj, profile).then((response) => {
+      this.paysafeApiClient.get<Profile>(uri).then((response) => {
         if (response) {
           return resolve(new Profile(response));
         }
@@ -106,29 +91,21 @@ export class CustomerServiceHandler {
    * create a new address for a profile
    * @param address the address to create--must have a profile, which must have an id
    */
-  public createAddress(address: Address): Promise<Address> {
+  public createAddress(profileId: string, address: Address): Promise<Address> {
 
     return new Promise((resolve, reject) => {
+
+      if (typeof profileId === 'undefined') {
+        throw new Error('profileId is undefined');
+      }
 
       if (typeof address === 'undefined') {
         throw new Error('address is undefined');
       }
 
-      const profile = address.getProfile();
-      if (typeof profile === 'undefined') {
-        throw new Error('address.profile is undefined');
-      }
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.ADDRESS}`);
 
-      const profileId = profile.getId();
-      if (typeof profileId === 'undefined') {
-        throw new Error('address.profile.id is undefined');
-      }
-
-      address.deleteProfile();
-
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.ADDRESS}`, this.paysafeApiClient), Constants.POST);
-
-      this.paysafeApiClient.processRequest(requestObj, address).then((response) => {
+      this.paysafeApiClient.post(uri, address).then((response) => {
         if (response) {
           return resolve(new Address(response));
         }
@@ -140,28 +117,20 @@ export class CustomerServiceHandler {
 
   }
 
-  public createCard(card: Card): Promise<Card> {
+  public createCard(profileId: string, card: Card): Promise<Card> {
     return new Promise((resolve, reject) => {
+
+      if (typeof profileId === 'undefined') {
+        throw new Error('profileId undefined');
+      }
 
       if (typeof card === 'undefined') {
         throw new Error('card is undefined');
       }
 
-      const profile = card.getProfile();
-      if (typeof profile === 'undefined') {
-        throw new Error('card.profile is undefined');
-      }
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.CARD}`);
 
-      const profileId = profile.getId();
-      if (typeof profileId === 'undefined') {
-        throw new Error('card.profile.id is undefined');
-      }
-
-      card.deleteProfile();
-
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}`, this.paysafeApiClient), Constants.POST);
-
-      this.paysafeApiClient.processRequest(requestObj, card).then((response) => {
+      this.paysafeApiClient.post(uri, card).then((response) => {
         if (response) {
           return resolve(new Card(response));
         }
@@ -172,30 +141,21 @@ export class CustomerServiceHandler {
     });
   }
 
-  public getCard(card: Card): Promise<Card> {
+  public getCard(profileId: string, cardId: string): Promise<Card> {
 
     return new Promise((resolve, reject) => {
 
-      const cardId = card.getId();
-      if (typeof cardId === 'undefined') {
-        throw new Error('card id is missing');
-      }
-
-      const profile = card.getProfile();
-      if (typeof profile === 'undefined') {
-        throw new Error('profile is missing');
-      }
-
-      const profileId = profile.getId();
       if (typeof profileId === 'undefined') {
-        throw new Error('profile id is missing');
+        throw new Error('profileId is undefined');
       }
 
-      card.deleteProfile();
+      if (typeof cardId === 'undefined') {
+        throw new Error('cardId is undefined');
+      }
 
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}/${cardId}`, this.paysafeApiClient), Constants.GET);
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.CARD}/${cardId}`);
 
-      this.paysafeApiClient.processRequest<Card>(requestObj).then((response) => {
+      this.paysafeApiClient.get<Card>(uri).then((response) => {
         if (response) {
           return resolve(new Card(response));
         }
@@ -207,30 +167,22 @@ export class CustomerServiceHandler {
 
   }
 
-  public updateCard(card: Card): Promise<Card> {
+  public updateCard(profileId: string, card: Card): Promise<Card> {
 
     return new Promise((resolve, reject) => {
 
+      if (typeof profileId === 'undefined') {
+        throw new Error('profile id is undefined');
+      }
+
       const cardId = card.getId();
       if (typeof cardId === 'undefined') {
-        throw new Error('card id is missing');
+        throw new Error('card.id is undefined');
       }
 
-      const profile = card.getProfile();
-      if (typeof profile === 'undefined') {
-        throw new Error('profile is missing');
-      }
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.CARD}/${cardId}`);
 
-      const profileId = profile.getId();
-      if (typeof profileId === 'undefined') {
-        throw new Error('profile id is missing');
-      }
-
-      card.deleteProfile();
-
-      const requestObj = new PaysafeRequest(prepareURI(`${paths.PROFILE}/${profileId}${paths.CARD}/${cardId}`, this.paysafeApiClient), Constants.PUT);
-
-      this.paysafeApiClient.processRequest(requestObj, card).then((response) => {
+      this.paysafeApiClient.put(uri, card).then((response) => {
         if (response) {
           return resolve(new Card(response));
         }
@@ -240,6 +192,63 @@ export class CustomerServiceHandler {
       });
     });
 
+  }
+
+  public getAddress(profileId: string, addressId: string): Promise<Address> {
+
+    return new Promise((resolve, reject) => {
+
+      if (typeof profileId === 'undefined') {
+        throw new Error('profileId is undefined');
+      }
+
+      if (typeof addressId === 'undefined') {
+        throw new Error('addressId is undefined');
+      }
+
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.ADDRESS}/${addressId}`);
+
+      this.paysafeApiClient.get<Address>(uri).then((response) => {
+        if (response) {
+          return resolve(new Address(response));
+        }
+        reject(new Error('empty response'));
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+
+  }
+
+  public updateAddress(profileId: string, address: Address): Promise<Address> {
+
+    return new Promise((resolve, reject) => {
+
+      if (typeof profileId === 'undefined') {
+        throw new Error('profile id is undefined');
+      }
+
+      const addressId = address.getId();
+      if (typeof addressId === 'undefined') {
+        throw new Error('address.id is undefined');
+      }
+
+      const uri = this.getURI(`${paths.PROFILE}/${profileId}/${paths.ADDRESS}/${addressId}`);
+
+      this.paysafeApiClient.put(uri, address).then((response) => {
+        if (response) {
+          return resolve(new Address(response));
+        }
+        reject(new Error('empty response'));
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+
+  }
+
+  private getURI(path: string) {
+    return this.paysafeApiClient.getEnvironment().host + '/customervault/v1/' + path;
   }
 
 }

@@ -1,13 +1,13 @@
 import { Link } from '../common/link';
-import { Profile } from '../customervault/profile';
 import { RequestObject } from '../request-object';
-import { AccordD } from './accord-d';
-import { AcquirerResponse } from './acquirer-response';
-import { Authentication } from './authentication';
-import { BillingDetails } from './billing-details';
-import { Card } from './card';
-import { MerchantDescriptor } from './merchant-descriptor';
-import { ShippingDetails } from './shipping-details';
+import { AccordD } from './lib/accord-d';
+import { AcquirerResponse } from './lib/acquirer-response';
+import { Authentication } from './lib/authentication';
+import { BillingDetails } from './lib/billing-details';
+import { Card } from './lib/card';
+import { MerchantDescriptor } from './lib/merchant-descriptor';
+import { Profile } from './lib/profile';
+import { ShippingDetails } from './lib/shipping-details';
 export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 export declare class Verification extends RequestObject {
     private merchantRefNum?;

@@ -13,7 +13,6 @@ export class Address extends RequestObject {
   private country?: string;
   private recipientName?: string;
   private phone?: string;
-  private profile?: Profile;
   private status?: string;
   private defaultShippingAddressIndicator?: boolean;
 
@@ -49,9 +48,6 @@ export class Address extends RequestObject {
     if (typeof resp.phone !== 'undefined') {
       this.phone = resp.phone;
     }
-    if (typeof resp.profile !== 'undefined') {
-      this.profile = new Profile(resp.profile);
-    }
     if (typeof resp.status !== 'undefined') {
       this.status = resp.status;
     }
@@ -86,10 +82,6 @@ export class Address extends RequestObject {
 
   public setPhone(phone: string) { this.phone = phone; }
   public getPhone(): string | undefined { return this.phone; }
-
-  public setProfile(profile: Profile) { this.profile = profile; }
-  public getProfile(): Profile | undefined { return this.profile; }
-  public deleteProfile(): void { delete this.profile; }
 
   public setStatus(status: string) { this.status = status; }
   public getStatus(): string | undefined { return this.status; }

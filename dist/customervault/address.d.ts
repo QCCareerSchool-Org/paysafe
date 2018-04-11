@@ -1,5 +1,4 @@
 import { RequestObject } from '../request-object';
-import { Profile } from './profile';
 export declare class Address extends RequestObject {
     private nickName?;
     private street?;
@@ -10,7 +9,6 @@ export declare class Address extends RequestObject {
     private country?;
     private recipientName?;
     private phone?;
-    private profile?;
     private status?;
     private defaultShippingAddressIndicator?;
     constructor(resp?: Address);
@@ -32,9 +30,6 @@ export declare class Address extends RequestObject {
     getRecipientName(): string | undefined;
     setPhone(phone: string): void;
     getPhone(): string | undefined;
-    setProfile(profile: Profile): void;
-    getProfile(): Profile | undefined;
-    deleteProfile(): void;
     setStatus(status: string): void;
     getStatus(): string | undefined;
     setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean): void;

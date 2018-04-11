@@ -1,14 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const link_1 = require("../common/link");
-const mandate_1 = require("./mandate");
-const paysafe_error_1 = require("../paysafe-error");
-const profile_1 = require("./profile");
 const create_array_1 = require("../common/create-array");
+const link_1 = require("../common/link");
+const paysafe_error_1 = require("../paysafe-error");
+const mandate_1 = require("./mandate");
+const profile_1 = require("./profile");
 class SEPABankAccount {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
+        }
         this.id = resp.id;
         this.nickName = resp.nickName;
         this.merchantRefNum = resp.merchantRefNum;
@@ -18,21 +19,26 @@ class SEPABankAccount {
         this.accountHolderName = resp.accountHolderName;
         this.bic = resp.bic;
         if (resp.mandates) {
-            if (resp.mandates instanceof Array)
+            if (resp.mandates instanceof Array) {
                 this.mandates = create_array_1.createArray(resp.mandates, mandate_1.Mandate);
-            else
+            }
+            else {
                 this.mandates = new mandate_1.Mandate(resp.mandates);
+            }
         }
         this.lastDigits = resp.lastDigits;
         this.billingAddressId = resp.billingAddressId;
         this.paymentToken = resp.paymentToken;
         this.mandateReference = resp.mandateReference;
-        if (resp.error)
+        if (resp.error) {
             this.error = new paysafe_error_1.PaysafeError(resp.error);
-        if (resp.profile)
+        }
+        if (resp.profile) {
             this.profile = new profile_1.Profile(resp.profile);
-        if (resp.links)
+        }
+        if (resp.links) {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
+        }
     }
     setId(id) { this.id = id; }
     getId() { return this.id; }

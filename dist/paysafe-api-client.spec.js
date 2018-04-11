@@ -5,13 +5,16 @@ const dotenv = require("dotenv");
 require("mocha");
 const request = require("request");
 const authorization_1 = require("./cardpayments/authorization");
-const authorization_reversal_1 = require("./cardpayments/authorization-reversal");
-const billing_details_1 = require("./cardpayments/billing-details");
-const card_1 = require("./cardpayments/card");
-const merchant_descriptor_1 = require("./cardpayments/merchant-descriptor");
 const verification_1 = require("./cardpayments/verification");
+const void_auth_1 = require("./cardpayments/void-auth");
+const billing_details_1 = require("./cardpayments/lib/billing-details");
+const card_1 = require("./cardpayments/lib/card");
+const merchant_descriptor_1 = require("./cardpayments/lib/merchant-descriptor");
+const card_expiry_1 = require("./common/card-expiry");
+const date_of_birth_1 = require("./common/date-of-birth");
 const address_1 = require("./customervault/address");
-const date_of_birth_1 = require("./customervault/date-of-birth");
+const billing_address_1 = require("./customervault/billing-address");
+const card_2 = require("./customervault/card");
 const profile_1 = require("./customervault/profile");
 const paysafe_api_client_1 = require("./paysafe-api-client");
 dotenv.config();
@@ -44,6 +47,22 @@ const expiryYear = new Date().getFullYear() + 1;
 const timeout = 60000; // 60 seconds
 /* tslint:disable:no-magic-numbers */
 let profileId;
+describe('Card Payments', () => {
+    it('should be up and running', (done) => {
+        paysafeAPIClient.getCardServiceHandler().monitor().then((result) => {
+            chai_1.expect(result).to.have.property('status').that.equals('READY');
+            done();
+        }).catch(done);
+    });
+});
+describe('Customer Vault', () => {
+    it('should be up and running', (done) => {
+        paysafeAPIClient.getCustomerServiceHandler().monitor().then((result) => {
+            chai_1.expect(result).to.have.property('status').that.equals('READY');
+            done();
+        }).catch(done);
+    });
+});
 describe('General Paysafe API', () => {
     it('should create a profile', (done) => {
         const merchantCustomerId = randomStr();
@@ -75,8 +94,7 @@ describe('General Paysafe API', () => {
             profile.setEmail(emailAddress);
             profile.setPhone(phoneNumber);
             profile.setNationality(nationality);
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            customerServiceHandler.createProfile(profile).then((profileResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
                 chai_1.expect(profileResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(profileResult.getMerchantCustomerId()).to.equal(merchantCustomerId);
                 chai_1.expect(profileResult.getLocale()).to.equal(locale);
@@ -96,10 +114,8 @@ describe('General Paysafe API', () => {
     }).timeout(timeout);
     it('should get a profile', (done) => {
         try {
-            const profile = new profile_1.Profile();
-            profile.setId(profileId);
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            customerServiceHandler.getProfile(profile).then((profileResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().getProfile(profileId).then((profileResult) => {
+                chai_1.expect(profileResult.getId()).to.equal(profileId);
                 done();
             }).catch((err) => done(new Error(JSON.stringify(err))));
         }
@@ -125,8 +141,7 @@ describe('General Paysafe API', () => {
             dateOfBirth.setMonth(month);
             dateOfBirth.setDay(day);
             profile.setDateOfBirth(dateOfBirth);
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            customerServiceHandler.createProfile(profile).then((profileResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
                 chai_1.expect(profileResult.getFirstName()).to.equal(firstName);
                 chai_1.expect(profileResult.getLastName()).to.equal(lastName);
                 chai_1.expect(profileResult.getDateOfBirth()).to.not.be.an('undefined');
@@ -169,12 +184,8 @@ describe('General Paysafe API', () => {
             address.setCountry(country);
             address.setPhone(phoneNumber);
             address.setDefaultShippingAddressIndicator(defaultShippingIndicator);
-            const profile = new profile_1.Profile();
-            profile.setId(profileId);
-            address.setProfile(profile);
             let addressId;
-            const customerServiceHandler = paysafeAPIClient.getCustomerServiceHandler();
-            customerServiceHandler.createAddress(address).then((addressResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createAddress(profileId, address).then((addressResult) => {
                 chai_1.expect(addressResult).to.not.be.an('undefined');
                 chai_1.expect(addressResult).to.be.instanceof(address_1.Address);
                 chai_1.expect(addressResult.getId()).to.not.be.an('undefined');
@@ -189,7 +200,7 @@ describe('General Paysafe API', () => {
                 chai_1.expect(addressResult.getPhone()).to.equal(phoneNumber);
                 chai_1.expect(addressResult.getDefaultShippingAddressIndicator()).to.equal(defaultShippingIndicator);
                 addressId = addressResult.getId();
-                return customerServiceHandler.getProfile(profile, ['addresses']);
+                return paysafeAPIClient.getCustomerServiceHandler().getProfile(profileId, ['addresses']);
             }).then((profileResult) => {
                 chai_1.expect(profileResult).to.not.be.an('undefined');
                 chai_1.expect(profileResult).to.be.instanceof(profile_1.Profile);
@@ -258,18 +269,15 @@ describe('Paysafe API with Single-Use Tokens', () => {
     }).timeout(timeout);
     it('should add a card to an existing profile using a single-use token', (done) => {
         try {
-            const card = new card_1.Card();
+            const card = new card_2.Card();
             card.setSingleUseToken(singleUseToken);
-            const profile = new profile_1.Profile();
-            profile.setId(profileId);
-            card.setProfile(profile);
             let cardId;
-            paysafeAPIClient.getCustomerServiceHandler().createCard(card).then((cardResult) => {
+            paysafeAPIClient.getCustomerServiceHandler().createCard(profileId, card).then((cardResult) => {
                 chai_1.expect(cardResult).to.not.be.an('undefined');
-                chai_1.expect(cardResult).to.be.instanceof(card_1.Card);
+                chai_1.expect(cardResult).to.be.instanceof(card_2.Card);
                 chai_1.expect(cardResult.getId()).to.not.be.an('undefined');
                 cardId = cardResult.getId();
-                return paysafeAPIClient.getCustomerServiceHandler().getProfile(profile, ['cards']);
+                return paysafeAPIClient.getCustomerServiceHandler().getProfile(profileId, ['cards']);
             }).then((profileResult) => {
                 chai_1.expect(profileResult).to.not.be.an('undefined');
                 chai_1.expect(profileResult).to.be.instanceof(profile_1.Profile);
@@ -304,7 +312,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
             profile.setLocale('en_US');
             profile.setFirstName(firstName);
             profile.setLastName(lastName);
-            const card = new card_1.Card();
+            const card = new card_2.Card();
             card.setSingleUseToken(singleUseToken);
             profile.setCard(card);
             // console.log('REQ 4', profile);
@@ -387,7 +395,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
             profile.setLocale('en_US');
             profile.setFirstName(firstName);
             profile.setLastName(lastName);
-            const profileCard = new card_1.Card();
+            const profileCard = new card_2.Card();
             profileCard.setSingleUseToken(singleUseToken);
             profile.setCard(profileCard);
             paysafeAPIClient.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
@@ -430,7 +438,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
             profile.setLocale('en_US');
             profile.setFirstName(firstName);
             profile.setLastName(lastName);
-            const profileCard = new card_1.Card();
+            const profileCard = new card_2.Card();
             profileCard.setSingleUseToken(singleUseToken);
             profile.setCard(profileCard);
             const authorization = new authorization_1.Authorization();
@@ -518,33 +526,26 @@ describe('Paysafe API with Single-Use Tokens', () => {
                 address.setCity(city);
                 address.setZip('K1L 6R2');
                 address.setCountry(country);
-                address.setProfile(profileResult);
                 // console.log(address);
-                return paysafeAPIClient.getCustomerServiceHandler().createAddress(address);
+                return paysafeAPIClient.getCustomerServiceHandler().createAddress(pId, address);
             }).then((addressResult) => {
                 // console.log('ADDRESS', addressResult);
                 chai_1.expect(addressResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(addressResult.getStatus()).to.equal('ACTIVE');
                 aId = addressResult.getId();
-                const card = new card_1.Card();
+                const card = new card_2.Card();
                 card.setSingleUseToken(singleUseToken);
-                const profile = new profile_1.Profile();
-                profile.setId(pId);
-                card.setProfile(profile);
                 // console.log(card);
-                return paysafeAPIClient.getCustomerServiceHandler().createCard(card);
+                return paysafeAPIClient.getCustomerServiceHandler().createCard(pId, card);
             }).then((cardResult) => {
                 // console.log('CARD', cardResult);
                 chai_1.expect(cardResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(cardResult.getStatus()).to.equal('ACTIVE');
                 cId = cardResult.getId();
-                const card = new card_1.Card(cardResult);
+                const card = new card_2.Card(cardResult);
                 card.setBillingAddressId(aId);
-                const profile = new profile_1.Profile();
-                profile.setId(pId);
-                card.setProfile(profile);
                 // console.log(card);
-                return paysafeAPIClient.getCustomerServiceHandler().updateCard(card);
+                return paysafeAPIClient.getCustomerServiceHandler().updateCard(pId, card);
             }).then((cardResult) => {
                 // console.log('CARD', cardResult);
                 const authorization = new authorization_1.Authorization();
@@ -569,8 +570,8 @@ describe('Paysafe API with Single-Use Tokens', () => {
         }
     }).timeout(timeout * 6);
     it('should verify a single-use token, create a profile, add an address, add a card using the single-use token, update the card\'s billingAddresId, and then charge the single-use token', (done) => {
-        const merchantRefNumVerify = randomStr();
-        const merchantRefNumAuth = randomStr();
+        const merchantRefNumVerify = randomStr() + '_verify';
+        const merchantRefNumAuth = randomStr() + '_auth';
         const amount = randomInt(200, 300);
         const merchantCustomerId = randomStr();
         const firstName = randomStr();
@@ -614,33 +615,26 @@ describe('Paysafe API with Single-Use Tokens', () => {
                 address.setCity(city);
                 address.setZip('K1L 6R2');
                 address.setCountry(country);
-                address.setProfile(profileResult);
                 // console.log(address);
-                return paysafeAPIClient.getCustomerServiceHandler().createAddress(address);
+                return paysafeAPIClient.getCustomerServiceHandler().createAddress(pId, address);
             }).then((addressResult) => {
                 // console.log('ADDRESS', addressResult);
                 chai_1.expect(addressResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(addressResult.getStatus()).to.equal('ACTIVE');
                 aId = addressResult.getId();
-                const card = new card_1.Card();
+                const card = new card_2.Card();
                 card.setSingleUseToken(singleUseToken);
-                const profile = new profile_1.Profile();
-                profile.setId(pId);
-                card.setProfile(profile);
                 // console.log(card);
-                return paysafeAPIClient.getCustomerServiceHandler().createCard(card);
+                return paysafeAPIClient.getCustomerServiceHandler().createCard(pId, card);
             }).then((cardResult) => {
                 // console.log('CARD', cardResult);
                 chai_1.expect(cardResult.getId()).to.not.be.an('undefined');
                 chai_1.expect(cardResult.getStatus()).to.equal('ACTIVE');
                 cId = cardResult.getId();
-                const card = new card_1.Card(cardResult);
+                const card = new card_2.Card(cardResult);
                 card.setBillingAddressId(aId);
-                const profile = new profile_1.Profile();
-                profile.setId(pId);
-                card.setProfile(profile);
                 // console.log(card);
-                return paysafeAPIClient.getCustomerServiceHandler().updateCard(card);
+                return paysafeAPIClient.getCustomerServiceHandler().updateCard(pId, card);
             }).then((cardResult) => {
                 // console.log('CARD', cardResult);
                 const authorization = new authorization_1.Authorization();
@@ -671,7 +665,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
 describe('Paysafe API Auths, Refunds, and Voids', () => {
     let authorizationId;
     it('should charge a card stored in a profile', (done) => {
-        const merchantRefNum = randomStr();
+        const merchantRefNum = randomStr() + '_auth';
         const amount = randomInt(200, 300);
         const currencyCode = 'CAD';
         const street = randomStr();
@@ -722,22 +716,20 @@ describe('Paysafe API Auths, Refunds, and Voids', () => {
             done(err);
         }
     }).timeout(timeout);
+    let voidAuthId;
     it('should void an authorization', (done) => {
         const amount = randomInt(100, 200);
-        const merchantRefNum = randomStr();
+        const merchantRefNum = randomStr() + '_void';
         try {
-            const authorizationReversal = new authorization_reversal_1.AuthorizationReversal();
+            const authorizationReversal = new void_auth_1.VoidAuth();
             authorizationReversal.setAmount(amount);
             authorizationReversal.setMerchantRefNum(merchantRefNum);
-            const authorization = new authorization_1.Authorization();
-            authorization.setId(authorizationId);
-            authorizationReversal.setAuthorization(authorization);
-            const cardServiceHandler = paysafeAPIClient.getCardServiceHandler();
-            cardServiceHandler.reverseAuth(authorizationReversal).then((authorizationReversalResult) => {
-                chai_1.expect(authorizationReversalResult.getId()).to.not.be.an('undefined');
-                chai_1.expect(authorizationReversalResult.getMerchantRefNum()).to.equal(merchantRefNum);
-                chai_1.expect(authorizationReversalResult.getStatus()).to.equal('COMPLETED');
-                chai_1.expect(authorizationReversalResult.getAmount()).to.equal(amount);
+            paysafeAPIClient.getCardServiceHandler().void(authorizationId, authorizationReversal).then((voidAuthResult) => {
+                chai_1.expect(voidAuthResult.getId()).to.not.be.an('undefined');
+                voidAuthId = voidAuthResult.getId();
+                chai_1.expect(voidAuthResult.getMerchantRefNum()).to.equal(merchantRefNum);
+                chai_1.expect(voidAuthResult.getStatus()).to.equal('COMPLETED');
+                chai_1.expect(voidAuthResult.getAmount()).to.equal(amount);
                 done();
             }).catch((err) => done(new Error(JSON.stringify(err))));
         }
@@ -745,6 +737,82 @@ describe('Paysafe API Auths, Refunds, and Voids', () => {
             done(err);
         }
     }).timeout(timeout);
+    it('should look up a void authorization', (done) => {
+        try {
+            paysafeAPIClient.getCardServiceHandler().getVoid(voidAuthId).then((voidAuthResult) => {
+                chai_1.expect(voidAuthResult.getId()).to.not.be.an('undefined');
+                chai_1.expect(voidAuthResult.getId()).to.equal(voidAuthId);
+                done();
+            }).catch((err) => done(new Error(JSON.stringify(err))));
+        }
+        catch (err) {
+            done(err);
+        }
+    }).timeout(timeout);
+    it('should create a profile along with a card with a billing address, and then be able to charge that card using its permanent card token without having to re-suply the AVS information', (done) => {
+        const merchantRefNum = randomStr() + '_auth';
+        const amount = randomInt(200, 300);
+        const merchantCustomerId = randomStr();
+        const firstName = randomStr();
+        const lastName = randomStr();
+        const street = randomStr();
+        const street2 = randomStr();
+        const city = randomStr();
+        const state = 'ON';
+        const zip = 'A1A 1A1';
+        const country = 'CA';
+        try {
+            const billingAddress = new billing_address_1.BillingAddress();
+            billingAddress.setStreet(street);
+            billingAddress.setStreet2(street2);
+            billingAddress.setCity(city);
+            billingAddress.setState(state);
+            billingAddress.setZip(zip);
+            billingAddress.setCountry(country);
+            const cardExpiry = new card_expiry_1.CardExpiry();
+            cardExpiry.setMonth(expiryMonth);
+            cardExpiry.setYear(expiryYear);
+            const card = new card_2.Card();
+            card.setCardNum(creditCardNumber);
+            card.setCardExpiry(cardExpiry);
+            card.setBillingAddress(billingAddress);
+            const profile = new profile_1.Profile();
+            profile.setMerchantCustomerId(merchantCustomerId);
+            profile.setLocale('en_US');
+            profile.setFirstName(firstName);
+            profile.setLastName(lastName);
+            profile.setCard(card);
+            // console.log(profile);
+            paysafeAPIClient.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
+                // console.log('PROFILE', profileResult);
+                chai_1.expect(profileResult.getId()).to.not.be.an('undefined');
+                chai_1.expect(profileResult.getStatus()).to.equal('ACTIVE');
+                chai_1.expect(profileResult.getCards()).to.not.be.an('undefined');
+                const cards = profileResult.getCards();
+                chai_1.expect(cards).to.be.an('array').of.length(1);
+                chai_1.expect(cards[0].getPaymentToken()).to.not.be.an('undefined');
+                const authorization = new authorization_1.Authorization();
+                authorization.setAmount(amount);
+                authorization.setCurrencyCode('CAD');
+                authorization.setMerchantRefNum(merchantRefNum);
+                authorization.setSettleWithAuth(true);
+                authorization.setRecurring('INITIAL');
+                const card2 = new card_1.Card();
+                card2.setPaymentToken(cards[0].getPaymentToken());
+                authorization.setCard(card2);
+                // console.log(authorization);
+                return paysafeAPIClient.getCardServiceHandler().authorize(authorization);
+            }).then((authorizationResult) => {
+                // console.log('AUTHORIZATION', authorizationResult);
+                chai_1.expect(authorizationResult.getId()).to.not.be.an('undefined');
+                chai_1.expect(authorizationResult.getAmount()).to.equal(amount);
+                done();
+            }).catch(done);
+        }
+        catch (err) {
+            done(err);
+        }
+    }).timeout(timeout * 2);
 });
 function getSingleUseToken(cb) {
     const headers = {

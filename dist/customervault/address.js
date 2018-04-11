@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const request_object_1 = require("../request-object");
-const profile_1 = require("./profile");
 class Address extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
@@ -35,9 +34,6 @@ class Address extends request_object_1.RequestObject {
         if (typeof resp.phone !== 'undefined') {
             this.phone = resp.phone;
         }
-        if (typeof resp.profile !== 'undefined') {
-            this.profile = new profile_1.Profile(resp.profile);
-        }
         if (typeof resp.status !== 'undefined') {
             this.status = resp.status;
         }
@@ -63,9 +59,6 @@ class Address extends request_object_1.RequestObject {
     getRecipientName() { return this.recipientName; }
     setPhone(phone) { this.phone = phone; }
     getPhone() { return this.phone; }
-    setProfile(profile) { this.profile = profile; }
-    getProfile() { return this.profile; }
-    deleteProfile() { delete this.profile; }
     setStatus(status) { this.status = status; }
     getStatus() { return this.status; }
     setDefaultShippingAddressIndicator(defaultShippingAddressIndicator) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }

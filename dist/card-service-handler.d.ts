@@ -1,13 +1,13 @@
 import { Authorization } from './cardpayments/authorization';
-import { AuthorizationReversal } from './cardpayments/authorization-reversal';
-import { Pagination } from './cardpayments/pagination';
+import { Pagination } from './cardpayments/lib/pagination';
 import { Refund } from './cardpayments/refund';
 import { Settlement } from './cardpayments/settlement';
 import { Verification } from './cardpayments/verification';
+import { VoidAuth } from './cardpayments/void-auth';
 import { PaysafeAPIClient } from './paysafe-api-client';
 export declare class CardServiceHandler {
     private paysafeApiClient;
-    constructor(p: PaysafeAPIClient);
+    constructor(paysafeApiClient: PaysafeAPIClient);
     /** verifies that the service is up and accessible */
     monitor(): Promise<any>;
     /**
@@ -19,47 +19,47 @@ export declare class CardServiceHandler {
      * approve a held authorization
      * @param authorization
      */
-    approveHeldAuth(authorization: Authorization): Promise<Authorization>;
+    approveHeldAuth(authorizationId: string): Promise<Authorization>;
     /**
      * cancel a held authorization
      * @param authorization
      */
-    cancelHeldAuth(authorization: Authorization): Promise<Authorization>;
+    cancelHeldAuth(authorizationId: string): Promise<Authorization>;
     /**
      * reverse an authorization
      * @param authorizationReversal
      */
-    reverseAuth(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal>;
+    void(authorizationId: string, voidAuth: VoidAuth): Promise<VoidAuth>;
     /**
      * settle
      * @param settlement
      */
-    settlement(settlement: Settlement): Promise<Settlement>;
+    settle(authorizationId: string, settlement: Settlement): Promise<Settlement>;
     /**
      * cancel a settlement
      * @param settlement
      */
-    cancelSettlement(settlement: Settlement): Promise<Settlement>;
+    cancelSettlement(settlementId: string): Promise<Settlement>;
     /**
      * refund a credit card
      * @param refund
      */
-    refund(refund: Refund): Promise<Refund>;
+    refund(settlementId: string, refund: Refund): Promise<Refund>;
     /**
      * cancel a refund
      * @param refund
      */
-    cancelRefund(refund: Refund): Promise<Refund>;
+    cancelRefund(refundId: string): Promise<Refund>;
     /**
      * retreive an authorization
      * @param authorization
      */
-    getAuth(authorization: Authorization): Promise<Authorization>;
+    getAuth(authorizationId: string): Promise<Authorization>;
     /**
      * retrieve an authorization reversal
      * @param authorizationReversal
      */
-    getAuthReversal(authorizationReversal: AuthorizationReversal): Promise<AuthorizationReversal>;
+    getVoid(voidAuthId: string): Promise<VoidAuth>;
     /**
      * prepares a query string for searches by merchantRefNum
      * @param merchObj
@@ -73,8 +73,9 @@ export declare class CardServiceHandler {
      * @param pagination
      */
     searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any>;
-    getSettlement(settlement: Settlement): Promise<Settlement>;
-    getRefund(refund: Refund): Promise<Refund>;
+    getSettlement(settlementId: string): Promise<Settlement>;
+    getRefund(refundId: string): Promise<Refund>;
     verify(verification: Verification): Promise<Verification>;
-    getVerification(verification: Verification): Promise<Verification>;
+    getVerification(verificationId: string): Promise<Verification>;
+    private getURI(path);
 }

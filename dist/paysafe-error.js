@@ -13,25 +13,25 @@ class PaysafeError extends Error {
         if (typeof resp.code !== 'undefined') {
             this.code = resp.code;
         }
-        if (typeof resp.links !== 'undefined') {
-            this.links = create_array_1.createArray(resp.links, link_1.Link);
+        if (typeof resp.details !== 'undefined') {
+            this.details = resp.details;
         }
         if (typeof resp.fieldErrors !== 'undefined') {
             this.fieldErrors = create_array_1.createArray(resp.fieldErrors, field_error_1.FieldError);
         }
-        if (typeof resp.details !== 'undefined') {
-            this.details = resp.details;
+        if (typeof resp.links !== 'undefined') {
+            this.links = create_array_1.createArray(resp.links, link_1.Link);
         }
     }
     setCode(code) { this.code = code; }
     getCode() { return this.code; }
     setMessage(message) { this.message = message; }
     getMessage() { return this.message; }
-    setLinks(links) { this.links = links; }
-    getLinks() { return this.links; }
-    setFieldErrors(fieldErrors) { this.fieldErrors = fieldErrors; }
-    getFieldErrors() { return this.fieldErrors; }
     setDetails(details) { this.details = details; }
     getDetails() { return this.details; }
+    setFieldErrors(fieldErrors) { this.fieldErrors = fieldErrors; }
+    getFieldErrors() { return this.fieldErrors; }
+    setLinks(links) { this.links = links; }
+    getLinks() { return this.links; }
 }
 exports.PaysafeError = PaysafeError;

@@ -1,3 +1,9 @@
+const MIN_DAY = 1;
+const MAX_DAY = 31;
+
+const MIN_MONTH = 1;
+const MAX_MONTH = 12;
+
 const MIN_YEAR = 1900;
 
 export class DateOfBirth {
@@ -22,7 +28,7 @@ export class DateOfBirth {
   }
 
   public setDay(day: number): void {
-    if (day < 1 || day > 31) {
+    if (day < MIN_DAY || day > MAX_DAY) {
       throw new Error('invalid day');
     }
     this.day = day;
@@ -30,7 +36,7 @@ export class DateOfBirth {
   public getDay(): number | undefined { return this.day; }
 
   public setMonth(month: number): void {
-    if (month < 1 || month > 12) {
+    if (month < MIN_MONTH || month > MAX_MONTH) {
       throw new Error('invalid month');
     }
     this.month = month;

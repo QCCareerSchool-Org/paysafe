@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
 const request_object_1 = require("../request-object");
-const acquirer_response_1 = require("./acquirer-response");
-const authorization_1 = require("./authorization");
-class AuthorizationReversal extends request_object_1.RequestObject {
+const acquirer_response_1 = require("./lib/acquirer-response");
+class VoidAuth extends request_object_1.RequestObject {
     constructor(resp) {
         super(resp);
         if (!resp) {
@@ -38,12 +37,6 @@ class AuthorizationReversal extends request_object_1.RequestObject {
         if (typeof resp.links !== 'undefined') {
             this.links = create_array_1.createArray(resp.links, link_1.Link);
         }
-        if (typeof resp.voidAuths !== 'undefined') {
-            this.voidAuths = create_array_1.createArray(resp.voidAuths, AuthorizationReversal);
-        }
-        if (typeof resp.authorization !== 'undefined') {
-            this.authorization = new authorization_1.Authorization(resp.authorization);
-        }
     }
     setMerchantRefNum(merchantRefNum) { this.merchantRefNum = merchantRefNum; }
     getMerchantRefNum() { return this.merchantRefNum; }
@@ -63,10 +56,5 @@ class AuthorizationReversal extends request_object_1.RequestObject {
     getAcquirerResponse() { return this.acquirerResponse; }
     setLinks(links) { this.links = links; }
     getLinks() { return this.links; }
-    setVoidAuths(voidAuths) { this.voidAuths = voidAuths; }
-    getVoidAuths() { return this.voidAuths; }
-    setAuthorization(authorization) { this.authorization = authorization; }
-    getAuthorization() { return this.authorization; }
-    deleteAuthorization() { delete this.authorization; }
 }
-exports.AuthorizationReversal = AuthorizationReversal;
+exports.VoidAuth = VoidAuth;

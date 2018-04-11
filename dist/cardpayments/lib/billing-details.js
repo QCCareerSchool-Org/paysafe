@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class BillingDetails {
+    // private useAsShippingAddress?: boolean;
     constructor(resp) {
         if (!resp) {
             return;
@@ -26,9 +27,9 @@ class BillingDetails {
         if (typeof resp.phone !== 'undefined') {
             this.phone = resp.phone;
         }
-        if (typeof resp.useAsShippingAddress !== 'undefined') {
-            this.useAsShippingAddress = resp.useAsShippingAddress;
-        }
+        // if (typeof resp.useAsShippingAddress !== 'undefined') {
+        //   this.useAsShippingAddress = resp.useAsShippingAddress;
+        // }
     }
     setStreet(street) { this.street = street; }
     getStreet() { return this.street; }
@@ -44,7 +45,5 @@ class BillingDetails {
     getCountry() { return this.country; }
     setPhone(phone) { this.phone = phone; }
     getPhone() { return this.phone; }
-    setUseAsShippingAddress(useAsShippingAddress) { this.useAsShippingAddress = useAsShippingAddress; }
-    getUseAsShippingAddress() { return this.useAsShippingAddress; }
 }
 exports.BillingDetails = BillingDetails;

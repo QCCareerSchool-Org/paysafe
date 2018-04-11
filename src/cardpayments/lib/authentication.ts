@@ -1,6 +1,4 @@
-import { RequestObject } from '../request-object';
-
-export class Authentication extends RequestObject {
+export class Authentication {
 
   private eci?: string;
   private cavv?: string;
@@ -10,7 +8,6 @@ export class Authentication extends RequestObject {
   private signatureStatus?: string;
 
   constructor(resp?: Authentication) {
-    super(resp);
     if (!resp) {
       return;
     }

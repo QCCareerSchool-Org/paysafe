@@ -1,13 +1,14 @@
 import { createArray } from '../common/create-array';
 import { Link } from '../common/link';
-import { PaysafeError } from '../paysafe-error';
 import { RequestObject } from '../request-object';
-import { AcquirerResponse } from './acquirer-response';
+
 import { Authorization } from './authorization';
+
+import { AcquirerResponse } from './lib/acquirer-response';
 
 export type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 
-export class AuthorizationReversal extends RequestObject {
+export class VoidAuth extends RequestObject {
 
   private merchantRefNum?: string;
   private amount?: number;
@@ -18,10 +19,8 @@ export class AuthorizationReversal extends RequestObject {
   private riskReasonCode?: string;
   private acquirerResponse?: AcquirerResponse;
   private links?: Link[];
-  private voidAuths?: AuthorizationReversal[];
-  private authorization?: Authorization;
 
-  constructor(resp?: AuthorizationReversal) {
+  constructor(resp?: VoidAuth) {
     super(resp);
     if (!resp) {
       return;
@@ -53,12 +52,6 @@ export class AuthorizationReversal extends RequestObject {
     if (typeof resp.links !== 'undefined') {
       this.links = createArray(resp.links, Link);
     }
-    if (typeof resp.voidAuths !== 'undefined') {
-      this.voidAuths = createArray(resp.voidAuths, AuthorizationReversal);
-    }
-    if (typeof resp.authorization !== 'undefined') {
-      this.authorization = new Authorization(resp.authorization);
-    }
   }
 
   public setMerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
@@ -87,12 +80,5 @@ export class AuthorizationReversal extends RequestObject {
 
   public setLinks(links: Link[]): void { this.links = links; }
   public getLinks(): Link[] | undefined { return this.links; }
-
-  public setVoidAuths(voidAuths: AuthorizationReversal[]): void { this.voidAuths = voidAuths; }
-  public getVoidAuths(): AuthorizationReversal[] | undefined { return this.voidAuths; }
-
-  public setAuthorization(authorization: Authorization): void { this.authorization = authorization; }
-  public getAuthorization(): Authorization | undefined { return this.authorization; }
-  public deleteAuthorization(): void { delete this.authorization; }
 
 }
