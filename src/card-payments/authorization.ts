@@ -10,13 +10,11 @@ import { Authentication } from './lib/authentication';
 import { BillingDetails } from './lib/billing-details';
 import { Card } from './lib/card';
 import { Level2level3 } from './lib/level2level3';
-// import { MasterPass } from './lib/master-pass';
 import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { Recipient } from './lib/recipient';
 import { ShippingDetails } from './lib/shipping-details';
 import { Splitpay } from './lib/splitpay';
-// import { VisaAdditionalAuthData } from './lib/visa-additional-auth-data';
 
 export type recurringType = 'INITIAL' | 'RECURRING';
 export type avsResponseType = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';

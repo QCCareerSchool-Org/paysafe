@@ -1,4 +1,3 @@
-import { createArray } from '../common/create-array';
 import { Request } from './request';
 
 const AMOUNT_MAX = 99999999999;

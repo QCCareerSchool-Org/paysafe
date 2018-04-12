@@ -66,7 +66,6 @@ export abstract class Request {
   public setDupCheck(dupCheck: boolean): void { this.dupCheck = dupCheck; }
   public getDupCheck(): boolean | undefined { return this.dupCheck; }
 
-  public setTxnTime(txnTime: Date): void { this.txnTime = new Date(txnTime); }
   public getTxnTime(): Date | undefined { return this.txnTime; }
 
   public getRiskReasonCode(): number[] | undefined { return this.riskReasonCode; }
