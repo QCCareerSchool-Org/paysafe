@@ -5,7 +5,7 @@ import { Splitpay } from './lib/splitpay';
 const AMOUNT_MAX = 99999999999;
 
 /**
- * abstract parent class of any Card Payments API request
+ * abstract parent class of any Card Payments API request pbject that has an amount and a splitpay
  */
 export abstract class SplitpayRequest extends AmountRequest {
 

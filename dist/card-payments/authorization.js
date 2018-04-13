@@ -8,7 +8,6 @@ const authentication_1 = require("./lib/authentication");
 const billing_details_1 = require("./lib/billing-details");
 const card_1 = require("./lib/card");
 const level2level3_1 = require("./lib/level2level3");
-// import { MasterPass } from './lib/master-pass';
 const merchant_descriptor_1 = require("./lib/merchant-descriptor");
 const profile_1 = require("./lib/profile");
 const recipient_1 = require("./lib/recipient");

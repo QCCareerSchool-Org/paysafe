@@ -2,7 +2,7 @@ import { Link } from '../common/link';
 import { PaysafeError } from '../common/paysafe-error';
 import { AcquirerResponse } from './lib/acquirer-response';
 /**
- * abstract parent class of any Card Payments API request
+ * abstract parent class of any Card Payments API request object
  */
 export declare abstract class Request {
     private id?;
@@ -20,7 +20,6 @@ export declare abstract class Request {
     getMerchantRefNum(): string | undefined;
     setDupCheck(dupCheck: boolean): void;
     getDupCheck(): boolean | undefined;
-    setTxnTime(txnTime: Date): void;
     getTxnTime(): Date | undefined;
     getRiskReasonCode(): number[] | undefined;
     getAcquirerResponse(): AcquirerResponse | undefined;

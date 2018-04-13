@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const card_expiry_1 = require("../common/card-expiry");
 const request_1 = require("./request");
-const billing_address_1 = require("./billing-address");
+const card_expiry_1 = require("../common/card-expiry");
+const billing_address_1 = require("./lib/billing-address");
 class Card extends request_1.Request {
     constructor(resp) {
         super(resp);
@@ -60,13 +60,10 @@ class Card extends request_1.Request {
     getHolderName() { return this.holderName; }
     setCardNum(cardNum) { this.cardNum = cardNum; }
     getCardNum() { return this.cardNum; }
-    setCardBin(cardBin) { this.cardBin = cardBin; }
     getCardBin() { return this.cardBin; }
-    setLastDigits(lastDigits) { this.lastDigits = lastDigits; }
     getLastDigits() { return this.lastDigits; }
     setCardExpiry(cardExpiry) { this.cardExpiry = cardExpiry; }
     getCardExpiry() { return this.cardExpiry; }
-    setCardType(cardType) { this.cardType = cardType; }
     getCardType() { return this.cardType; }
     setBillingAddress(billingAddress) { this.billingAddress = billingAddress; }
     getBillingAddress() { return this.billingAddress; }
@@ -78,7 +75,6 @@ class Card extends request_1.Request {
     getPaymentToken() { return this.paymentToken; }
     setSingleUseToken(singleUseToken) { this.singleUseToken = singleUseToken; }
     getSingleUseToken() { return this.singleUseToken; }
-    setStatus(status) { this.status = status; }
     getStatus() { return this.status; }
 }
 exports.Card = Card;

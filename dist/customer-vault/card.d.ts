@@ -1,8 +1,8 @@
-import { CardExpiry } from '../common/card-expiry';
 import { Request } from './request';
-import { BillingAddress } from './billing-address';
-export declare type CardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
-export declare type StatusType = 'ACTIVE';
+import { CardExpiry } from '../common/card-expiry';
+import { BillingAddress } from './lib/billing-address';
+export declare type cardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
+export declare type statusType = 'ACTIVE';
 export declare class Card extends Request {
     private nickName?;
     private merchantRefNum?;
@@ -27,14 +27,11 @@ export declare class Card extends Request {
     getHolderName(): string | undefined;
     setCardNum(cardNum: string): void;
     getCardNum(): string | undefined;
-    setCardBin(cardBin: string): void;
     getCardBin(): string | undefined;
-    setLastDigits(lastDigits: string): void;
     getLastDigits(): string | undefined;
     setCardExpiry(cardExpiry: CardExpiry): void;
     getCardExpiry(): CardExpiry | undefined;
-    setCardType(cardType: CardType): void;
-    getCardType(): CardType | undefined;
+    getCardType(): cardType | undefined;
     setBillingAddress(billingAddress: BillingAddress): void;
     getBillingAddress(): BillingAddress | undefined;
     setBillingAddressId(billingAddressId: string): void;
@@ -45,6 +42,5 @@ export declare class Card extends Request {
     getPaymentToken(): string | undefined;
     setSingleUseToken(singleUseToken: string): void;
     getSingleUseToken(): string | undefined;
-    setStatus(status: StatusType): void;
-    getStatus(): StatusType | undefined;
+    getStatus(): statusType | undefined;
 }

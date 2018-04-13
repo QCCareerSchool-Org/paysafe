@@ -6,7 +6,7 @@ const paysafe_error_1 = require("../common/paysafe-error");
 const acquirer_response_1 = require("./lib/acquirer-response");
 const MERCHANT_REF_NUM_MAX_LENGTH = 255;
 /**
- * abstract parent class of any Card Payments API request
+ * abstract parent class of any Card Payments API request object
  */
 class Request {
     constructor(resp) {
@@ -51,7 +51,6 @@ class Request {
     getMerchantRefNum() { return this.merchantRefNum; }
     setDupCheck(dupCheck) { this.dupCheck = dupCheck; }
     getDupCheck() { return this.dupCheck; }
-    setTxnTime(txnTime) { this.txnTime = new Date(txnTime); }
     getTxnTime() { return this.txnTime; }
     getRiskReasonCode() { return this.riskReasonCode; }
     getAcquirerResponse() { return this.acquirerResponse; }

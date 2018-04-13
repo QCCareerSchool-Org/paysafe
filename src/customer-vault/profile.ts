@@ -48,10 +48,14 @@ export class Profile extends Request {
   private addresses?: Address[];
   private card?: Card;
   private cards?: Card[];
-  private achbankaccounts?: ACHBankAccount | ACHBankAccount[];
-  private bacsbankaccounts?: BACSBankAccount | BACSBankAccount[];
-  private eftbankaccounts?: EFTBankAccount | EFTBankAccount[];
-  private sepabankaccounts?: SEPABankAccount | SEPABankAccount[];
+  private achBankAccount?: ACHBankAccount;
+  private achBankAccounts?: ACHBankAccount[];
+  private bacsBankAccount?: BACSBankAccount;
+  private bacsBankAccounts?: BACSBankAccount[];
+  private eftBankAccount?: EFTBankAccount;
+  private eftBankAccounts?: EFTBankAccount[];
+  private sepaBankAccount?: SEPABankAccount;
+  private sepaBankAccounts?: SEPABankAccount[];
 
   constructor(resp?: Profile) {
     super(resp);
@@ -107,35 +111,46 @@ export class Profile extends Request {
       this.card = new Card(resp.card);
     }
     if (typeof resp.cards !== 'undefined') {
-        this.cards = createArray(resp.cards, Card);
-    }
-    if (typeof resp.achbankaccounts !== 'undefined') {
-      if (resp.achbankaccounts instanceof Array) {
-        this.achbankaccounts = createArray(resp.achbankaccounts, ACHBankAccount);
-      } else {
-        this.achbankaccounts = resp.achbankaccounts;
+      if (!Array.isArray(resp.cards)) {
+        throw new Error('cards should be an array');
       }
+      this.cards = createArray(resp.cards, Card);
     }
-    if (typeof resp.eftbankaccounts !== 'undefined') {
-      if (resp.eftbankaccounts instanceof Array) {
-        this.eftbankaccounts = createArray(resp.eftbankaccounts, EFTBankAccount);
-      } else {
-        this.eftbankaccounts = resp.eftbankaccounts;
-      }
+    if (typeof resp.achBankAccount !== 'undefined') {
+        this.achBankAccount = resp.achBankAccount;
     }
-    if (typeof resp.bacsbankaccounts !== 'undefined') {
-      if (resp.bacsbankaccounts instanceof Array) {
-        this.bacsbankaccounts = createArray(resp.bacsbankaccounts, BACSBankAccount);
-      } else {
-        this.bacsbankaccounts = resp.bacsbankaccounts;
+    if (typeof resp.achBankAccounts !== 'undefined') {
+      if (!Array.isArray(resp.achBankAccounts)) {
+        throw new Error('achBankAccounts should be an array');
       }
+      this.achBankAccounts = createArray(resp.achBankAccounts, ACHBankAccount);
     }
-    if (typeof resp.sepabankaccounts !== 'undefined') {
-      if (resp.sepabankaccounts instanceof Array) {
-        this.sepabankaccounts = createArray(resp.sepabankaccounts, SEPABankAccount);
-      } else {
-        this.sepabankaccounts = resp.sepabankaccounts;
+    if (typeof resp.eftBankAccount !== 'undefined') {
+      this.eftBankAccount = resp.eftBankAccount;
+    }
+    if (typeof resp.eftBankAccounts !== 'undefined') {
+      if (!Array.isArray(resp.eftBankAccounts)) {
+        throw new Error('eftBankAccounts should be an array');
       }
+      this.eftBankAccounts = createArray(resp.eftBankAccounts, EFTBankAccount);
+    }
+    if (typeof resp.bacsBankAccount !== 'undefined') {
+      this.bacsBankAccount = resp.bacsBankAccount;
+    }
+    if (typeof resp.bacsBankAccounts !== 'undefined') {
+      if (!Array.isArray(resp.bacsBankAccounts)) {
+        throw new Error('bacsBankAccounts should be an array');
+      }
+      this.bacsBankAccounts = createArray(resp.bacsBankAccounts, BACSBankAccount);
+    }
+    if (typeof resp.sepaBankAccount !== 'undefined') {
+      this.sepaBankAccount = resp.sepaBankAccount;
+    }
+    if (typeof resp.sepaBankAccounts !== 'undefined') {
+      if (!Array.isArray(resp.sepaBankAccounts)) {
+        throw new Error('sepaBankAccounts should be an array');
+      }
+      this.sepaBankAccounts = createArray(resp.sepaBankAccounts, SEPABankAccount);
     }
   }
 
@@ -282,16 +297,24 @@ export class Profile extends Request {
   }
   public getCards(): Card[] | undefined { return this.cards; }
 
-  public setACHBankAccounts(achbankaccounts: ACHBankAccount | ACHBankAccount[]): void { this.achbankaccounts = achbankaccounts; }
-  public getACHBankAccounts(): ACHBankAccount | ACHBankAccount[] | undefined { return this.achbankaccounts; }
+  public setACHBankAccount(achBankAccount: ACHBankAccount): void { this.achBankAccount = achBankAccount; }
+  public getACHBankAccount(): ACHBankAccount | undefined { return this.achBankAccount; }
 
-  public setBACSBankAccounts(bacsbankaccounts: BACSBankAccount | BACSBankAccount[]): void { this.bacsbankaccounts = bacsbankaccounts; }
-  public getBACSBankAccounts(): BACSBankAccount | BACSBankAccount[] | undefined { return this.bacsbankaccounts; }
+  public getACHBankAccounts(): ACHBankAccount[] | undefined { return this.achBankAccounts; }
 
-  public setEFTBankAccounts(eftbankaccounts: EFTBankAccount | EFTBankAccount[]): void { this.eftbankaccounts = eftbankaccounts; }
-  public getEFTBankAccounts(): EFTBankAccount | EFTBankAccount[] | undefined { return this.eftbankaccounts; }
+  public setBACSBankAccount(bacsBankAccount: BACSBankAccount): void { this.bacsBankAccount = bacsBankAccount; }
+  public getBACSBankAccount(): BACSBankAccount | undefined { return this.bacsBankAccount; }
 
-  public setSEPABankAccounts(sepabankaccounts: SEPABankAccount | SEPABankAccount[]): void { this.sepabankaccounts = sepabankaccounts; }
-  public getSEPABankAccounts(): SEPABankAccount | SEPABankAccount[] | undefined { return this.sepabankaccounts; }
+  public getBACSBankAccounts(): BACSBankAccount[] | undefined { return this.bacsBankAccounts; }
+
+  public setEFTBankAccount(eftBankAccount: EFTBankAccount): void { this.eftBankAccount = eftBankAccount; }
+  public getEFTBankAccount(): EFTBankAccount | undefined { return this.eftBankAccount; }
+
+  public getEFTBankAccounts(): EFTBankAccount[] | undefined { return this.eftBankAccounts; }
+
+  public setSEPABankAccount(sepaBankAccount: SEPABankAccount): void { this.sepaBankAccount = sepaBankAccount; }
+  public getSEPABankAccount(): SEPABankAccount | undefined { return this.sepaBankAccount; }
+
+  public getSEPABankAccounts(): SEPABankAccount[] | undefined { return this.sepaBankAccounts; }
 
 }

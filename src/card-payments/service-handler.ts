@@ -443,6 +443,7 @@ export class ServiceHandler {
       const path = this.getPath(paths.VERIFICATION);
 
       this.paysafe.post(path, verification).then((response) => {
+
         if (response) {
           return resolve(new Verification(response));
         }

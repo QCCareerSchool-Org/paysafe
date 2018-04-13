@@ -6,7 +6,7 @@ import { AcquirerResponse } from './lib/acquirer-response';
 const MERCHANT_REF_NUM_MAX_LENGTH = 255;
 
 /**
- * abstract parent class of any Card Payments API request
+ * abstract parent class of any Card Payments API request object
  */
 export abstract class Request {
 

@@ -1,6 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const request_1 = require("./request");
+const NICK_NAME_MAX_LENGTH = 50;
+const STREET_MAX_LENGTH = 50;
+const STREET2_MAX_LENGTH = 50;
+const CITY_MAX_LENGTH = 40;
+const STATE_MAX_LENGTH = 40;
+const ZIP_MAX_LENGTH = 10;
+const COUNTRY_MAX_LENGTH = 2;
+const RECIPIENT_NAME_MAX_LENGTH = 255;
+const PHONE_MAX_LENGTH = 40;
 class Address extends request_1.Request {
     constructor(resp) {
         super(resp);
@@ -41,25 +50,69 @@ class Address extends request_1.Request {
             this.defaultShippingAddressIndicator = resp.defaultShippingAddressIndicator;
         }
     }
-    setNickName(nickName) { this.nickName = nickName; }
+    setNickName(nickName) {
+        if (nickName.length > NICK_NAME_MAX_LENGTH) {
+            throw new Error('invalid nickName');
+        }
+        this.nickName = nickName;
+    }
     getNickName() { return this.nickName; }
-    setStreet(street) { this.street = street; }
+    setStreet(street) {
+        if (street.length > STREET_MAX_LENGTH) {
+            throw new Error('invalid street');
+        }
+        this.street = street;
+    }
     getStreet() { return this.street; }
-    setStreet2(street2) { this.street2 = street2; }
+    setStreet2(street2) {
+        if (street2.length > STREET2_MAX_LENGTH) {
+            throw new Error('invalid street2');
+        }
+        this.street2 = street2;
+    }
     getStreet2() { return this.street2; }
-    setCity(city) { this.city = city; }
+    setCity(city) {
+        if (city.length > CITY_MAX_LENGTH) {
+            throw new Error('invalid city');
+        }
+        this.city = city;
+    }
     getCity() { return this.city; }
-    setState(state) { this.state = state; }
+    setState(state) {
+        if (state.length > STATE_MAX_LENGTH) {
+            throw new Error('invalid state');
+        }
+        this.state = state;
+    }
     getState() { return this.state; }
-    setZip(zip) { this.zip = zip; }
+    setZip(zip) {
+        if (zip.length > ZIP_MAX_LENGTH) {
+            throw new Error('invalid zip');
+        }
+        this.zip = zip;
+    }
     getZip() { return this.zip; }
-    setCountry(country) { this.country = country; }
+    setCountry(country) {
+        if (country.length > COUNTRY_MAX_LENGTH) {
+            throw new Error('invalid country');
+        }
+        this.country = country;
+    }
     getCountry() { return this.country; }
-    setRecipientName(recipientName) { this.recipientName = recipientName; }
+    setRecipientName(recipientName) {
+        if (recipientName.length > RECIPIENT_NAME_MAX_LENGTH) {
+            throw new Error('invalid recipientName');
+        }
+        this.recipientName = recipientName;
+    }
     getRecipientName() { return this.recipientName; }
-    setPhone(phone) { this.phone = phone; }
+    setPhone(phone) {
+        if (phone.length > PHONE_MAX_LENGTH) {
+            throw new Error('invalid phone');
+        }
+        this.phone = phone;
+    }
     getPhone() { return this.phone; }
-    setStatus(status) { this.status = status; }
     getStatus() { return this.status; }
     setDefaultShippingAddressIndicator(defaultShippingAddressIndicator) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
     getDefaultShippingAddressIndicator() { return this.defaultShippingAddressIndicator; }

@@ -1,6 +1,16 @@
 import { Request } from './request';
 
-import { Profile } from './profile';
+const NICK_NAME_MAX_LENGTH = 50;
+const STREET_MAX_LENGTH = 50;
+const STREET2_MAX_LENGTH = 50;
+const CITY_MAX_LENGTH = 40;
+const STATE_MAX_LENGTH = 40;
+const ZIP_MAX_LENGTH = 10;
+const COUNTRY_MAX_LENGTH = 2;
+const RECIPIENT_NAME_MAX_LENGTH = 255;
+const PHONE_MAX_LENGTH = 40;
+
+export type statusType = 'ACTIVE';
 
 export class Address extends Request {
 
@@ -13,7 +23,7 @@ export class Address extends Request {
   private country?: string;
   private recipientName?: string;
   private phone?: string;
-  private status?: string;
+  private status?: statusType;
   private defaultShippingAddressIndicator?: boolean;
 
   constructor(resp?: Address) {
@@ -56,35 +66,79 @@ export class Address extends Request {
     }
   }
 
-  public setNickName(nickName: string) { this.nickName = nickName; }
+  public setNickName(nickName: string) {
+    if (nickName.length > NICK_NAME_MAX_LENGTH) {
+      throw new Error('invalid nickName');
+    }
+    this.nickName = nickName;
+  }
   public getNickName(): string | undefined { return this.nickName; }
 
-  public setStreet(street: string) { this.street = street; }
+  public setStreet(street: string) {
+    if (street.length > STREET_MAX_LENGTH) {
+      throw new Error('invalid street');
+    }
+    this.street = street;
+  }
   public getStreet(): string | undefined { return this.street; }
 
-  public setStreet2(street2: string) { this.street2 = street2; }
+  public setStreet2(street2: string) {
+    if (street2.length > STREET2_MAX_LENGTH) {
+      throw new Error('invalid street2');
+    }
+    this.street2 = street2;
+  }
   public getStreet2(): string | undefined { return this.street2; }
 
-  public setCity(city: string) { this.city = city; }
+  public setCity(city: string) {
+    if (city.length > CITY_MAX_LENGTH) {
+      throw new Error('invalid city');
+    }
+    this.city = city;
+  }
   public getCity(): string | undefined { return this.city; }
 
-  public setState(state: string) { this.state = state; }
+  public setState(state: string) {
+    if (state.length > STATE_MAX_LENGTH) {
+      throw new Error('invalid state');
+    }
+    this.state = state;
+  }
   public getState(): string | undefined { return this.state; }
 
-  public setZip(zip: string) { this.zip = zip; }
+  public setZip(zip: string) {
+    if (zip.length > ZIP_MAX_LENGTH) {
+      throw new Error('invalid zip');
+    }
+    this.zip = zip;
+  }
   public getZip(): string | undefined { return this.zip; }
 
-  public setCountry(country: string) { this.country = country; }
+  public setCountry(country: string) {
+    if (country.length > COUNTRY_MAX_LENGTH) {
+      throw new Error('invalid country');
+    }
+    this.country = country;
+  }
   public getCountry(): string | undefined { return this.country; }
 
-  public setRecipientName(recipientName: string) { this.recipientName = recipientName; }
+  public setRecipientName(recipientName: string) {
+    if (recipientName.length > RECIPIENT_NAME_MAX_LENGTH) {
+      throw new Error('invalid recipientName');
+    }
+    this.recipientName = recipientName;
+  }
   public getRecipientName(): string | undefined { return this.recipientName; }
 
-  public setPhone(phone: string) { this.phone = phone; }
+  public setPhone(phone: string) {
+    if (phone.length > PHONE_MAX_LENGTH) {
+      throw new Error('invalid phone');
+    }
+    this.phone = phone;
+  }
   public getPhone(): string | undefined { return this.phone; }
 
-  public setStatus(status: string) { this.status = status; }
-  public getStatus(): string | undefined { return this.status; }
+  public getStatus(): statusType | undefined { return this.status; }
 
   public setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
   public getDefaultShippingAddressIndicator(): boolean | undefined { return this.defaultShippingAddressIndicator; }

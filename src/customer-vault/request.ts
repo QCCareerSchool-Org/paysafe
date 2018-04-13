@@ -3,12 +3,11 @@ import { PaysafeError } from '../common/paysafe-error';
 const ID_MAX_LENGTH = 36;
 
 /**
- * parent object of any object that can be sent as a request body
+ * abstract parent class of any Customer Vault API request object
  */
 export abstract class Request {
 
   private id?: string;
-  private error?: PaysafeError;
 
   constructor(resp?: Request) {
     if (!resp) {
@@ -17,16 +16,8 @@ export abstract class Request {
     if (typeof resp.id !== 'undefined') {
       this.id = resp.id;
     }
-    if (typeof resp.error !== 'undefined') {
-      this.error = new PaysafeError(resp.error);
-    }
   }
 
-  // public setId(id: string): void { if (id.length > ID_MAX_LENGTH) { throw new Error('invalid id'); } this.id = id; }
   public getId(): string | undefined { return this.id; }
-  // public deleteId(): void { delete this.id; }
-
-  // public setError(error: PaysafeError): void { this.error = error; }
-  public getError(): PaysafeError | undefined { return this.error; }
 
 }

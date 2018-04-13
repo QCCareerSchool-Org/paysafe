@@ -8,7 +8,8 @@
         "quotemark": [ true, "single" ],
         "object-literal-sort-keys": false,
         "max-line-length": false,
-        "no-magic-numbers": [true, -1, 0, 1]
+        "no-magic-numbers": [true, -1, 0, 1],
+        "space-before-function-paren": [true, {"anonymous": "always", "named": "never", "asyncArrow": "always"}]
     },
     "rulesDirectory": []
 }

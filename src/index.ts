@@ -27,7 +27,7 @@ export class Paysafe {
   private customerServiceHandler?: CustomerServiceHandler;
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
-  private maxSockets = 10;
+  private maxSockets = 40;
   private timeout = 60000; // 60 seconds
   private baseRequest = request.defaults({
     pool: { maxSockets: this.maxSockets },
@@ -108,8 +108,9 @@ export class Paysafe {
     }
 
     return new Promise((resolve, reject) => {
-
+      debug(options);
       this.baseRequest(options, (err, response, body) => {
+        debug(body);
         const CLIENT_ERROR = 400;
         const SERVER_ERROR = 500;
         if (err) {
@@ -121,7 +122,6 @@ export class Paysafe {
         } else {
           try {
             body = (typeof body === 'string') ? JSON.parse(body) : body;
-            debug(body);
             if (typeof body.error !== 'undefined') { // the entire response is an error
               return reject(new PaysafeError(body.error));
             }
@@ -135,7 +135,7 @@ export class Paysafe {
   }
 
   private getHost() {
-    return this.environment === 'LIVE' ? 'https://api.test.paysafe.com' : 'https://api.paysafe.com';
+    return this.environment === 'LIVE' ? 'https://api.paysafe.com' : 'https://api.test.paysafe.com';
   }
 
 }

@@ -18,7 +18,7 @@ class Paysafe {
         this.apiPassword = apiPassword;
         this.environment = environment;
         this.accountNumber = accountNumber;
-        this.maxSockets = 10;
+        this.maxSockets = 40;
         this.timeout = 60000; // 60 seconds
         this.baseRequest = request.defaults({
             pool: { maxSockets: this.maxSockets },
@@ -85,7 +85,9 @@ class Paysafe {
             options.body = requestObject;
         }
         return new Promise((resolve, reject) => {
+            debug(options);
             this.baseRequest(options, (err, response, body) => {
+                debug(body);
                 const CLIENT_ERROR = 400;
                 const SERVER_ERROR = 500;
                 if (err) {
@@ -100,7 +102,6 @@ class Paysafe {
                 else {
                     try {
                         body = (typeof body === 'string') ? JSON.parse(body) : body;
-                        debug(body);
                         if (typeof body.error !== 'undefined') { // the entire response is an error
                             return reject(new paysafe_error_1.PaysafeError(body.error));
                         }
@@ -114,7 +115,7 @@ class Paysafe {
         });
     }
     getHost() {
-        return this.environment === 'LIVE' ? 'https://api.test.paysafe.com' : 'https://api.paysafe.com';
+        return this.environment === 'LIVE' ? 'https://api.paysafe.com' : 'https://api.test.paysafe.com';
     }
 }
 exports.Paysafe = Paysafe;

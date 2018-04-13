@@ -1,3 +1,11 @@
+const NICK_NAME_MAX_LENGTH = 50;
+const STREET_MAX_LENGTH = 50;
+const STREET2_MAX_LENGTH = 50;
+const CITY_MAX_LENGTH = 40;
+const STATE_MAX_LENGTH = 40;
+const ZIP_MAX_LENGTH = 10;
+const COUNTRY_MAX_LENGTH = 2;
+
 export class BillingAddress {
 
   private nickName?: string;

@@ -1,78 +1,71 @@
-import { PaysafeError } from '../common/paysafe-error';
-import { BACSBankAccount } from './bacs-bank-account';
-import { Profile } from './profile';
-import { SEPABankAccount } from './sepa-bank-account';
+import { Request } from './request';
 
-export class Mandate {
+const REFERENCE_MAX_LENGTH = 35; // 10 for BACS, 35 for SEPA
+const PAYMENT_TOKEN_MAX_LENGTH = 50;
 
-  private id?: string;
+export type statusType = 'INITIAL' | 'PENDING' | 'DECLINED' | 'BATCHED' | 'ACTIVE' | 'CANCELLED' | 'REJECTED' | 'DISPUTED' | 'INACTIVE';
+export class Mandate extends Request {
+
   private reference?: string;
   private bankAccountId?: string;
-  private statusChangeDate?: string;
+  private status?: statusType;
+  private paymentToken?: string;
+  private statusChangeDate?: Date;
   private statusReasonCode?: string;
   private statusReason?: string;
-  private paymentToken?: string;
-  private error?: PaysafeError;
-  private status?: string;
-  private profiles?: Profile;
-  private sepabankaccounts?: SEPABankAccount;
-  private bacsbankaccounts?: BACSBankAccount;
 
   constructor(resp?: Mandate) {
-    if (!resp)
+    super(resp);
+    if (!resp) {
       return;
-    this.id = resp.id;
-    this.reference = resp.reference;
-    this.bankAccountId = resp.bankAccountId;
-    this.statusChangeDate = resp.statusChangeDate;
-    this.statusReasonCode = resp.statusReasonCode;
-    this.statusReason = resp.statusReason;
-    this.paymentToken = resp.paymentToken;
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
-    this.status = resp.status;
-    if (resp.profiles)
-      this.profiles = new Profile(resp.profiles);
-    if (resp.sepabankaccounts)
-      this.sepabankaccounts = new SEPABankAccount(resp.sepabankaccounts);
-    if (resp.bacsbankaccounts)
-      this.bacsbankaccounts = new BACSBankAccount(resp.bacsbankaccounts);
+    }
+    if (typeof resp.reference !== 'undefined') {
+      this.reference = resp.reference;
+    }
+    if (typeof resp.bankAccountId !== 'undefined') {
+      this.bankAccountId = resp.bankAccountId;
+    }
+    if (typeof resp.status !== 'undefined') {
+      this.status = resp.status;
+    }
+    if (typeof resp.paymentToken !== 'undefined') {
+      this.paymentToken = resp.paymentToken;
+    }
+    if (typeof resp.statusChangeDate !== 'undefined') {
+      this.statusChangeDate = new Date(resp.statusChangeDate);
+    }
+    if (typeof resp.statusReasonCode !== 'undefined') {
+      this.statusReasonCode = resp.statusReasonCode;
+    }
+    if (typeof resp.statusReason !== 'undefined') {
+      this.statusReason = resp.statusReason;
+    }
   }
 
-  setId(id: string): void { this.id = id; }
-  getId() { return this.id; }
+  public setReference(reference: string): void {
+    if (reference.length > REFERENCE_MAX_LENGTH) {
+      throw new Error('invalid reference');
+    }
+    this.reference = reference;
+  }
+  public getReference(): string | undefined { return this.reference; }
 
-  setreference(reference: string): void { this.reference = reference; }
-  getreference() { return this.reference; }
+  public getBankAccountId(): string | undefined { return this.bankAccountId; }
 
-  setbankAccountId(bankAccountId: string): void { this.bankAccountId = bankAccountId; }
-  getbankAccountId() { return this.bankAccountId; }
+  public getStatus(): statusType | undefined { return this.status; }
 
-  setStatus(status: string): void { this.status = status; }
-  getStatus() { return this.status; }
+  public getStatusChangeDate(): Date | undefined { return this.statusChangeDate; }
 
-  setstatusChangeDate(statusChangeDate: string): void { this.statusChangeDate = statusChangeDate; }
-  getstatusChangeDate() { return this.statusChangeDate; }
+  public getStatusReasonCode(): string | undefined { return this.statusReasonCode; }
 
-  setstatusReasonCode(statusReasonCode: string): void { this.statusReasonCode = statusReasonCode; }
-  getstatusReasonCode() { return this.statusReasonCode; }
+  public getStatusReason(): string | undefined { return this.statusReason; }
 
-  setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
-  getstatusReason() { return this.statusReason; }
-
-  setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
-  getpaymentToken() { return this.paymentToken; }
-
-  setError(error: PaysafeError): void { this.error = error; }
-  getError() { return this.error; }
-
-  setprofiles(profiles: Profile): void { this.profiles = profiles; }
-  getprofiles() { return this.profiles; }
-
-  setsepabankaccounts(sepabankaccounts: SEPABankAccount): void { this.sepabankaccounts = sepabankaccounts; }
-  getsepabankaccounts() { return this.sepabankaccounts; }
-
-  setbacsbankaccounts(bacsbankaccounts: BACSBankAccount): void { this.bacsbankaccounts = bacsbankaccounts; }
-  getbacsbankaccounts() { return this.bacsbankaccounts; }
+  public setPaymentToken(paymentToken: string): void {
+    if (paymentToken.length > PAYMENT_TOKEN_MAX_LENGTH) {
+      throw new Error('invalid paymentToken');
+    }
+    this.paymentToken = paymentToken;
+  }
+  public getPaymentToken(): string | undefined { return this.paymentToken; }
 
 }

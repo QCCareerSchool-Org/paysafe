@@ -19,10 +19,14 @@ import { BillingDetails } from './card-payments/lib/billing-details';
 import { Card } from './card-payments/lib/card';
 import { MerchantDescriptor } from './card-payments/lib/merchant-descriptor';
 
+import { ACHBankAccount } from './customer-vault/ach-bank-account';
 import { Address } from './customer-vault/address';
-import { BillingAddress } from './customer-vault/billing-address';
+import { BACSBankAccount } from './customer-vault/bacs-bank-account';
 import { Card as CustomerVaultCard } from './customer-vault/card';
 import { Profile } from './customer-vault/profile';
+
+import { BillingAddress } from './customer-vault/lib/billing-address';
+import { Mandate } from './customer-vault/mandate';
 
 dotenv.config();
 
@@ -49,11 +53,11 @@ const apiPassword = process.env.API_PASSWORD;
 if (typeof process.env.ACCOUNT_NUMBER === 'undefined') {
   throw new Error('ACCOUNT_NUMBER is undefined');
 }
-const accountNumber = process.env.ACCOUNT_NUMBER;
+const paysafeAccountNumber = process.env.ACCOUNT_NUMBER;
 
 const debug = Debug('paysafe-testing');
 
-const paysafe = new Paysafe(apiKey, apiPassword, 'TEST', accountNumber);
+const paysafe = new Paysafe(apiKey, apiPassword, 'TEST', paysafeAccountNumber);
 
 const rand = Math.random();
 // tslint:disable-next-line:no-magic-numbers
@@ -64,8 +68,6 @@ const expiryYear = new Date().getFullYear() + 1;
 const timeout = 60000; // 60 seconds
 
 /* tslint:disable:no-magic-numbers */
-
-let profileId: string;
 
 describe('Card Payments', () => {
 
@@ -80,214 +82,11 @@ describe('Card Payments', () => {
 
 });
 
-describe('Customer Vault', () => {
-
-  it('should be up and running', (done) => {
-
-    paysafe.getCustomerServiceHandler().monitor().then((result) => {
-      expect(result).to.have.property('status').that.equals('READY');
-      done();
-    }).catch(done);
-
-  });
-
-});
-
-describe('General Paysafe API', () => {
-
-  it('should create a profile', (done) => {
-    const merchantCustomerId = randomStr();
-    const randLocale = Math.random();
-    const locale = randLocale < 0.333 ? 'en_US' : randLocale < 0.666 ? 'fr_CA' : 'en_GB';
-    const firstName = randomStr();
-    const lastName = randomStr();
-    const gender = Math.random() < 0.5 ? 'M' : 'F';
-    const emailAddress = randomEmail();
-    const phoneNumber = randomStr();
-    const nationality = 'Canadian';
-
-    /*
-      private nationality?: string;
-      private email?: string;
-      private phone?: string;
-      private cellPhone?: string;
-      private paymentToken?: string;
-      private addresses?: Address | Address[];
-      private card?: Card;
-      private cards?: Card[];
-  */
-
-    try {
-      const profile = new Profile();
-      profile.setMerchantCustomerId(merchantCustomerId);
-      profile.setLocale(locale);
-      profile.setFirstName(firstName);
-      profile.setLastName(lastName);
-      profile.setGender(gender);
-      profile.setEmail(emailAddress);
-      profile.setPhone(phoneNumber);
-      profile.setNationality(nationality);
-
-      paysafe.getCustomerServiceHandler().createProfile(profile).then((profileResult: Profile) => {
-        debug(profileResult);
-        expect(profileResult.getId()).to.not.be.an('undefined');
-        expect(profileResult.getMerchantCustomerId()).to.equal(merchantCustomerId);
-        expect(profileResult.getLocale()).to.equal(locale);
-        expect(profileResult.getFirstName()).to.equal(firstName);
-        expect(profileResult.getLastName()).to.equal(lastName);
-        expect(profileResult.getGender()).to.equal(gender);
-        expect(profileResult.getEmail()).to.equal(emailAddress);
-        expect(profileResult.getPhone()).to.equal(phoneNumber);
-        expect(profileResult.getNationality()).to.equal(nationality);
-        profileId = profileResult.getId() as string; // for future tests
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-  }).timeout(timeout);
-
-  it('should get a profile', (done) => {
-
-    try {
-      paysafe.getCustomerServiceHandler().getProfile(profileId).then((profileResult) => {
-        debug(profileResult);
-        expect(profileResult.getId()).to.equal(profileId);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-
-  }).timeout(timeout);
-
-  it('should create a profile with a dateOfBirth', (done) => {
-    const merchantCustomerId = randomStr();
-    const firstName = randomStr();
-    const lastName = randomStr();
-
-    const day = Math.floor(Math.random() * 28) + 1;
-    const month = Math.floor(Math.random() * 12) + 1;
-    const year = Math.floor(Math.random() * 117) + 1900;
-
-    try {
-      const profile = new Profile();
-      profile.setMerchantCustomerId(merchantCustomerId);
-      profile.setLocale('en_US');
-      profile.setFirstName(firstName);
-      profile.setLastName(lastName);
-
-      const dateOfBirth = new DateOfBirth();
-      dateOfBirth.setYear(year);
-      dateOfBirth.setMonth(month);
-      dateOfBirth.setDay(day);
-      profile.setDateOfBirth(dateOfBirth);
-
-      paysafe.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
-        debug(profileResult);
-        expect(profileResult.getFirstName()).to.equal(firstName);
-        expect(profileResult.getLastName()).to.equal(lastName);
-        expect(profileResult.getDateOfBirth()).to.not.be.an('undefined');
-        const dob = profileResult.getDateOfBirth();
-        expect(dob).to.not.be.an('undefined');
-        expect((dob as DateOfBirth)).to.be.an.instanceof(DateOfBirth);
-        expect((dob as DateOfBirth).getYear()).to.not.be.an('undefined');
-        expect((dob as DateOfBirth).getYear()).to.equal(year);
-        expect((dob as DateOfBirth).getMonth()).to.not.be.an('undefined');
-        expect((dob as DateOfBirth).getMonth()).to.equal(month);
-        expect((dob as DateOfBirth).getDay()).to.not.be.an('undefined');
-        expect((dob as DateOfBirth).getDay()).to.equal(day);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-  }).timeout(timeout);
-
-  it('should add an address to an existing profile', (done) => {
-    const nickName = randomStr();
-    const recipientName = randomStr();
-    const street = randomStr();
-    const street2 = randomStr();
-    const city = randomStr();
-    const state = 'ON';
-    const zip = 'K1A 1A1';
-    const country = 'CA';
-    const phoneNumber = randomStr();
-    const defaultShippingIndicator = Math.random() < 0.5;
-
-    try {
-      const address = new Address();
-      address.setNickName(nickName);
-      address.setRecipientName(recipientName);
-      address.setStreet(street);
-      address.setStreet2(street2);
-      address.setCity(city);
-      address.setState(state);
-      address.setZip(zip);
-      address.setCountry(country);
-      address.setPhone(phoneNumber);
-      address.setDefaultShippingAddressIndicator(defaultShippingIndicator);
-
-      let addressId: string;
-
-      paysafe.getCustomerServiceHandler().createAddress(profileId, address).then((addressResult) => {
-        debug(addressResult);
-        expect(addressResult).to.not.be.an('undefined');
-        expect(addressResult).to.be.instanceof(Address);
-        expect(addressResult.getId()).to.not.be.an('undefined');
-        expect(addressResult.getNickName()).to.equal(nickName);
-        expect(addressResult.getRecipientName()).to.equal(recipientName);
-        expect(addressResult.getStreet()).to.equal(street);
-        expect(addressResult.getStreet2()).to.equal(street2);
-        expect(addressResult.getCity()).to.equal(city);
-        expect(addressResult.getState()).to.equal(state);
-        expect(addressResult.getZip()).to.equal(zip);
-        expect(addressResult.getCountry()).to.equal(country);
-        expect(addressResult.getPhone()).to.equal(phoneNumber);
-        expect(addressResult.getDefaultShippingAddressIndicator()).to.equal(defaultShippingIndicator);
-        addressId = addressResult.getId() as string;
-        return paysafe.getCustomerServiceHandler().getProfile(profileId, ['addresses']);
-      }).then((profileResult) => {
-        debug(profileResult);
-        expect(profileResult).to.not.be.an('undefined');
-        expect(profileResult).to.be.instanceof(Profile);
-        expect(profileResult.getAddresses()).to.not.be.an('undefined');
-        expect(profileResult.getAddresses()).to.be.an('array');
-        let found = false;
-        for (const a of profileResult.getAddresses() as Address[]) {
-          expect(a.getId()).to.not.be.an('undefined');
-          if (a.getId() === addressId) { // this is the address we added
-            found = true;
-            expect(a.getNickName()).to.equal(nickName);
-            expect(a.getRecipientName()).to.equal(recipientName);
-            expect(a.getStreet()).to.equal(street);
-            expect(a.getStreet2()).to.equal(street2);
-            expect(a.getCity()).to.equal(city);
-            expect(a.getState()).to.equal(state);
-            expect(a.getZip()).to.equal(zip);
-            expect(a.getCountry()).to.equal(country);
-            expect(a.getPhone()).to.equal(phoneNumber);
-            expect(a.getDefaultShippingAddressIndicator()).to.equal(defaultShippingIndicator);
-          }
-        }
-        expect(found).to.equal(true);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-  }).timeout(timeout);
-
-});
-
-let paymentToken: string;
-
 describe('Paysafe API with Single-Use Tokens', () => {
 
   let singleUseToken: string;
 
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     this.timeout(timeout);
     getSingleUseToken((err, result) => {
       if (err) {
@@ -297,161 +96,6 @@ describe('Paysafe API with Single-Use Tokens', () => {
       done();
     });
   });
-
-  it('should verify a single-use token', (done) => {
-
-    const merchantRefNum = randomStr();
-
-    try {
-
-      const verification = new Verification();
-      verification.setMerchantRefNum(merchantRefNum);
-
-      const card = new Card();
-      card.setPaymentToken(singleUseToken);
-      verification.setCard(card);
-
-      const billingDetails = new BillingDetails();
-      billingDetails.setZip('K1L 6R2');
-      verification.setBillingDetails(billingDetails);
-
-      paysafe.getCardServiceHandler().verify(verification).then((verificationResult) => {
-        debug(verificationResult);
-        expect(verificationResult.getId()).to.not.be.an('undefined');
-        expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-        expect(verificationResult.getStatus()).to.equal('COMPLETED');
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-
-    } catch (err) {
-      done(err);
-    }
-
-  }).timeout(timeout);
-
-  it('should add a card to an existing profile using a single-use token', (done) => {
-
-    try {
-      const card = new CustomerVaultCard();
-      card.setSingleUseToken(singleUseToken);
-
-      let cardId: string;
-
-      paysafe.getCustomerServiceHandler().createCard(profileId, card).then((cardResult) => {
-        debug(cardResult);
-        expect(cardResult).to.not.be.an('undefined');
-        expect(cardResult).to.be.instanceof(CustomerVaultCard);
-        expect(cardResult.getId()).to.not.be.an('undefined');
-        cardId = cardResult.getId() as string;
-        return paysafe.getCustomerServiceHandler().getProfile(profileId, ['cards']);
-      }).then((profileResult) => {
-        debug(profileResult);
-        expect(profileResult).to.not.be.an('undefined');
-        expect(profileResult).to.be.instanceof(Profile);
-        expect(profileResult.getCards()).to.not.be.an('undefined');
-        expect(profileResult.getCards()).to.be.an('array');
-        let found = false;
-        for (const c of profileResult.getCards() as CustomerVaultCard[]) {
-          expect(c.getId()).to.not.be.an('undefined');
-          if (c.getId() === cardId) { // this is the card we added
-            found = true;
-            expect(c.getCardExpiry()).to.not.be.an('undefined');
-            expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-            expect((c.getCardExpiry() as CardExpiry).getMonth()).to.equal(expiryMonth);
-            expect((c.getCardExpiry() as CardExpiry).getYear()).to.equal(expiryYear);
-          }
-        }
-        expect(found).to.equal(true);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-  }).timeout(timeout * 2);
-
-  it('should create a profile along with a card using a single-use token', (done) => {
-    const merchantCustomerId = randomStr();
-    const firstName = randomStr();
-    const lastName = randomStr();
-
-    try {
-      const profile = new Profile();
-      profile.setMerchantCustomerId(merchantCustomerId);
-      profile.setLocale('en_US');
-      profile.setFirstName(firstName);
-      profile.setLastName(lastName);
-
-      const card = new CustomerVaultCard();
-      card.setSingleUseToken(singleUseToken);
-      profile.setCard(card);
-
-      // console.log('REQ 4', profile);
-      paysafe.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
-        debug(profileResult);
-        // console.log('RES 4', profileResult);
-        expect(profileResult.getFirstName()).to.equal(firstName);
-        expect(profileResult.getLastName()).to.equal(lastName);
-        expect(profileResult.getCards()).to.not.be.an('undefined');
-
-        const cards = profileResult.getCards() as CustomerVaultCard[];
-        expect(cards).to.not.be.an('undefined');
-        expect(cards).to.be.an('array').of.length(1);
-        expect(cards[0].getLastDigits()).to.not.be.an('undefined');
-        expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-
-        paymentToken = cards[0].getPaymentToken() as string; // needed for future test
-
-        const expiry = cards[0].getCardExpiry() as CardExpiry;
-        expect(expiry).to.not.be.an('undefined');
-        expect(expiry.getMonth()).to.equal(expiryMonth);
-        expect(expiry.getYear()).to.equal(expiryYear);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-    } catch (err) {
-      done(err);
-    }
-  }).timeout(timeout);
-
-  it('should perform an authorization on a single-use token', (done) => {
-    const merchantRefNum = randomStr();
-    const amount = randomInt(200, 300);
-
-    try {
-      const authorization = new Authorization();
-      authorization.setAmount(amount);
-      authorization.setCurrencyCode('CAD');
-      authorization.setMerchantRefNum(merchantRefNum);
-
-      const card = new Card();
-      card.setPaymentToken(singleUseToken);
-      authorization.setCard(card);
-
-      const billingDetails = new BillingDetails();
-      billingDetails.setZip('K1L 6R2');
-      authorization.setBillingDetails(billingDetails);
-
-      paysafe.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
-        debug(authorizationResult);
-        expect(authorizationResult.getId()).to.not.be.an('undefined');
-        expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-        expect(authorizationResult.getAmount()).to.equal(amount);
-        expect(authorizationResult.getStatus()).to.equal('COMPLETED');
-        expect(authorizationResult.getTxnTime()).to.be.a('Date');
-        const c = authorizationResult.getCard();
-        expect(c).to.not.be.an('undefined');
-        expect((c as Card).getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-        const exp = (c as Card).getCardExpiry();
-        expect(exp).to.not.be.an('undefined');
-        expect((exp as CardExpiry).getMonth()).to.equal(expiryMonth);
-        expect((exp as CardExpiry).getYear()).to.equal(expiryYear);
-        done();
-      }).catch((err) => done(new Error(JSON.stringify(err))));
-
-    } catch (err) {
-      done(err);
-    }
-
-  }).timeout(timeout);
 
   it('should perform an authorization on a single-use token and then create a profile along with that same card', (done) => {
     const merchantRefNum = randomStr();
@@ -854,6 +498,7 @@ describe('Paysafe API Auths, Refunds, and Voids', () => {
 
   let authorizationId: string;
 
+  /*
   it('should charge a card stored in a profile', (done) => {
     const merchantRefNum = randomStr() + '_auth';
     const amount = randomInt(200, 300);
@@ -911,6 +556,7 @@ describe('Paysafe API Auths, Refunds, and Voids', () => {
       done(err);
     }
   }).timeout(timeout);
+*/
 
   let voidAuthId: string;
   it('should void an authorization', (done) => {

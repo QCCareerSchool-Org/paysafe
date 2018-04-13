@@ -1,103 +1,145 @@
+import { Request } from './request';
+
 import { createArray } from '../common/create-array';
-import { Link } from '../common/link';
-import { PaysafeError } from '../common/paysafe-error';
+import { BillingAddress } from './lib/billing-address';
 import { Mandate } from './mandate';
-import { Profile } from './profile';
 
-export class BACSBankAccount {
+const NICK_NAME_MAX_LENGTH = 50;
+const MERCHANT_REF_NUM_MAX_LENGTH = 255;
+const ACCOUNT_NUMBER_LENGTH = 8;
+const ACCOUNT_HOLDER_NAME_MAX_LENGTH = 18;
+const SORT_CODE_LENGTH = 6;
+const BILLING_ADDRESS_ID_MAX_LENGTH = 36;
+const PAYMENT_TOKEN_MAX_LENGTH = 50;
 
-  private id?: string;
+export type statusType = 'ACTIVE' | 'INVALID' | 'INACTIVE';
+
+export class BACSBankAccount extends Request {
+
   private nickName?: string;
   private merchantRefNum?: string;
-  private status?: string;
+  private status?: statusType;
   private statusReason?: string;
   private accountNumber?: string;
   private accountHolderName?: string;
   private sortCode?: string;
-  private billingAddressId?: string;
-  private mandates?: Mandate | Mandate[];
   private lastDigits?: string;
+  private billingAddress?: BillingAddress;
+  private billingAddressId?: string;
   private paymentToken?: string;
-  private mandateReference?: string;
-  private error?: PaysafeError;
-  private profile?: Profile;
-  private links?: Link[];
+  private mandates?: Mandate[];
 
   constructor(resp?: BACSBankAccount) {
-    if (!resp)
+    super(resp);
+    if (!resp) {
       return;
-    this.id = resp.id;
-    this.nickName = resp.nickName;
-    this.merchantRefNum = resp.merchantRefNum;
-    this.status = resp.status;
-    this.statusReason = resp.statusReason;
-    this.accountNumber = resp.accountNumber;
-    this.accountHolderName = resp.accountHolderName;
-    this.sortCode = resp.sortCode;
-    this.billingAddressId = resp.billingAddressId;
-    if (resp.mandates) {
-      if (resp.mandates instanceof Array)
-        this.mandates = createArray(resp.mandates, Mandate);
-      else
-        this.mandates = new Mandate(resp.mandates);
     }
-    this.lastDigits = resp.lastDigits;
-    this.paymentToken = resp.paymentToken;
-    this.mandateReference = resp.mandateReference;
-    if (resp.error)
-      this.error = new PaysafeError(resp.error);
-    if (resp.profile)
-      this.profile = new Profile(resp.profile);
-    if (resp.links)
-      this.links = createArray(resp.links, Link);
+    if (typeof resp.nickName !== 'undefined') {
+      this.nickName = resp.nickName;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
+    }
+    if (typeof resp.status !== 'undefined') {
+      this.status = resp.status;
+    }
+    if (typeof resp.statusReason !== 'undefined') {
+      this.statusReason = resp.statusReason;
+    }
+    if (typeof resp.accountNumber !== 'undefined') {
+      this.accountNumber = resp.accountNumber;
+    }
+    if (typeof resp.accountHolderName !== 'undefined') {
+      this.accountHolderName = resp.accountHolderName;
+    }
+    if (typeof resp.sortCode !== 'undefined') {
+      this.sortCode = resp.sortCode;
+    }
+    if (typeof resp.lastDigits !== 'undefined') {
+      this.lastDigits = resp.lastDigits;
+    }
+    if (typeof resp.billingAddress !== 'undefined') {
+      this.billingAddress = new BillingAddress(resp.billingAddress);
+    }
+    if (typeof resp.billingAddressId !== 'undefined') {
+      this.billingAddressId = resp.billingAddressId;
+    }
+    if (typeof resp.paymentToken !== 'undefined') {
+      this.paymentToken = resp.paymentToken;
+    }
+    if (typeof resp.mandates !== 'undefined') {
+      if (!Array.isArray(resp.mandates)) {
+        throw new Error('mandates should be an array');
+      }
+      this.mandates = createArray(resp.mandates, Mandate);
+    }
   }
 
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
+  public setNickName(nickName: string): void {
+    if (nickName.length > NICK_NAME_MAX_LENGTH) {
+      throw new Error('invalid nickName');
+    }
+    this.nickName = nickName;
+  }
+  public getNickName(): string | undefined { return this.nickName; }
 
-  setnickName(nickName: string): void { this.nickName = nickName; }
-  getnickName(): string | undefined { return this.nickName; }
+  public setMerchantRefNum(merchantRefNum: string): void {
+    if (merchantRefNum.length > MERCHANT_REF_NUM_MAX_LENGTH) {
+      throw new Error('invalid merchantRefNum');
+    }
+    this.merchantRefNum = merchantRefNum;
+  }
+  public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
-  setmerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getmerchantRefNum(): string | undefined { return this.merchantRefNum; }
+  public getStatus(): string | undefined { return this.status; }
 
-  setStatus(status: string): void { this.status = status; }
-  getStatus(): string | undefined { return this.status; }
+  public getStatusReason(): string | undefined { return this.statusReason; }
 
-  setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
-  getstatusReason(): string | undefined { return this.statusReason; }
-  
-  setaccountNumber(accountNumber: string): void { this.accountNumber = accountNumber; }
-  getaccountNumber(): string | undefined { return this.accountNumber; }
+  public setAccountNumber(accountNumber: string): void {
+    if (accountNumber.length !== ACCOUNT_NUMBER_LENGTH) {
+      throw new Error('invalid accountNumber');
+    }
+    this.accountNumber = accountNumber;
+  }
+  public getAccountNumber(): string | undefined { return this.accountNumber; }
 
-  setaccountHolderName(accountHolderName: string): void { this.accountHolderName = accountHolderName; }
-  getaccountHolderName(): string | undefined { return this.accountHolderName; }
-  
-  setsortCode(sortCode: string): void { this.sortCode = sortCode; }
-  getsortCode(): string | undefined { return this.sortCode; }
-  
-  setbillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
-  getbillingAddressId(): string | undefined { return this.billingAddressId; }
-  
-  setmandates(mandates: Mandate | Mandate[]): void { this.mandates = mandates; }
-  getmandates(): Mandate | Mandate[] | undefined { return this.mandates; }
-  
-  setlastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
-  getlastDigits(): string | undefined { return this.lastDigits; }
-  
-  setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
-  getpaymentToken(): string | undefined { return this.paymentToken; }
-  
-  setmandateReference(mandateReference: string): void { this.mandateReference = mandateReference; }
-  getmandateReference(): string | undefined { return this.mandateReference; }
-  
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
-  
-  setProfile(profile: Profile): void { this.profile = profile; }
-  getProfile(): Profile | undefined { return this.profile; }
-  
-  setLinks(links: Link[]): void { this.links = links; }
-  getLinks(): Link[] | undefined { return this.links; }
+  public setAccountHolderName(accountHolderName: string): void {
+    if (accountHolderName.length > ACCOUNT_HOLDER_NAME_MAX_LENGTH) {
+      throw new Error('invalid accountHolderName');
+    }
+    this.accountHolderName = accountHolderName;
+  }
+  public getAccountHolderName(): string | undefined { return this.accountHolderName; }
+
+  public setSortCode(sortCode: string): void {
+    if (sortCode.length !== SORT_CODE_LENGTH) {
+      throw new Error('invalid sortCode');
+    }
+    this.sortCode = sortCode;
+  }
+  public getSortCode(): string | undefined { return this.sortCode; }
+
+  public setBillingAddress(billingAddress: BillingAddress): void { this.billingAddress = billingAddress; }
+  public getBillingAddress(): BillingAddress | undefined { return this.billingAddress; }
+
+  public setBillingAddressId(billingAddressId: string): void {
+    if (billingAddressId.length > BILLING_ADDRESS_ID_MAX_LENGTH) {
+      throw new Error('invalid billingAddressId');
+    }
+    this.billingAddressId = billingAddressId;
+  }
+  public getBillingAddressId(): string | undefined { return this.billingAddressId; }
+
+  public getMandates(): Mandate[] | undefined { return this.mandates; }
+
+  public getLastDigits(): string | undefined { return this.lastDigits; }
+
+  public setPaymentToken(paymentToken: string): void {
+    if (paymentToken.length > PAYMENT_TOKEN_MAX_LENGTH) {
+      throw new Error('invalid paymentToken');
+    }
+    this.paymentToken = paymentToken;
+  }
+  public getPaymentToken(): string | undefined { return this.paymentToken; }
 
 }

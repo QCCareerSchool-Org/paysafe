@@ -5,7 +5,7 @@ const amount_request_1 = require("./amount-request");
 const splitpay_1 = require("./lib/splitpay");
 const AMOUNT_MAX = 99999999999;
 /**
- * abstract parent class of any Card Payments API request
+ * abstract parent class of any Card Payments API request pbject that has an amount and a splitpay
  */
 class SplitpayRequest extends amount_request_1.AmountRequest {
     constructor(resp) {

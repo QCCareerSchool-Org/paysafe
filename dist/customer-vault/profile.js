@@ -77,39 +77,46 @@ class Profile extends request_1.Request {
             this.card = new card_1.Card(resp.card);
         }
         if (typeof resp.cards !== 'undefined') {
+            if (!Array.isArray(resp.cards)) {
+                throw new Error('cards should be an array');
+            }
             this.cards = create_array_1.createArray(resp.cards, card_1.Card);
         }
-        if (typeof resp.achbankaccounts !== 'undefined') {
-            if (resp.achbankaccounts instanceof Array) {
-                this.achbankaccounts = create_array_1.createArray(resp.achbankaccounts, ach_bank_account_1.ACHBankAccount);
-            }
-            else {
-                this.achbankaccounts = resp.achbankaccounts;
-            }
+        if (typeof resp.achBankAccount !== 'undefined') {
+            this.achBankAccount = resp.achBankAccount;
         }
-        if (typeof resp.eftbankaccounts !== 'undefined') {
-            if (resp.eftbankaccounts instanceof Array) {
-                this.eftbankaccounts = create_array_1.createArray(resp.eftbankaccounts, eft_bank_account_1.EFTBankAccount);
+        if (typeof resp.achBankAccounts !== 'undefined') {
+            if (!Array.isArray(resp.achBankAccounts)) {
+                throw new Error('achBankAccounts should be an array');
             }
-            else {
-                this.eftbankaccounts = resp.eftbankaccounts;
-            }
+            this.achBankAccounts = create_array_1.createArray(resp.achBankAccounts, ach_bank_account_1.ACHBankAccount);
         }
-        if (typeof resp.bacsbankaccounts !== 'undefined') {
-            if (resp.bacsbankaccounts instanceof Array) {
-                this.bacsbankaccounts = create_array_1.createArray(resp.bacsbankaccounts, bacs_bank_account_1.BACSBankAccount);
-            }
-            else {
-                this.bacsbankaccounts = resp.bacsbankaccounts;
-            }
+        if (typeof resp.eftBankAccount !== 'undefined') {
+            this.eftBankAccount = resp.eftBankAccount;
         }
-        if (typeof resp.sepabankaccounts !== 'undefined') {
-            if (resp.sepabankaccounts instanceof Array) {
-                this.sepabankaccounts = create_array_1.createArray(resp.sepabankaccounts, sepa_bank_account_1.SEPABankAccount);
+        if (typeof resp.eftBankAccounts !== 'undefined') {
+            if (!Array.isArray(resp.eftBankAccounts)) {
+                throw new Error('eftBankAccounts should be an array');
             }
-            else {
-                this.sepabankaccounts = resp.sepabankaccounts;
+            this.eftBankAccounts = create_array_1.createArray(resp.eftBankAccounts, eft_bank_account_1.EFTBankAccount);
+        }
+        if (typeof resp.bacsBankAccount !== 'undefined') {
+            this.bacsBankAccount = resp.bacsBankAccount;
+        }
+        if (typeof resp.bacsBankAccounts !== 'undefined') {
+            if (!Array.isArray(resp.bacsBankAccounts)) {
+                throw new Error('bacsBankAccounts should be an array');
             }
+            this.bacsBankAccounts = create_array_1.createArray(resp.bacsBankAccounts, bacs_bank_account_1.BACSBankAccount);
+        }
+        if (typeof resp.sepaBankAccount !== 'undefined') {
+            this.sepaBankAccount = resp.sepaBankAccount;
+        }
+        if (typeof resp.sepaBankAccounts !== 'undefined') {
+            if (!Array.isArray(resp.sepaBankAccounts)) {
+                throw new Error('sepaBankAccounts should be an array');
+            }
+            this.sepaBankAccounts = create_array_1.createArray(resp.sepaBankAccounts, sepa_bank_account_1.SEPABankAccount);
         }
     }
     setStatus(status) {
@@ -238,13 +245,17 @@ class Profile extends request_1.Request {
         this.cards = cards;
     }
     getCards() { return this.cards; }
-    setACHBankAccounts(achbankaccounts) { this.achbankaccounts = achbankaccounts; }
-    getACHBankAccounts() { return this.achbankaccounts; }
-    setBACSBankAccounts(bacsbankaccounts) { this.bacsbankaccounts = bacsbankaccounts; }
-    getBACSBankAccounts() { return this.bacsbankaccounts; }
-    setEFTBankAccounts(eftbankaccounts) { this.eftbankaccounts = eftbankaccounts; }
-    getEFTBankAccounts() { return this.eftbankaccounts; }
-    setSEPABankAccounts(sepabankaccounts) { this.sepabankaccounts = sepabankaccounts; }
-    getSEPABankAccounts() { return this.sepabankaccounts; }
+    setACHBankAccount(achBankAccount) { this.achBankAccount = achBankAccount; }
+    getACHBankAccount() { return this.achBankAccount; }
+    getACHBankAccounts() { return this.achBankAccounts; }
+    setBACSBankAccount(bacsBankAccount) { this.bacsBankAccount = bacsBankAccount; }
+    getBACSBankAccount() { return this.bacsBankAccount; }
+    getBACSBankAccounts() { return this.bacsBankAccounts; }
+    setEFTBankAccount(eftBankAccount) { this.eftBankAccount = eftBankAccount; }
+    getEFTBankAccount() { return this.eftBankAccount; }
+    getEFTBankAccounts() { return this.eftBankAccounts; }
+    setSEPABankAccount(sepaBankAccount) { this.sepaBankAccount = sepaBankAccount; }
+    getSEPABankAccount() { return this.sepaBankAccount; }
+    getSEPABankAccounts() { return this.sepaBankAccounts; }
 }
 exports.Profile = Profile;
