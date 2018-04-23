@@ -351,7 +351,7 @@ describe('Customer Vault API', () => {
       cardExpiry.setMonth(expiryMonth);
 
       const card = new Card();
-      // card.setCardNum(creditCardNumber);
+      card.setCardNum(creditCardNumber);
       card.setCardExpiry(cardExpiry);
 
       let cardId: string;
