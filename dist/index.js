@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 const Debug = require("debug");
 const request = require("request");
-const paysafe_error_1 = require("./common/paysafe-error");
 const service_handler_1 = require("./card-payments/service-handler");
 const service_handler_2 = require("./customer-vault/service-handler");
 const service_handler_3 = require("./direct-debit/service-handler");
@@ -87,8 +86,8 @@ class Paysafe {
         return new Promise((resolve, reject) => {
             debug(options);
             this.baseRequest(options, (err, response, body) => {
+                debug('STATUS CODE ' + response.statusCode);
                 debug(body);
-                const CLIENT_ERROR = 400;
                 const SERVER_ERROR = 500;
                 if (err) {
                     reject(err);
@@ -102,9 +101,9 @@ class Paysafe {
                 else {
                     try {
                         body = (typeof body === 'string') ? JSON.parse(body) : body;
-                        if (typeof body.error !== 'undefined') { // the entire response is an error
-                            return reject(new paysafe_error_1.PaysafeError(body.error));
-                        }
+                        // if (typeof body.error !== 'undefined') { // the entire response is an error
+                        //  return reject(new PaysafeError(body.error));
+                        // }
                         resolve(body);
                     }
                     catch (parseError) {

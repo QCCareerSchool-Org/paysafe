@@ -15,9 +15,8 @@ export class FieldError {
     }
   }
 
-  public setField(field: string): void { this.field = field; }
   public getField(): string | undefined { return this.field; }
-  public setError(error: string): void { this.error = error; }
+
   public getError(): string | undefined { return this.error; }
 
 }

@@ -12,7 +12,7 @@ export class PaysafeError extends Error {
   }
 
   private code?: number;
-  private details?: string;
+  private details?: string[];
   private fieldErrors?: FieldError[];
   private links?: Link[];
 
@@ -26,7 +26,9 @@ export class PaysafeError extends Error {
       this.code = resp.code;
     }
     if (typeof resp.details !== 'undefined') {
-      this.details = resp.details;
+      if (Array.isArray(resp.details)) {
+        this.details = resp.details;
+      }
     }
     if (typeof resp.fieldErrors !== 'undefined') {
       this.fieldErrors = createArray(resp.fieldErrors, FieldError);
@@ -42,13 +44,10 @@ export class PaysafeError extends Error {
   public setMessage(message: string): void { this.message = message; }
   public getMessage(): string | undefined { return this.message; }
 
-  public setDetails(details: string): void { this.details = details; }
-  public getDetails(): string | undefined { return this.details; }
+  public getDetails(): string[] | undefined { return this.details; }
 
-  public setFieldErrors(fieldErrors: FieldError[]): void { this.fieldErrors = fieldErrors; }
   public getFieldErrors(): FieldError[] | undefined { return this.fieldErrors; }
 
-  public setLinks(links: Link[]): void { this.links = links; }
   public getLinks(): Link[] | undefined { return this.links; }
 
 }

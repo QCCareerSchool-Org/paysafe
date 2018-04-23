@@ -20,7 +20,9 @@ class PaysafeError extends Error {
             this.code = resp.code;
         }
         if (typeof resp.details !== 'undefined') {
-            this.details = resp.details;
+            if (Array.isArray(resp.details)) {
+                this.details = resp.details;
+            }
         }
         if (typeof resp.fieldErrors !== 'undefined') {
             this.fieldErrors = create_array_1.createArray(resp.fieldErrors, field_error_1.FieldError);
@@ -33,11 +35,8 @@ class PaysafeError extends Error {
     getCode() { return this.code; }
     setMessage(message) { this.message = message; }
     getMessage() { return this.message; }
-    setDetails(details) { this.details = details; }
     getDetails() { return this.details; }
-    setFieldErrors(fieldErrors) { this.fieldErrors = fieldErrors; }
     getFieldErrors() { return this.fieldErrors; }
-    setLinks(links) { this.links = links; }
     getLinks() { return this.links; }
 }
 exports.PaysafeError = PaysafeError;

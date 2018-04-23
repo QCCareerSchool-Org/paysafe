@@ -110,8 +110,8 @@ export class Paysafe {
     return new Promise((resolve, reject) => {
       debug(options);
       this.baseRequest(options, (err, response, body) => {
+        debug('STATUS CODE ' + response.statusCode);
         debug(body);
-        const CLIENT_ERROR = 400;
         const SERVER_ERROR = 500;
         if (err) {
           reject(err);
@@ -122,9 +122,9 @@ export class Paysafe {
         } else {
           try {
             body = (typeof body === 'string') ? JSON.parse(body) : body;
-            if (typeof body.error !== 'undefined') { // the entire response is an error
-              return reject(new PaysafeError(body.error));
-            }
+            // if (typeof body.error !== 'undefined') { // the entire response is an error
+            //  return reject(new PaysafeError(body.error));
+            // }
             resolve(body);
           } catch (parseError) {
             reject(parseError);

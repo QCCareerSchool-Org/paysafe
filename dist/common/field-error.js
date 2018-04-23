@@ -12,9 +12,7 @@ class FieldError {
             this.error = resp.error;
         }
     }
-    setField(field) { this.field = field; }
     getField() { return this.field; }
-    setError(error) { this.error = error; }
     getError() { return this.error; }
 }
 exports.FieldError = FieldError;

@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const Debug = require("debug");
@@ -41,12 +49,11 @@ const expiryYear = new Date().getFullYear() + 1;
 const timeout = 80000; // 80 seconds
 /* tslint:disable:no-magic-numbers */
 describe('Card Payments API', () => {
-    it('should be up and running', (done) => {
-        paysafe.getCardServiceHandler().monitor().then((result) => {
-            chai_1.expect(result).to.have.property('status').that.equals('READY');
-            done();
-        }).catch((err) => done(Error(JSON.stringify(err))));
-    }).timeout(timeout);
+    it('should be up and running', () => __awaiter(this, void 0, void 0, function* () {
+        const result = yield paysafe.getCardServiceHandler().monitor();
+        chai_1.expect(result).to.not.have.property('error');
+        chai_1.expect(result).to.have.property('status').that.equals('READY');
+    })).timeout(timeout);
     describe('Card Single Use Tokens', () => {
         let singleUseToken;
         beforeEach(function (done) {
@@ -56,64 +63,52 @@ describe('Card Payments API', () => {
                 done();
             }).catch(done);
         });
-        it('should verify a single-use token', (done) => {
+        it('should verify a single-use token', () => __awaiter(this, void 0, void 0, function* () {
             const merchantRefNum = randomStr();
-            try {
-                const verification = new verification_1.Verification();
-                verification.setMerchantRefNum(merchantRefNum);
-                const card = new card_1.Card();
-                card.setPaymentToken(singleUseToken);
-                verification.setCard(card);
-                const billingDetails = new billing_details_1.BillingDetails();
-                billingDetails.setZip('K1L 6R2');
-                verification.setBillingDetails(billingDetails);
-                paysafe.getCardServiceHandler().verify(verification).then((verificationResult) => {
-                    debug(verificationResult);
-                    chai_1.expect(verificationResult.getId()).to.not.be.an('undefined');
-                    chai_1.expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-                    chai_1.expect(verificationResult.getStatus()).to.equal('COMPLETED');
-                    done();
-                }).catch((err) => done(new Error(JSON.stringify(err))));
-            }
-            catch (err) {
-                done(err);
-            }
-        }).timeout(timeout);
-        it('should perform an authorization on a single-use token', (done) => {
+            const verification = new verification_1.Verification();
+            verification.setMerchantRefNum(merchantRefNum);
+            const card = new card_1.Card();
+            card.setPaymentToken(singleUseToken);
+            verification.setCard(card);
+            const billingDetails = new billing_details_1.BillingDetails();
+            billingDetails.setZip('K1L 6R2');
+            verification.setBillingDetails(billingDetails);
+            const verificationResult = yield paysafe.getCardServiceHandler().verify(verification);
+            debug(verificationResult);
+            chai_1.expect(verificationResult).to.not.have.property('error');
+            chai_1.expect(verificationResult.getId()).to.not.be.an('undefined');
+            chai_1.expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+            chai_1.expect(verificationResult.getStatus()).to.equal('COMPLETED');
+        })).timeout(timeout);
+        it('should perform an authorization on a single-use token', () => __awaiter(this, void 0, void 0, function* () {
             const merchantRefNum = randomStr();
             const amount = randomInt(200, 300);
-            try {
-                const authorization = new authorization_1.Authorization();
-                authorization.setAmount(amount);
-                authorization.setCurrencyCode('CAD');
-                authorization.setMerchantRefNum(merchantRefNum);
-                const card = new card_1.Card();
-                card.setPaymentToken(singleUseToken);
-                authorization.setCard(card);
-                const billingDetails = new billing_details_1.BillingDetails();
-                billingDetails.setZip('K1L 6R2');
-                authorization.setBillingDetails(billingDetails);
-                paysafe.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
-                    debug(authorizationResult);
-                    chai_1.expect(authorizationResult.getId()).to.not.be.an('undefined');
-                    chai_1.expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-                    chai_1.expect(authorizationResult.getAmount()).to.equal(amount);
-                    chai_1.expect(authorizationResult.getStatus()).to.equal('COMPLETED');
-                    chai_1.expect(authorizationResult.getTxnTime()).to.be.a('Date');
-                    const c = authorizationResult.getCard();
-                    chai_1.expect(c).to.not.be.an('undefined');
-                    chai_1.expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-                    const exp = c.getCardExpiry();
-                    chai_1.expect(exp).to.not.be.an('undefined');
-                    chai_1.expect(exp.getMonth()).to.equal(expiryMonth);
-                    chai_1.expect(exp.getYear()).to.equal(expiryYear);
-                    done();
-                }).catch((err) => done(new Error(JSON.stringify(err))));
-            }
-            catch (err) {
-                done(err);
-            }
-        }).timeout(timeout);
+            const authorization = new authorization_1.Authorization();
+            authorization.setAmount(amount);
+            authorization.setCurrencyCode('CAD');
+            authorization.setMerchantRefNum(merchantRefNum);
+            const card = new card_1.Card();
+            card.setPaymentToken(singleUseToken);
+            authorization.setCard(card);
+            const billingDetails = new billing_details_1.BillingDetails();
+            billingDetails.setZip('K1L 6R2');
+            authorization.setBillingDetails(billingDetails);
+            const authorizationResult = yield paysafe.getCardServiceHandler().authorize(authorization);
+            debug(authorizationResult);
+            chai_1.expect(authorizationResult).to.not.have.property('error');
+            chai_1.expect(authorizationResult.getId()).to.not.be.an('undefined');
+            chai_1.expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+            chai_1.expect(authorizationResult.getAmount()).to.equal(amount);
+            chai_1.expect(authorizationResult.getStatus()).to.equal('COMPLETED');
+            chai_1.expect(authorizationResult.getTxnTime()).to.be.a('Date');
+            const c = authorizationResult.getCard();
+            chai_1.expect(c).to.not.be.an('undefined');
+            chai_1.expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+            const exp = c.getCardExpiry();
+            chai_1.expect(exp).to.not.be.an('undefined');
+            chai_1.expect(exp.getMonth()).to.equal(expiryMonth);
+            chai_1.expect(exp.getYear()).to.equal(expiryYear);
+        })).timeout(timeout);
     });
 });
 function getCardSingleUseToken() {

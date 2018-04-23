@@ -297,22 +297,42 @@ export class Profile extends Request {
   }
   public getCards(): Card[] | undefined { return this.cards; }
 
-  public setACHBankAccount(achBankAccount: ACHBankAccount): void { this.achBankAccount = achBankAccount; }
+  public setACHBankAccount(achBankAccount: ACHBankAccount): void {
+    if (!(achBankAccount instanceof ACHBankAccount)) {
+      throw new Error('invalid achBankAccount');
+    }
+    this.achBankAccount = achBankAccount;
+  }
   public getACHBankAccount(): ACHBankAccount | undefined { return this.achBankAccount; }
 
   public getACHBankAccounts(): ACHBankAccount[] | undefined { return this.achBankAccounts; }
 
-  public setBACSBankAccount(bacsBankAccount: BACSBankAccount): void { this.bacsBankAccount = bacsBankAccount; }
+  public setBACSBankAccount(bacsBankAccount: BACSBankAccount): void {
+    if (!(bacsBankAccount instanceof BACSBankAccount)) {
+      throw new Error('invalid bacsBankAccount');
+    }
+    this.bacsBankAccount = bacsBankAccount;
+  }
   public getBACSBankAccount(): BACSBankAccount | undefined { return this.bacsBankAccount; }
 
   public getBACSBankAccounts(): BACSBankAccount[] | undefined { return this.bacsBankAccounts; }
 
-  public setEFTBankAccount(eftBankAccount: EFTBankAccount): void { this.eftBankAccount = eftBankAccount; }
+  public setEFTBankAccount(eftBankAccount: EFTBankAccount): void {
+    if (!(eftBankAccount instanceof EFTBankAccount)) {
+      throw new Error('invalid eftBankAccount');
+    }
+    this.eftBankAccount = eftBankAccount;
+  }
   public getEFTBankAccount(): EFTBankAccount | undefined { return this.eftBankAccount; }
 
   public getEFTBankAccounts(): EFTBankAccount[] | undefined { return this.eftBankAccounts; }
 
-  public setSEPABankAccount(sepaBankAccount: SEPABankAccount): void { this.sepaBankAccount = sepaBankAccount; }
+  public setSEPABankAccount(sepaBankAccount: SEPABankAccount): void {
+    if (!(sepaBankAccount instanceof SEPABankAccount)) {
+      throw new Error('invalid sepaBankAccount');
+    }
+    this.sepaBankAccount = sepaBankAccount;
+  }
   public getSEPABankAccount(): SEPABankAccount | undefined { return this.sepaBankAccount; }
 
   public getSEPABankAccounts(): SEPABankAccount[] | undefined { return this.sepaBankAccounts; }

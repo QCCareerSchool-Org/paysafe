@@ -245,16 +245,36 @@ class Profile extends request_1.Request {
         this.cards = cards;
     }
     getCards() { return this.cards; }
-    setACHBankAccount(achBankAccount) { this.achBankAccount = achBankAccount; }
+    setACHBankAccount(achBankAccount) {
+        if (!(achBankAccount instanceof ach_bank_account_1.ACHBankAccount)) {
+            throw new Error('invalid achBankAccount');
+        }
+        this.achBankAccount = achBankAccount;
+    }
     getACHBankAccount() { return this.achBankAccount; }
     getACHBankAccounts() { return this.achBankAccounts; }
-    setBACSBankAccount(bacsBankAccount) { this.bacsBankAccount = bacsBankAccount; }
+    setBACSBankAccount(bacsBankAccount) {
+        if (!(bacsBankAccount instanceof bacs_bank_account_1.BACSBankAccount)) {
+            throw new Error('invalid bacsBankAccount');
+        }
+        this.bacsBankAccount = bacsBankAccount;
+    }
     getBACSBankAccount() { return this.bacsBankAccount; }
     getBACSBankAccounts() { return this.bacsBankAccounts; }
-    setEFTBankAccount(eftBankAccount) { this.eftBankAccount = eftBankAccount; }
+    setEFTBankAccount(eftBankAccount) {
+        if (!(eftBankAccount instanceof eft_bank_account_1.EFTBankAccount)) {
+            throw new Error('invalid eftBankAccount');
+        }
+        this.eftBankAccount = eftBankAccount;
+    }
     getEFTBankAccount() { return this.eftBankAccount; }
     getEFTBankAccounts() { return this.eftBankAccounts; }
-    setSEPABankAccount(sepaBankAccount) { this.sepaBankAccount = sepaBankAccount; }
+    setSEPABankAccount(sepaBankAccount) {
+        if (!(sepaBankAccount instanceof sepa_bank_account_1.SEPABankAccount)) {
+            throw new Error('invalid sepaBankAccount');
+        }
+        this.sepaBankAccount = sepaBankAccount;
+    }
     getSEPABankAccount() { return this.sepaBankAccount; }
     getSEPABankAccounts() { return this.sepaBankAccounts; }
 }

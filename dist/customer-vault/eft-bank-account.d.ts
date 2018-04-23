@@ -1,5 +1,4 @@
 import { PaysafeError } from '../common/paysafe-error';
-import { Profile } from './profile';
 export declare class EFTBankAccount {
     private id?;
     private nickName?;
@@ -15,7 +14,6 @@ export declare class EFTBankAccount {
     private paymentToken?;
     private payMethod?;
     private paymentDescriptor?;
-    private profile?;
     private error?;
     constructor(resp?: EFTBankAccount);
     setId(id: string): void;
@@ -46,8 +44,6 @@ export declare class EFTBankAccount {
     getpayMethod(): string | undefined;
     setpaymentDescriptor(paymentDescriptor: string): void;
     getpaymentDescriptor(): string | undefined;
-    setProfile(profile: Profile): void;
-    getProfile(): Profile | undefined;
     setError(error: PaysafeError): void;
     getError(): PaysafeError | undefined;
 }

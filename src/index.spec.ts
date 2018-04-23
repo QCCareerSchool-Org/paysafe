@@ -71,12 +71,16 @@ const timeout = 60000; // 60 seconds
 
 describe('Card Payments', () => {
 
-  it('should be up and running', (done) => {
+  it('should be up and running', async (done) => {
 
-    paysafe.getCardServiceHandler().monitor().then((result) => {
+    try {
+      const result = await paysafe.getCardServiceHandler().monitor();
+      expect(result).to.equal('3');
       expect(result).to.have.property('status').that.equals('READY');
       done();
-    }).catch(done);
+    } catch (err) {
+      done(err);
+    }
 
   });
 

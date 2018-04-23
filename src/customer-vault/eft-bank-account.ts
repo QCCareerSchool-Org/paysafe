@@ -17,78 +17,109 @@ export class EFTBankAccount {
   private paymentToken?: string;
   private payMethod?: string;
   private paymentDescriptor?: string;
-  private profile?: Profile;
+  // private profile?: Profile;
   private error?: PaysafeError;
 
   constructor(resp?: EFTBankAccount) {
-    if (!resp)
+    if (!resp) {
       return;
-    this.id = resp.id;
-    this.nickName = resp.nickName;
-    this.merchantRefNum = resp.merchantRefNum;
-    this.status = resp.status;
-    this.statusReason = resp.statusReason;
-    this.accountNumber = resp.accountNumber;
-    this.accountHolderName = resp.accountHolderName;
-    this.transitNumber = resp.transitNumber;
-    this.institutionId = resp.institutionId;
-    this.lastDigits = resp.lastDigits;
-    this.billingAddressId = resp.billingAddressId;
-    this.paymentToken = resp.paymentToken;
-    this.payMethod = resp.payMethod;
-    this.paymentDescriptor = resp.paymentDescriptor;
-    if (resp.profile)
-      this.profile = new Profile(resp.profile);
-    if (resp.error)
+    }
+    if (typeof resp.id !== 'undefined') {
+      this.id = resp.id;
+    }
+    if (typeof resp.nickName !== 'undefined') {
+      this.nickName = resp.nickName;
+    }
+    if (typeof resp.merchantRefNum !== 'undefined') {
+      this.merchantRefNum = resp.merchantRefNum;
+    }
+    if (typeof resp.status !== 'undefined') {
+      this.status = resp.status;
+    }
+    if (typeof resp.statusReason !== 'undefined') {
+      this.statusReason = resp.statusReason;
+    }
+    if (typeof resp.accountNumber !== 'undefined') {
+      this.accountNumber = resp.accountNumber;
+    }
+    if (typeof resp.accountHolderName !== 'undefined') {
+      this.accountHolderName = resp.accountHolderName;
+    }
+    if (typeof resp.transitNumber !== 'undefined') {
+      this.transitNumber = resp.transitNumber;
+    }
+    if (typeof resp.institutionId !== 'undefined') {
+      this.institutionId = resp.institutionId;
+    }
+    if (typeof resp.lastDigits !== 'undefined') {
+      this.lastDigits = resp.lastDigits;
+    }
+    if (typeof resp.billingAddressId !== 'undefined') {
+      this.billingAddressId = resp.billingAddressId;
+    }
+    if (typeof resp.paymentToken !== 'undefined') {
+      this.paymentToken = resp.paymentToken;
+    }
+    if (typeof resp.payMethod !== 'undefined') {
+      this.payMethod = resp.payMethod;
+    }
+    if (typeof resp.paymentDescriptor !== 'undefined') {
+      this.paymentDescriptor = resp.paymentDescriptor;
+    }
+    // if (typeof resp.profile !== 'undefined') {
+    //   this.profile = new Profile(resp.profile);
+    // }
+    if (typeof resp.error !== 'undefined') {
       this.error = new PaysafeError(resp.error);
+    }
   }
 
-  setId(id: string): void { this.id = id; }
-  getId(): string | undefined { return this.id; }
+  public setId(id: string): void { this.id = id; }
+  public getId(): string | undefined { return this.id; }
 
-  setnickName(nickName: string): void { this.nickName = nickName; }
-  getnickName(): string | undefined { return this.nickName; }
+  public setnickName(nickName: string): void { this.nickName = nickName; }
+  public getnickName(): string | undefined { return this.nickName; }
 
-  setmerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
-  getmerchantRefNum(): string | undefined { return this.merchantRefNum; }
+  public setmerchantRefNum(merchantRefNum: string): void { this.merchantRefNum = merchantRefNum; }
+  public getmerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
-  setStatus(status: string): void { this.status = status; }
-  getStatus(): string | undefined { return this.status; }
+  public setStatus(status: string): void { this.status = status; }
+  public getStatus(): string | undefined { return this.status; }
 
-  setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
-  getstatusReason(): string | undefined { return this.statusReason; }
+  public setstatusReason(statusReason: string): void { this.statusReason = statusReason; }
+  public getstatusReason(): string | undefined { return this.statusReason; }
 
-  setaccountNumber(accountNumber: string): void { this.accountNumber = accountNumber; }
-  getaccountNumber(): string | undefined { return this.accountNumber; }
+  public setaccountNumber(accountNumber: string): void { this.accountNumber = accountNumber; }
+  public getaccountNumber(): string | undefined { return this.accountNumber; }
 
-  setaccountHolderName(accountHolderName: string): void { this.accountHolderName = accountHolderName; }
-  getaccountHolderName(): string | undefined { return this.accountHolderName; }
+  public setaccountHolderName(accountHolderName: string): void { this.accountHolderName = accountHolderName; }
+  public getaccountHolderName(): string | undefined { return this.accountHolderName; }
 
-  settransitNumber(transitNumber: string): void { this.transitNumber = transitNumber; }
-  gettransitNumber(): string | undefined { return this.transitNumber; }
+  public settransitNumber(transitNumber: string): void { this.transitNumber = transitNumber; }
+  public gettransitNumber(): string | undefined { return this.transitNumber; }
 
-  setinstitutionId(institutionId: string): void { this.institutionId = institutionId; }
-  getinstitutionId(): string | undefined { return this.institutionId; }
+  public setinstitutionId(institutionId: string): void { this.institutionId = institutionId; }
+  public getinstitutionId(): string | undefined { return this.institutionId; }
 
-  setlastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
-  getlastDigits(): string | undefined { return this.lastDigits; }
+  public setlastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
+  public getlastDigits(): string | undefined { return this.lastDigits; }
 
-  setbillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
-  getbillingAddressId(): string | undefined { return this.billingAddressId; }
+  public setbillingAddressId(billingAddressId: string): void { this.billingAddressId = billingAddressId; }
+  public getbillingAddressId(): string | undefined { return this.billingAddressId; }
 
-  setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
-  getpaymentToken(): string | undefined { return this.paymentToken; }
+  public setpaymentToken(paymentToken: string): void { this.paymentToken = paymentToken; }
+  public getpaymentToken(): string | undefined { return this.paymentToken; }
 
-  setpayMethod(payMethod: string): void { this.payMethod = payMethod; }
-  getpayMethod(): string | undefined { return this.payMethod; }
+  public setpayMethod(payMethod: string): void { this.payMethod = payMethod; }
+  public getpayMethod(): string | undefined { return this.payMethod; }
 
-  setpaymentDescriptor(paymentDescriptor: string): void { this.paymentDescriptor = paymentDescriptor; }
-  getpaymentDescriptor(): string | undefined { return this.paymentDescriptor; }
+  public setpaymentDescriptor(paymentDescriptor: string): void { this.paymentDescriptor = paymentDescriptor; }
+  public getpaymentDescriptor(): string | undefined { return this.paymentDescriptor; }
 
-  setProfile(profile: Profile): void { this.profile = profile; }
-  getProfile(): Profile | undefined { return this.profile; }
+  // public setProfile(profile: Profile): void { this.profile = profile; }
+  // public getProfile(): Profile | undefined { return this.profile; }
 
-  setError(error: PaysafeError): void { this.error = error; }
-  getError(): PaysafeError | undefined { return this.error; }
+  public setError(error: PaysafeError): void { this.error = error; }
+  public getError(): PaysafeError | undefined { return this.error; }
 
 }

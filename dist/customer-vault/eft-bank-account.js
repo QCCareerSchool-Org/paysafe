@@ -1,29 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const paysafe_error_1 = require("../common/paysafe-error");
-const profile_1 = require("./profile");
 class EFTBankAccount {
     constructor(resp) {
-        if (!resp)
+        if (!resp) {
             return;
-        this.id = resp.id;
-        this.nickName = resp.nickName;
-        this.merchantRefNum = resp.merchantRefNum;
-        this.status = resp.status;
-        this.statusReason = resp.statusReason;
-        this.accountNumber = resp.accountNumber;
-        this.accountHolderName = resp.accountHolderName;
-        this.transitNumber = resp.transitNumber;
-        this.institutionId = resp.institutionId;
-        this.lastDigits = resp.lastDigits;
-        this.billingAddressId = resp.billingAddressId;
-        this.paymentToken = resp.paymentToken;
-        this.payMethod = resp.payMethod;
-        this.paymentDescriptor = resp.paymentDescriptor;
-        if (resp.profile)
-            this.profile = new profile_1.Profile(resp.profile);
-        if (resp.error)
+        }
+        if (typeof resp.id !== 'undefined') {
+            this.id = resp.id;
+        }
+        if (typeof resp.nickName !== 'undefined') {
+            this.nickName = resp.nickName;
+        }
+        if (typeof resp.merchantRefNum !== 'undefined') {
+            this.merchantRefNum = resp.merchantRefNum;
+        }
+        if (typeof resp.status !== 'undefined') {
+            this.status = resp.status;
+        }
+        if (typeof resp.statusReason !== 'undefined') {
+            this.statusReason = resp.statusReason;
+        }
+        if (typeof resp.accountNumber !== 'undefined') {
+            this.accountNumber = resp.accountNumber;
+        }
+        if (typeof resp.accountHolderName !== 'undefined') {
+            this.accountHolderName = resp.accountHolderName;
+        }
+        if (typeof resp.transitNumber !== 'undefined') {
+            this.transitNumber = resp.transitNumber;
+        }
+        if (typeof resp.institutionId !== 'undefined') {
+            this.institutionId = resp.institutionId;
+        }
+        if (typeof resp.lastDigits !== 'undefined') {
+            this.lastDigits = resp.lastDigits;
+        }
+        if (typeof resp.billingAddressId !== 'undefined') {
+            this.billingAddressId = resp.billingAddressId;
+        }
+        if (typeof resp.paymentToken !== 'undefined') {
+            this.paymentToken = resp.paymentToken;
+        }
+        if (typeof resp.payMethod !== 'undefined') {
+            this.payMethod = resp.payMethod;
+        }
+        if (typeof resp.paymentDescriptor !== 'undefined') {
+            this.paymentDescriptor = resp.paymentDescriptor;
+        }
+        // if (typeof resp.profile !== 'undefined') {
+        //   this.profile = new Profile(resp.profile);
+        // }
+        if (typeof resp.error !== 'undefined') {
             this.error = new paysafe_error_1.PaysafeError(resp.error);
+        }
     }
     setId(id) { this.id = id; }
     getId() { return this.id; }
@@ -53,8 +83,8 @@ class EFTBankAccount {
     getpayMethod() { return this.payMethod; }
     setpaymentDescriptor(paymentDescriptor) { this.paymentDescriptor = paymentDescriptor; }
     getpaymentDescriptor() { return this.paymentDescriptor; }
-    setProfile(profile) { this.profile = profile; }
-    getProfile() { return this.profile; }
+    // public setProfile(profile: Profile): void { this.profile = profile; }
+    // public getProfile(): Profile | undefined { return this.profile; }
     setError(error) { this.error = error; }
     getError() { return this.error; }
 }

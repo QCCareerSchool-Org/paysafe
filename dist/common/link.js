@@ -12,9 +12,7 @@ class Link {
             this.href = resp.href;
         }
     }
-    setRel(rel) { this.rel = rel; }
     getRel() { return this.rel; }
-    setHref(href) { this.href = href; }
     getHref() { return this.href; }
 }
 exports.Link = Link;

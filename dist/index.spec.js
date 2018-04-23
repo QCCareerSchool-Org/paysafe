@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const Debug = require("debug");
@@ -49,12 +57,17 @@ const expiryYear = new Date().getFullYear() + 1;
 const timeout = 60000; // 60 seconds
 /* tslint:disable:no-magic-numbers */
 describe('Card Payments', () => {
-    it('should be up and running', (done) => {
-        paysafe.getCardServiceHandler().monitor().then((result) => {
+    it('should be up and running', (done) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result = yield paysafe.getCardServiceHandler().monitor();
+            chai_1.expect(result).to.equal('3');
             chai_1.expect(result).to.have.property('status').that.equals('READY');
             done();
-        }).catch(done);
-    });
+        }
+        catch (err) {
+            done(err);
+        }
+    }));
 });
 describe('Paysafe API with Single-Use Tokens', () => {
     let singleUseToken;

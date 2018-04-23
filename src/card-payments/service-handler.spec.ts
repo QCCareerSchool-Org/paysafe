@@ -56,18 +56,17 @@ const timeout = 80000; // 80 seconds
 
 describe('Card Payments API', () => {
 
-  it('should be up and running', (done) => {
-    paysafe.getCardServiceHandler().monitor().then((result) => {
-      expect(result).to.have.property('status').that.equals('READY');
-      done();
-    }).catch((err) => done(Error(JSON.stringify(err))));
+  it('should be up and running', async () => {
+    const result = await paysafe.getCardServiceHandler().monitor();
+    expect(result).to.not.have.property('error');
+    expect(result).to.have.property('status').that.equals('READY');
   }).timeout(timeout);
 
   describe('Card Single Use Tokens', () => {
 
     let singleUseToken: string;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       this.timeout(timeout);
       getCardSingleUseToken().then((result) => {
         singleUseToken = result;
@@ -75,76 +74,62 @@ describe('Card Payments API', () => {
       }).catch(done);
     });
 
-    it('should verify a single-use token', (done) => {
+    it('should verify a single-use token', async () => {
 
       const merchantRefNum = randomStr();
 
-      try {
+      const verification = new Verification();
+      verification.setMerchantRefNum(merchantRefNum);
 
-        const verification = new Verification();
-        verification.setMerchantRefNum(merchantRefNum);
+      const card = new Card();
+      card.setPaymentToken(singleUseToken);
+      verification.setCard(card);
 
-        const card = new Card();
-        card.setPaymentToken(singleUseToken);
-        verification.setCard(card);
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      verification.setBillingDetails(billingDetails);
 
-        const billingDetails = new BillingDetails();
-        billingDetails.setZip('K1L 6R2');
-        verification.setBillingDetails(billingDetails);
-
-
-        paysafe.getCardServiceHandler().verify(verification).then((verificationResult) => {
-          debug(verificationResult);
-          expect(verificationResult.getId()).to.not.be.an('undefined');
-          expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-          expect(verificationResult.getStatus()).to.equal('COMPLETED');
-          done();
-        }).catch((err) => done(new Error(JSON.stringify(err))));
-
-      } catch (err) {
-        done(err);
-      }
+      const verificationResult = await paysafe.getCardServiceHandler().verify(verification);
+      debug(verificationResult);
+      expect(verificationResult).to.not.have.property('error');
+      expect(verificationResult.getId()).to.not.be.an('undefined');
+      expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+      expect(verificationResult.getStatus()).to.equal('COMPLETED');
 
     }).timeout(timeout);
 
-    it('should perform an authorization on a single-use token', (done) => {
+    it('should perform an authorization on a single-use token', async () => {
       const merchantRefNum = randomStr();
       const amount = randomInt(200, 300);
 
-      try {
-        const authorization = new Authorization();
-        authorization.setAmount(amount);
-        authorization.setCurrencyCode('CAD');
-        authorization.setMerchantRefNum(merchantRefNum);
+      const authorization = new Authorization();
+      authorization.setAmount(amount);
+      authorization.setCurrencyCode('CAD');
+      authorization.setMerchantRefNum(merchantRefNum);
 
-        const card = new Card();
-        card.setPaymentToken(singleUseToken);
-        authorization.setCard(card);
+      const card = new Card();
+      card.setPaymentToken(singleUseToken);
+      authorization.setCard(card);
 
-        const billingDetails = new BillingDetails();
-        billingDetails.setZip('K1L 6R2');
-        authorization.setBillingDetails(billingDetails);
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      authorization.setBillingDetails(billingDetails);
 
-        paysafe.getCardServiceHandler().authorize(authorization).then((authorizationResult) => {
-          debug(authorizationResult);
-          expect(authorizationResult.getId()).to.not.be.an('undefined');
-          expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-          expect(authorizationResult.getAmount()).to.equal(amount);
-          expect(authorizationResult.getStatus()).to.equal('COMPLETED');
-          expect(authorizationResult.getTxnTime()).to.be.a('Date');
-          const c = authorizationResult.getCard();
-          expect(c).to.not.be.an('undefined');
-          expect((c as Card).getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-          const exp = (c as Card).getCardExpiry();
-          expect(exp).to.not.be.an('undefined');
-          expect((exp as CardExpiry).getMonth()).to.equal(expiryMonth);
-          expect((exp as CardExpiry).getYear()).to.equal(expiryYear);
-          done();
-        }).catch((err) => done(new Error(JSON.stringify(err))));
-
-      } catch (err) {
-        done(err);
-      }
+      const authorizationResult = await paysafe.getCardServiceHandler().authorize(authorization);
+      debug(authorizationResult);
+      expect(authorizationResult).to.not.have.property('error');
+      expect(authorizationResult.getId()).to.not.be.an('undefined');
+      expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+      expect(authorizationResult.getAmount()).to.equal(amount);
+      expect(authorizationResult.getStatus()).to.equal('COMPLETED');
+      expect(authorizationResult.getTxnTime()).to.be.a('Date');
+      const c = authorizationResult.getCard();
+      expect(c).to.not.be.an('undefined');
+      expect((c as Card).getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+      const exp = (c as Card).getCardExpiry();
+      expect(exp).to.not.be.an('undefined');
+      expect((exp as CardExpiry).getMonth()).to.equal(expiryMonth);
+      expect((exp as CardExpiry).getYear()).to.equal(expiryYear);
 
     }).timeout(timeout);
 

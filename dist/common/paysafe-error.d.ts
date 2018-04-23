@@ -11,10 +11,7 @@ export declare class PaysafeError extends Error {
     getCode(): number | undefined;
     setMessage(message: string): void;
     getMessage(): string | undefined;
-    setDetails(details: string): void;
-    getDetails(): string | undefined;
-    setFieldErrors(fieldErrors: FieldError[]): void;
+    getDetails(): string[] | undefined;
     getFieldErrors(): FieldError[] | undefined;
-    setLinks(links: Link[]): void;
     getLinks(): Link[] | undefined;
 }

@@ -15,9 +15,8 @@ export class Link {
     }
   }
 
-  public setRel(rel: string): void { this.rel = rel; }
   public getRel(): string | undefined { return this.rel; }
-  public setHref(href: string): void { this.href = href; }
+
   public getHref(): string | undefined { return this.href; }
 
 }
