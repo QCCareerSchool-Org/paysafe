@@ -262,7 +262,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
                 const card = new card_2.Card(cardResult);
                 card.setBillingAddressId(aId);
                 // console.log(card);
-                return paysafe.getCustomerServiceHandler().updateCard(pId, card);
+                return paysafe.getCustomerServiceHandler().updateCard(pId, cId, card);
             }).then((cardResult) => {
                 debug(cardResult);
                 // console.log('CARD', cardResult);
@@ -357,7 +357,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
                 const card = new card_2.Card(cardResult);
                 card.setBillingAddressId(aId);
                 // console.log(card);
-                return paysafe.getCustomerServiceHandler().updateCard(pId, card);
+                return paysafe.getCustomerServiceHandler().updateCard(pId, cId, card);
             }).then((cardResult) => {
                 debug(cardResult);
                 // console.log('CARD', cardResult);

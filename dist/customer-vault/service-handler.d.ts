@@ -17,6 +17,11 @@ export declare class ServiceHandler {
     createProfile(profile: Profile): Promise<Profile>;
     /**
      * updates an existing profile
+     *
+     * Note: You must provide all of the elements of the profile when you are updating it,
+     * including the elements that are not changing. Elements that are part of an existing
+     * profile but that are not included in the update request will be set to null in the
+     * resulting profile, with the exception of the status element.
      * @param profileId the id of the profile to update
      * @param profile the new profile
      */
@@ -34,10 +39,10 @@ export declare class ServiceHandler {
      */
     createAddress(profileId: string, address: Address): Promise<Address>;
     getAddress(profileId: string, addressId: string): Promise<Address>;
-    updateAddress(profileId: string, address: Address): Promise<Address>;
+    updateAddress(profileId: string, addressId: string, address: Address): Promise<Address>;
     createCard(profileId: string, card: Card): Promise<Card>;
     getCard(profileId: string, cardId: string): Promise<Card>;
-    updateCard(profileId: string, card: Card): Promise<Card>;
+    updateCard(profileId: string, cardId: string, card: Card): Promise<Card>;
     createACHBankAccount(profileId: string, achBankAccount: ACHBankAccount): Promise<ACHBankAccount>;
     createBACSBankAccount(profileId: string, bacsBankAccount: BACSBankAccount): Promise<BACSBankAccount>;
     createMandate(accountType: 'BACS' | 'SEPA', profileId: string, bankAccountId: string, mandate: Mandate): Promise<Mandate>;

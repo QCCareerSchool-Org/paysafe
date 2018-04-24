@@ -323,7 +323,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
 
         // console.log(card);
 
-        return paysafe.getCustomerServiceHandler().updateCard(pId, card);
+        return paysafe.getCustomerServiceHandler().updateCard(pId, cId, card);
 
       }).then((cardResult) => {
         debug(cardResult);
@@ -456,7 +456,7 @@ describe('Paysafe API with Single-Use Tokens', () => {
 
         // console.log(card);
 
-        return paysafe.getCustomerServiceHandler().updateCard(pId, card);
+        return paysafe.getCustomerServiceHandler().updateCard(pId, cId, card);
 
       }).then((cardResult) => {
         debug(cardResult);

@@ -63,6 +63,11 @@ export class ServiceHandler {
 
   /**
    * updates an existing profile
+   *
+   * Note: You must provide all of the elements of the profile when you are updating it,
+   * including the elements that are not changing. Elements that are part of an existing
+   * profile but that are not included in the update request will be set to null in the
+   * resulting profile, with the exception of the status element.
    * @param profileId the id of the profile to update
    * @param profile the new profile
    */
@@ -178,17 +183,20 @@ export class ServiceHandler {
 
   }
 
-  public updateAddress(profileId: string, address: Address): Promise<Address> {
+  public updateAddress(profileId: string, addressId: string, address: Address): Promise<Address> {
 
     return new Promise((resolve, reject) => {
 
       if (typeof profileId === 'undefined') {
-        return reject(new Error('profile id is undefined'));
+        return reject(new Error('profileId is undefined'));
       }
 
-      const addressId = address.getId();
       if (typeof addressId === 'undefined') {
-        return reject(new Error('address.id is undefined'));
+        return reject(new Error('addressId is undefined'));
+      }
+
+      if (typeof address === 'undefined') {
+        return reject(new Error('address is undefined'));
       }
 
       const path = this.getPath(`${paths.PROFILE}/${profileId}/${paths.ADDRESS}/${addressId}`);
@@ -256,17 +264,20 @@ export class ServiceHandler {
 
   }
 
-  public updateCard(profileId: string, card: Card): Promise<Card> {
+  public updateCard(profileId: string, cardId: string, card: Card): Promise<Card> {
 
     return new Promise((resolve, reject) => {
 
       if (typeof profileId === 'undefined') {
-        return reject(new Error('profile id is undefined'));
+        return reject(new Error('profileId is undefined'));
       }
 
-      const cardId = card.getId();
       if (typeof cardId === 'undefined') {
-        return reject(new Error('card.id is undefined'));
+        return reject(new Error('cardId is undefined'));
+      }
+
+      if (typeof card === 'undefined') {
+        return reject(new Error('card is undefined'));
       }
 
       const path = this.getPath(`${paths.PROFILE}/${profileId}/${paths.CARD}/${cardId}`);

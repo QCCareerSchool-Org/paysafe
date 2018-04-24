@@ -157,6 +157,62 @@ describe('Customer Vault API', () => {
 
     }).timeout(timeout);
 
+    it('should create a profile with a card with a billing address', async () => {
+      const merchantCustomerId = randomStr();
+      const randLocale = Math.random();
+      const locale = randLocale < 0.333 ? 'en_US' : randLocale < 0.666 ? 'fr_CA' : 'en_GB';
+      const firstName = randomStr();
+      const lastName = randomStr();
+      const gender = Math.random() < 0.5 ? 'M' : 'F';
+      const emailAddress = randomEmail();
+      const phoneNumber = randomStr();
+      const nationality = 'Canadian';
+
+      const billingAddress = new BillingAddress();
+      billingAddress.setZip('K1L 6R2');
+      billingAddress.setCountry('CA');
+
+      const cardExpiry = new CardExpiry();
+      cardExpiry.setYear(expiryYear);
+      cardExpiry.setMonth(expiryMonth);
+
+      const card = new Card();
+      card.setCardNum(creditCardNumber);
+      card.setCardExpiry(cardExpiry);
+      card.setBillingAddress(billingAddress);
+
+      const profile = new Profile();
+      profile.setMerchantCustomerId(merchantCustomerId);
+      profile.setLocale(locale);
+      profile.setFirstName(firstName);
+      profile.setLastName(lastName);
+      profile.setGender(gender);
+      profile.setEmail(emailAddress);
+      profile.setPhone(phoneNumber);
+      profile.setNationality(nationality);
+      profile.setCard(card);
+
+      const profileResult = await paysafe.getCustomerServiceHandler().createProfile(profile);
+      debug(profileResult);
+
+      expect(profileResult).to.not.have.property('error');
+      expect(profileResult.getId()).to.not.be.an('undefined');
+      expect(profileResult.getMerchantCustomerId()).to.equal(merchantCustomerId);
+      expect(profileResult.getLocale()).to.equal(locale);
+      expect(profileResult.getFirstName()).to.equal(firstName);
+      expect(profileResult.getLastName()).to.equal(lastName);
+      expect(profileResult.getGender()).to.equal(gender);
+      expect(profileResult.getEmail()).to.equal(emailAddress);
+      expect(profileResult.getPhone()).to.equal(phoneNumber);
+      expect(profileResult.getNationality()).to.equal(nationality);
+      expect(profileResult.getCards()).to.not.be.an('undefined');
+      expect(profileResult.getCards()).to.be.an('array').of.length(1);
+      const cards = profileResult.getCards() as Card[];
+      expect(cards[0].getId()).to.not.be.an('undefined');
+      expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+
+    }).timeout(timeout);
+
     it('should create a profile with a dateOfBirth', async () => {
       const merchantCustomerId = randomStr();
       const firstName = randomStr();
@@ -575,6 +631,80 @@ describe('Customer Vault API', () => {
       expect(expiry.getYear()).to.equal(expiryYear);
 
     }).timeout(timeout * 2);
+
+    it('should create a profile, then add an address, then add a card using a single-use token, and then update the card\'s billing address', async () => {
+      const merchantCustomerId = randomStr();
+      const firstName = randomStr();
+      const lastName = randomStr();
+      const street = randomStr();
+      const street2 = randomStr();
+      const city = randomStr();
+      const state = 'ON';
+      const zip = 'K1L 6R2';
+      const country = 'CA';
+
+      const profile = new Profile();
+      profile.setMerchantCustomerId(merchantCustomerId);
+      profile.setLocale('en_US');
+      profile.setFirstName(firstName);
+      profile.setLastName(lastName);
+
+      const profileResult = await paysafe.getCustomerServiceHandler().createProfile(profile);
+      debug(profileResult);
+
+      expect(profileResult).to.not.have.property('error');
+      expect(profileResult.getId()).to.not.be.an('undefined');
+      expect(profileResult.getFirstName()).to.equal(firstName);
+      expect(profileResult.getLastName()).to.equal(lastName);
+
+      const profileId = profileResult.getId() as string;
+
+      const address = new Address();
+      address.setStreet(street);
+      address.setStreet2(street2);
+      address.setCity(city);
+      address.setState(state);
+      address.setZip(zip);
+      address.setCountry(country);
+
+      const addressResult = await paysafe.getCustomerServiceHandler().createAddress(profileId, address);
+      debug(addressResult);
+
+      expect(addressResult).to.not.have.property('error');
+      expect(addressResult.getId()).to.not.be.an('undefined');
+      expect(addressResult.getStreet()).to.equal(street);
+      expect(addressResult.getStreet2()).to.equal(street2);
+
+      const addressId = addressResult.getId() as string;
+
+      const card = new Card();
+      card.setSingleUseToken(singleUseToken);
+
+      const cardResult = await paysafe.getCustomerServiceHandler().createCard(profileId, card);
+      debug(cardResult);
+
+      expect(cardResult).to.not.have.property('error');
+      expect(cardResult.getId()).to.not.be.an('undefined');
+      expect(cardResult.getLastDigits()).to.not.be.an('undefined');
+      expect(cardResult.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+
+      const cardId = cardResult.getId() as string;
+
+      const expiry = cardResult.getCardExpiry() as CardExpiry;
+      expect(expiry).to.not.be.an('undefined');
+      expect(expiry.getMonth()).to.equal(expiryMonth);
+      expect(expiry.getYear()).to.equal(expiryYear);
+
+      const cardUpdate = new Card();
+      cardUpdate.setBillingAddressId(addressId);
+      cardUpdate.setCardExpiry(expiry);
+
+      const cardUpdateResult = await paysafe.getCustomerServiceHandler().updateCard(profileId, cardId, cardUpdate);
+      debug(cardUpdateResult);
+
+      expect(cardUpdateResult).to.not.have.property('error');
+
+    }).timeout(timeout * 4);
 
   });
 
