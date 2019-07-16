@@ -77,5 +77,5 @@ export declare class ServiceHandler {
     getRefund(refundId: string): Promise<Refund>;
     verify(verification: Verification): Promise<Verification>;
     getVerification(verificationId: string): Promise<Verification>;
-    private getPath(path);
+    private getPath;
 }

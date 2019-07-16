@@ -23,7 +23,11 @@ export class PaysafeError extends Error {
     }
     super(resp.message);
     if (typeof resp.code !== 'undefined') {
-      this.code = resp.code;
+      if (typeof resp.code === 'number') {
+        this.code = resp.code;
+      } else if (typeof resp.code === 'string') {
+        this.code = parseInt(resp.code, 10) || 0;
+      }
     }
     if (typeof resp.details !== 'undefined') {
       if (Array.isArray(resp.details)) {

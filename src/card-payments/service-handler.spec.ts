@@ -10,6 +10,7 @@ import { Authorization } from './authorization';
 import { Verification } from './verification';
 
 import { CardExpiry } from '../common/card-expiry';
+import { PaysafeError } from '../common/paysafe-error';
 import { BillingDetails } from './lib/billing-details';
 import { Card } from './lib/card';
 
@@ -130,6 +131,65 @@ describe('Card Payments API', () => {
       expect(exp).to.not.be.an('undefined');
       expect((exp as CardExpiry).getMonth()).to.equal(expiryMonth);
       expect((exp as CardExpiry).getYear()).to.equal(expiryYear);
+
+    }).timeout(timeout);
+
+    it('should perform an authorization on a single-use token and fail', async () => {
+      const merchantRefNum = randomStr();
+      const amount = 11;
+
+      const authorization = new Authorization();
+      authorization.setAmount(amount);
+      authorization.setCurrencyCode('CAD');
+      authorization.setMerchantRefNum(merchantRefNum);
+
+      const card = new Card();
+      card.setPaymentToken(singleUseToken);
+      authorization.setCard(card);
+
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      authorization.setBillingDetails(billingDetails);
+
+      const authorizationResult = await paysafe.getCardServiceHandler().authorize(authorization);
+      debug(authorizationResult);
+      expect(authorizationResult).to.have.property('error');
+      const e = authorizationResult.getError();
+      expect(e).to.not.be.an('undefined');
+      expect((e as PaysafeError).getCode()).to.equal(3022);
+      expect(authorizationResult.getId()).to.not.be.an('undefined');
+      expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+      expect(authorizationResult).to.not.have.property('amount');
+      expect(authorizationResult).to.not.have.property('status');
+      expect(authorizationResult).to.not.have.property('txnTime');
+      expect(authorizationResult).to.not.have.property('card');
+
+    }).timeout(timeout);
+
+    it('should perform an authorization on a single-use token and have a server error', async () => {
+      const merchantRefNum = randomStr();
+      const amount = 20;
+
+      const authorization = new Authorization();
+      authorization.setAmount(amount);
+      authorization.setCurrencyCode('CAD');
+      authorization.setMerchantRefNum(merchantRefNum);
+
+      const card = new Card();
+      card.setPaymentToken(singleUseToken);
+      authorization.setCard(card);
+
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      authorization.setBillingDetails(billingDetails);
+
+      try {
+        await paysafe.getCardServiceHandler().authorize(authorization);
+        expect.fail();
+      } catch (err) {
+        debug(err);
+        expect(err).to.be.an('Error');
+      }
 
     }).timeout(timeout);
 

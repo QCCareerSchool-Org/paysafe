@@ -109,6 +109,54 @@ describe('Card Payments API', () => {
             chai_1.expect(exp.getMonth()).to.equal(expiryMonth);
             chai_1.expect(exp.getYear()).to.equal(expiryYear);
         })).timeout(timeout);
+        it('should perform an authorization on a single-use token and fail', () => __awaiter(this, void 0, void 0, function* () {
+            const merchantRefNum = randomStr();
+            const amount = 11;
+            const authorization = new authorization_1.Authorization();
+            authorization.setAmount(amount);
+            authorization.setCurrencyCode('CAD');
+            authorization.setMerchantRefNum(merchantRefNum);
+            const card = new card_1.Card();
+            card.setPaymentToken(singleUseToken);
+            authorization.setCard(card);
+            const billingDetails = new billing_details_1.BillingDetails();
+            billingDetails.setZip('K1L 6R2');
+            authorization.setBillingDetails(billingDetails);
+            const authorizationResult = yield paysafe.getCardServiceHandler().authorize(authorization);
+            debug(authorizationResult);
+            chai_1.expect(authorizationResult).to.have.property('error');
+            const e = authorizationResult.getError();
+            chai_1.expect(e).to.not.be.an('undefined');
+            chai_1.expect(e.getCode()).to.equal(3022);
+            chai_1.expect(authorizationResult.getId()).to.not.be.an('undefined');
+            chai_1.expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+            chai_1.expect(authorizationResult).to.not.have.property('amount');
+            chai_1.expect(authorizationResult).to.not.have.property('status');
+            chai_1.expect(authorizationResult).to.not.have.property('txnTime');
+            chai_1.expect(authorizationResult).to.not.have.property('card');
+        })).timeout(timeout);
+        it('should perform an authorization on a single-use token and have a server error', () => __awaiter(this, void 0, void 0, function* () {
+            const merchantRefNum = randomStr();
+            const amount = 20;
+            const authorization = new authorization_1.Authorization();
+            authorization.setAmount(amount);
+            authorization.setCurrencyCode('CAD');
+            authorization.setMerchantRefNum(merchantRefNum);
+            const card = new card_1.Card();
+            card.setPaymentToken(singleUseToken);
+            authorization.setCard(card);
+            const billingDetails = new billing_details_1.BillingDetails();
+            billingDetails.setZip('K1L 6R2');
+            authorization.setBillingDetails(billingDetails);
+            try {
+                yield paysafe.getCardServiceHandler().authorize(authorization);
+                chai_1.expect.fail();
+            }
+            catch (err) {
+                debug(err);
+                chai_1.expect(err).to.be.an('Error');
+            }
+        })).timeout(timeout);
     });
 });
 function getCardSingleUseToken() {

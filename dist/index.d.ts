@@ -32,6 +32,6 @@ export declare class Paysafe {
     post<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
     put<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
     delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
-    private process<T>(method, uri, requestObject?);
-    private getHost();
+    private process;
+    private getHost;
 }

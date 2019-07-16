@@ -46,5 +46,5 @@ export declare class ServiceHandler {
     createACHBankAccount(profileId: string, achBankAccount: ACHBankAccount): Promise<ACHBankAccount>;
     createBACSBankAccount(profileId: string, bacsBankAccount: BACSBankAccount): Promise<BACSBankAccount>;
     createMandate(accountType: 'BACS' | 'SEPA', profileId: string, bankAccountId: string, mandate: Mandate): Promise<Mandate>;
-    private getPath(path);
+    private getPath;
 }
