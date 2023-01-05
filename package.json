@@ -1,6 +1,6 @@
 {
   "name": "@qccareerschool/paysafe",
-  "version": "0.0.13",
+  "version": "0.1.0",
   "description": "API for Paysafe payments",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
