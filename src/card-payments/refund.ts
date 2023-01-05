@@ -1,20 +1,12 @@
-import { createArray } from '../common/create-array';
-import { Link } from '../common/link';
-
 import { SplitpayRequest } from './splitpay-request';
 
-import { Settlement } from './settlement';
-
-import { AcquirerResponse } from './lib/acquirer-response';
-import { Splitpay } from './lib/splitpay';
-
-export type statusType = 'RECEIVED' | 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
+export type RefundStatus = 'RECEIVED' | 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
 
 const AMOUNT_MAX = 99999999999;
 
 export class Refund extends SplitpayRequest {
 
-  private status?: statusType;
+  private status?: RefundStatus;
 
   constructor(resp?: Refund) {
     super(resp);
@@ -26,7 +18,6 @@ export class Refund extends SplitpayRequest {
     }
   }
 
-  public setStatus(status: statusType): void { this.status = status; }
-  public getStatus(): statusType | undefined { return this.status; }
-
+  public setStatus(status: RefundStatus): void { this.status = status; }
+  public getStatus(): RefundStatus | undefined { return this.status; }
 }

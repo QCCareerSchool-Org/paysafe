@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PaysafeError = void 0;
 const create_array_1 = require("./create-array");
 const field_error_1 = require("./field-error");
 const link_1 = require("./link");
@@ -30,10 +31,10 @@ class PaysafeError extends Error {
             }
         }
         if (typeof resp.fieldErrors !== 'undefined') {
-            this.fieldErrors = create_array_1.createArray(resp.fieldErrors, field_error_1.FieldError);
+            this.fieldErrors = (0, create_array_1.createArray)(resp.fieldErrors, field_error_1.FieldError);
         }
         if (typeof resp.links !== 'undefined') {
-            this.links = create_array_1.createArray(resp.links, link_1.Link);
+            this.links = (0, create_array_1.createArray)(resp.links, link_1.Link);
         }
     }
     setCode(code) { this.code = code; }

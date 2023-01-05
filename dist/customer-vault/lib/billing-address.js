@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BillingAddress = void 0;
 const NICK_NAME_MAX_LENGTH = 50;
 const STREET_MAX_LENGTH = 50;
 const STREET2_MAX_LENGTH = 50;

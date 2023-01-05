@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACHBankAccount = void 0;
 const request_1 = require("./request");
 const billing_address_1 = require("./lib/billing-address");
 const NICK_NAME_MAX_LENGTH = 50;

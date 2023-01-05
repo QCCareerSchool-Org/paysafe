@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccordD = void 0;
 const DEFERRED_PAYMENT = 'DEFERRED_PAYMENT';
 class AccordD {
     constructor(resp) {

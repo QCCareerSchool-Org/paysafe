@@ -2,10 +2,8 @@
  * Paysafe
  *
  */
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as request from 'request';
-
-import { PaysafeError } from './common/paysafe-error';
 
 import { Request as CardPaymentRequest } from './card-payments/request';
 import { Request as CustomerVaultRequest } from './customer-vault/request';
@@ -17,7 +15,7 @@ import { ServiceHandler as ThreeDSecureServiceHandler } from './three-d-secure/s
 
 export type GeneralRequest = CardPaymentRequest | CustomerVaultRequest;
 
-export type environmentType = 'LIVE' | 'TEST';
+export type Environment = 'LIVE' | 'TEST';
 
 const debug = Debug('paysafe');
 
@@ -33,9 +31,9 @@ export class Paysafe {
     pool: { maxSockets: this.maxSockets },
   });
 
-  constructor(private apiKey: string, private apiPassword: string, private environment: environmentType, private accountNumber: string) { }
+  constructor(private apiKey: string, private apiPassword: string, private environment: Environment, private accountNumber: string) { }
 
-  public updateConfig(apiKey: string, apiPassword: string, environment: environmentType, accountNumber: string) {
+  public updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
     this.apiPassword = apiPassword;
     this.environment = environment;
@@ -46,7 +44,7 @@ export class Paysafe {
 
   public getApiPassword(): string { return this.apiPassword; }
 
-  public getEnvironment(): environmentType { return this.environment; }
+  public getEnvironment(): Environment { return this.environment; }
 
   public getAccountNumber(): string { return this.accountNumber; }
 
@@ -87,11 +85,13 @@ export class Paysafe {
   public put<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
     return this.process('PUT', uri, requestObject);
   }
-  public delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
+  public delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<void> {
     return this.process('DELETE', uri, requestObject);
   }
 
-  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', uri: string, requestObject?: T): Promise<T> {
+  private process<T extends GeneralRequest>(method: 'DELETE', uri: string, requestObject?: T): Promise<void>;
+  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT', uri: string, requestObject?: T): Promise<T>
+  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', uri: string, requestObject?: T): Promise<void | T> {
     const options: request.OptionsWithUri = {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',

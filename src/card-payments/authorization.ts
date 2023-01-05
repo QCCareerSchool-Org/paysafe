@@ -1,10 +1,7 @@
 import { createArray } from '../common/create-array';
-import { Link } from '../common/link';
 
 import { SplitpayRequest } from './splitpay-request';
-
 import { Settlement } from './settlement';
-
 import { AccordD } from './lib/accord-d';
 import { Authentication } from './lib/authentication';
 import { BillingDetails } from './lib/billing-details';
@@ -14,12 +11,12 @@ import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { Recipient } from './lib/recipient';
 import { ShippingDetails } from './lib/shipping-details';
-import { Splitpay } from './lib/splitpay';
+import { StoredCredential } from './lib/stored-credential';
 
-export type recurringType = 'INITIAL' | 'RECURRING';
-export type avsResponseType = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
-export type cvvVerificationType = 'MATCH' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
-export type statusType = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
+export type AuthorizationRecurring = 'INITIAL' | 'RECURRING';
+export type AuthorizationAvsResponse = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
+export type AuthorizationCvvVerification = 'MATCH' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
+export type AuthorizationStatus = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
 
 export class Authorization extends SplitpayRequest {
 
@@ -28,7 +25,27 @@ export class Authorization extends SplitpayRequest {
   private profile?: Profile;
   private billingDetails?: BillingDetails;
   private shippingDetails?: ShippingDetails;
-  private recurring?: recurringType;
+   /**
+   * This indicates whether this is an initial or repeat transaction for a customer for whom you will be processing
+   * recurring transactions. The Recurring Indicator is used to identify transactions that are eligible for repeat
+   * processing. The merchant should identity the initial transaction processed with full billing information including
+   * the card security code (CVV) by setting the recurring indicator to “INITIAL”. Subsequent charges to the same card
+   * can be identified with the recurring indicator set to “RECURRING”. For these transactions the card security code
+   * is not required and could not be passed in because card regulations do not allow merchants to store it.
+   * 
+   * Note: Not all processing gateways support this parameter. Contact your account manager for more information. You
+   * cannot include both the recurring parameter and the storedCredential object in the same authorization request.
+   * Paysafe recommends using the storedCredential object.
+   */
+  private recurring?: AuthorizationRecurring;
+  /**
+   * This object is used to identify requests that use stored credentials that the merchant has on file for the
+   * consumer, in order to improve authorization rates and reduce fraud.
+   * 
+   * Note: You cannot include both the recurring parameter and the storedCredential object in the same authorization
+   * request. Paysafe recommends using the storedCredential object.
+   */
+  private storedCredential?: StoredCredential;
   private customerIp?: string;
   private keywords?: string[];
   private merchantDescriptor?: MerchantDescriptor;
@@ -40,9 +57,9 @@ export class Authorization extends SplitpayRequest {
   private availableToSettle?: number;
   private authCode?: string;
   private currencyCode?: string;
-  private avsResponse?: avsResponseType;
-  private cvvVerification?: cvvVerificationType;
-  private status?: statusType;
+  private avsResponse?: AuthorizationAvsResponse;
+  private cvvVerification?: AuthorizationCvvVerification;
+  private status?: AuthorizationStatus;
 
   private settlements?: Settlement[];
 
@@ -131,8 +148,11 @@ export class Authorization extends SplitpayRequest {
   public setShippingDetails(shippingDetails: ShippingDetails): void { this.shippingDetails = shippingDetails; }
   public getShippingDetails(): ShippingDetails | undefined { return this.shippingDetails; }
 
-  public setRecurring(recurring: recurringType): void { this.recurring = recurring; }
-  public getRecurring(): recurringType | undefined { return this.recurring; }
+  public setRecurring(recurring: AuthorizationRecurring): void { this.recurring = recurring; }
+  public getRecurring(): AuthorizationRecurring | undefined { return this.recurring; }
+
+  public setStoredCredential(storedCredential: StoredCredential): void { this.storedCredential = storedCredential; }
+  public getStoredCredential(): StoredCredential | undefined { return this.storedCredential; }
 
   public setCustomerIp(customerIp: string): void { this.customerIp = customerIp; }
   public getCustomerIp(): string | undefined { return this.customerIp; }
@@ -165,12 +185,12 @@ export class Authorization extends SplitpayRequest {
   public setCurrencyCode(currencyCode: string): void { this.currencyCode = currencyCode; }
   public getCurrencyCode(): string | undefined { return this.currencyCode; }
 
-  public getAvsResponse(): avsResponseType | undefined { return this.avsResponse; }
+  public getAvsResponse(): AuthorizationAvsResponse | undefined { return this.avsResponse; }
 
-  public getCvvVerification(): cvvVerificationType | undefined { return this.cvvVerification; }
+  public getCvvVerification(): AuthorizationCvvVerification | undefined { return this.cvvVerification; }
 
-  public setStatus(status: statusType): void { this.status = status; }
-  public getStatus(): statusType | undefined { return this.status; }
+  public setStatus(status: AuthorizationStatus): void { this.status = status; }
+  public getStatus(): AuthorizationStatus | undefined { return this.status; }
 
   public setSettlements(settlements: Settlement[]): void { this.settlements = settlements; }
   public getSettlements(): Settlement[] | undefined { return this.settlements; }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ShippingDetails = void 0;
 class ShippingDetails {
     constructor(resp) {
         if (!resp) {

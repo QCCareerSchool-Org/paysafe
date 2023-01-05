@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Splitpay = void 0;
 class Splitpay {
     constructor(resp) {
         if (typeof resp === 'undefined') {

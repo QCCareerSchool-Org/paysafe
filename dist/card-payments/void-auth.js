@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoidAuth = void 0;
 const amount_request_1 = require("./amount-request");
 const AMOUNT_MAX = 99999999999;
 class VoidAuth extends amount_request_1.AmountRequest {

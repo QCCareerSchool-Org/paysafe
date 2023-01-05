@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Request = void 0;
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
 const paysafe_error_1 = require("../common/paysafe-error");
@@ -35,7 +36,7 @@ class Request {
             this.childAccountNum = resp.childAccountNum;
         }
         if (typeof resp.links !== 'undefined') {
-            this.links = create_array_1.createArray(resp.links, link_1.Link);
+            this.links = (0, create_array_1.createArray)(resp.links, link_1.Link);
         }
         if (typeof resp.error !== 'undefined') {
             this.error = new paysafe_error_1.PaysafeError(resp.error);

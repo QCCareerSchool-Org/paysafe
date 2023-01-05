@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Profile = void 0;
 const FIRST_NAME_MAX_LENGTH = 80;
 const LAST_NAME_MAX_LENGTH = 80;
 const EMAIL_MAX_LENGTH = 255;

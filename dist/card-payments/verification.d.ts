@@ -6,7 +6,7 @@ import { Card } from './lib/card';
 import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { ShippingDetails } from './lib/shipping-details';
-export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
+export type VerificationStatus = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 export declare class Verification extends Request {
     private card?;
     private authCode?;
@@ -51,6 +51,6 @@ export declare class Verification extends Request {
     getAuthCode(): string | undefined;
     setCard(card: Card): void;
     getCard(): Card | undefined;
-    setStatus(status: statusType): void;
-    getStatus(): statusType | undefined;
+    setStatus(status: VerificationStatus): void;
+    getStatus(): VerificationStatus | undefined;
 }

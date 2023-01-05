@@ -1,13 +1,13 @@
 import { CardExpiry } from '../../common/card-expiry';
 
-export type cardType = 'AM' | 'DC' | 'JC' | 'MC' | 'MD' | 'SO' | 'VI' | 'VD' | 'VE';
+export type CardType = 'AM' | 'DC' | 'JC' | 'MC' | 'MD' | 'SO' | 'VI' | 'VD' | 'VE';
 
 export class Card {
 
   private paymentToken?: string;
   private singleUseToken?: string;
   private cardNum?: string;
-  private type?: cardType;
+  private type?: CardType;
   private lastDigits?: string;
   private cardExpiry?: CardExpiry;
   private cvv?: string;
@@ -56,8 +56,8 @@ export class Card {
   public setCardNum(cardNum: string): void { this.cardNum = cardNum; }
   public getCardNum(): string | undefined { return this.cardNum; }
 
-  public setType(type: cardType): void { this.type = type; }
-  public getType(): cardType | undefined { return this.type; }
+  public setType(type: CardType): void { this.type = type; }
+  public getType(): CardType | undefined { return this.type; }
 
   public setLastDigits(lastDigits: string): void { this.lastDigits = lastDigits; }
   public getLastDigits(): string | undefined { return this.lastDigits; }

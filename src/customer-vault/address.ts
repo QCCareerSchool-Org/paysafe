@@ -10,7 +10,7 @@ const COUNTRY_MAX_LENGTH = 2;
 const RECIPIENT_NAME_MAX_LENGTH = 255;
 const PHONE_MAX_LENGTH = 40;
 
-export type statusType = 'ACTIVE';
+export type AddressStatus = 'ACTIVE';
 
 export class Address extends Request {
 
@@ -23,7 +23,7 @@ export class Address extends Request {
   private country?: string;
   private recipientName?: string;
   private phone?: string;
-  private status?: statusType;
+  private status?: AddressStatus;
   private defaultShippingAddressIndicator?: boolean;
 
   constructor(resp?: Address) {
@@ -138,7 +138,7 @@ export class Address extends Request {
   }
   public getPhone(): string | undefined { return this.phone; }
 
-  public getStatus(): statusType | undefined { return this.status; }
+  public getStatus(): AddressStatus | undefined { return this.status; }
 
   public setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean) { this.defaultShippingAddressIndicator = defaultShippingAddressIndicator; }
   public getDefaultShippingAddressIndicator(): boolean | undefined { return this.defaultShippingAddressIndicator; }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MerchantDescriptor = void 0;
 const DYNAMIC_DESCRIPTOR_MAX_LENGTH = 20;
 const PHONE_MAX_LENGTH = 13;
 class MerchantDescriptor {

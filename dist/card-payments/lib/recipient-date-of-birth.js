@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecipientDateOfBirth = void 0;
 const MIN_DAY = 1;
 const MAX_DAY = 31;
 const MIN_MONTH = 1;

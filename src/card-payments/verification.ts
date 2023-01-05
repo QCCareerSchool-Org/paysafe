@@ -1,10 +1,6 @@
 import { createArray } from '../common/create-array';
-import { Link } from '../common/link';
-
 import { Request } from './request';
-
 import { AccordD } from './lib/accord-d';
-import { AcquirerResponse } from './lib/acquirer-response';
 import { Authentication } from './lib/authentication';
 import { BillingDetails } from './lib/billing-details';
 import { Card } from './lib/card';
@@ -12,7 +8,7 @@ import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { ShippingDetails } from './lib/shipping-details';
 
-export type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
+export type VerificationStatus = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 
 export class Verification extends Request {
 
@@ -25,7 +21,7 @@ export class Verification extends Request {
   private currencyCode?: string;
   private avsResponse?: string;
   private cvvVerification?: string;
-  private status?: statusType;
+  private status?: VerificationStatus;
   private verifications?: Verification[];
   private accordD?: AccordD;
   private merchantDescriptor?: MerchantDescriptor;
@@ -125,7 +121,7 @@ export class Verification extends Request {
   public setCard(card: Card): void { this.card = card; }
   public getCard(): Card | undefined { return this.card; }
 
-  public setStatus(status: statusType): void { this.status = status; }
-  public getStatus(): statusType | undefined { return this.status; }
+  public setStatus(status: VerificationStatus): void { this.status = status; }
+  public getStatus(): VerificationStatus | undefined { return this.status; }
 
 }

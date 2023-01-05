@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LineItem = void 0;
 const DESCRIPTION_MAX_LENGTH = 50;
 const PRODUCT_CODE_MAX_LENGTH = 12;
 const QUANTITY_MAX = 99999999999;

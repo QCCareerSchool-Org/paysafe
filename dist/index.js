@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Paysafe = void 0;
 /**
  * Paysafe
  *

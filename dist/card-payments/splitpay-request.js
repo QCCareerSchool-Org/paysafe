@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SplitpayRequest = void 0;
 const create_array_1 = require("../common/create-array");
 const amount_request_1 = require("./amount-request");
 const splitpay_1 = require("./lib/splitpay");
@@ -15,7 +16,7 @@ class SplitpayRequest extends amount_request_1.AmountRequest {
         }
         if (typeof resp.splitpay !== 'undefined') {
             if (Array.isArray(resp.splitpay)) {
-                this.splitpay = create_array_1.createArray(resp.splitpay, splitpay_1.Splitpay);
+                this.splitpay = (0, create_array_1.createArray)(resp.splitpay, splitpay_1.Splitpay);
             }
             else {
                 this.splitpay = new splitpay_1.Splitpay(resp.splitpay);

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as dotenv from 'dotenv';
 import 'mocha';
-import * as request from 'request';
+import request from 'request';
 import * as util from 'util';
 
 import { Paysafe } from './index';
@@ -27,6 +27,7 @@ import { Profile } from './customer-vault/profile';
 
 import { BillingAddress } from './customer-vault/lib/billing-address';
 import { Mandate } from './customer-vault/mandate';
+import { StoredCredential, StoredCredentialOccurrence, StoredCredentialType } from './card-payments/lib/stored-credential';
 
 dotenv.config();
 
@@ -187,6 +188,74 @@ describe('Paysafe API with Single-Use Tokens', () => {
       authorization.setCurrencyCode('CAD');
       authorization.setMerchantRefNum(merchantRefNum);
       authorization.setRecurring('INITIAL');
+
+      const authCard = new Card();
+      authCard.setPaymentToken(singleUseToken);
+      authorization.setCard(authCard);
+
+      const billingDetails = new BillingDetails();
+      billingDetails.setZip('K1L 6R2');
+      authorization.setBillingDetails(billingDetails);
+
+      paysafe.getCustomerServiceHandler().createProfile(profile).then((profileResult) => {
+        debug(profileResult);
+        expect(profileResult.getId()).to.not.be.an('undefined');
+        expect(profileResult.getMerchantCustomerId()).to.equal(merchantCustomerId);
+        expect(profileResult.getFirstName()).to.equal(firstName);
+        expect(profileResult.getLastName()).to.equal(lastName);
+        const cards = profileResult.getCards() as CustomerVaultCard[];
+        expect(cards).to.not.be.an('undefined');
+        expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+        return paysafe.getCardServiceHandler().authorize(authorization);
+      }).then((authorizationResult) => {
+        debug(authorizationResult);
+        expect(authorizationResult.getId()).to.not.be.an('undefined');
+        expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
+        expect(authorizationResult.getAmount()).to.equal(amount);
+        expect(authorizationResult.getStatus()).to.equal('COMPLETED');
+        const c = authorizationResult.getCard() as Card;
+        expect(c).to.not.be.an('undefined');
+        expect(c.getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+        const exp = c.getCardExpiry() as CardExpiry;
+        expect(exp).to.not.be.an('undefined');
+        expect(exp.getMonth()).to.equal(expiryMonth);
+        expect(exp.getYear()).to.equal(expiryYear);
+        done();
+      }).catch((err) => done(new Error(JSON.stringify(err))));
+    } catch (err) {
+      done(err);
+    }
+
+  }).timeout(timeout * 2);
+
+  it('should create a profile along with a card using a single-use token and then perform an authorization using a storedCredentials object on that single-use token', (done) => {
+    const merchantRefNum = randomStr();
+    const amount = randomInt(200, 300);
+    const merchantCustomerId = randomStr();
+    const firstName = randomStr();
+    const lastName = randomStr();
+
+    try {
+      const profile = new Profile();
+      profile.setMerchantCustomerId(merchantCustomerId);
+      profile.setLocale('en_US');
+      profile.setFirstName(firstName);
+      profile.setLastName(lastName);
+
+      const profileCard = new CustomerVaultCard();
+      profileCard.setSingleUseToken(singleUseToken);
+      profile.setCard(profileCard);
+
+
+      const authorization = new Authorization();
+      authorization.setAmount(amount);
+      authorization.setCurrencyCode('CAD');
+      authorization.setMerchantRefNum(merchantRefNum);
+
+      const storedCredential = new StoredCredential();
+      storedCredential.setType(StoredCredentialType.RECURRING);
+      storedCredential.setOccurence(StoredCredentialOccurrence.INITIAL);
+      authorization.setStoredCredential(storedCredential);
 
       const authCard = new Card();
       authCard.setPaymentToken(singleUseToken);

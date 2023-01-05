@@ -1,19 +1,12 @@
-import { createArray } from '../common/create-array';
-import { Link } from '../common/link';
-
 import { AmountRequest } from './amount-request';
 
-import { Authorization } from './authorization';
-
-import { AcquirerResponse } from './lib/acquirer-response';
-
-export type statusType = 'RECEIVED' | 'COMPLETED' | 'FAILED';
+export type VoidAuthStatus = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 
 const AMOUNT_MAX = 99999999999;
 
 export class VoidAuth extends AmountRequest {
 
-  private status?: statusType;
+  private status?: VoidAuthStatus;
 
   constructor(resp?: VoidAuth) {
     super(resp);
@@ -25,7 +18,7 @@ export class VoidAuth extends AmountRequest {
     }
   }
 
-  public setStatus(status: statusType): void { this.status = status; }
-  public getStatus(): statusType | undefined { return this.status; }
+  public setStatus(status: VoidAuthStatus): void { this.status = status; }
+  public getStatus(): VoidAuthStatus | undefined { return this.status; }
 
 }

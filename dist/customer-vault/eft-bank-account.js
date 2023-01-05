@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EFTBankAccount = void 0;
 const paysafe_error_1 = require("../common/paysafe-error");
 class EFTBankAccount {
     constructor(resp) {

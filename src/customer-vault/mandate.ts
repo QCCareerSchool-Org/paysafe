@@ -3,12 +3,13 @@ import { Request } from './request';
 const REFERENCE_MAX_LENGTH = 35; // 10 for BACS, 35 for SEPA
 const PAYMENT_TOKEN_MAX_LENGTH = 50;
 
-export type statusType = 'INITIAL' | 'PENDING' | 'DECLINED' | 'BATCHED' | 'ACTIVE' | 'CANCELLED' | 'REJECTED' | 'DISPUTED' | 'INACTIVE';
+export type MandateStatus = 'INITIAL' | 'PENDING' | 'DECLINED' | 'BATCHED' | 'ACTIVE' | 'CANCELLED' | 'REJECTED' | 'DISPUTED' | 'INACTIVE';
+
 export class Mandate extends Request {
 
   private reference?: string;
   private bankAccountId?: string;
-  private status?: statusType;
+  private status?: MandateStatus;
   private paymentToken?: string;
   private statusChangeDate?: Date;
   private statusReasonCode?: string;
@@ -52,7 +53,7 @@ export class Mandate extends Request {
 
   public getBankAccountId(): string | undefined { return this.bankAccountId; }
 
-  public getStatus(): statusType | undefined { return this.status; }
+  public getStatus(): MandateStatus | undefined { return this.status; }
 
   public getStatusChangeDate(): Date | undefined { return this.statusChangeDate; }
 
@@ -67,5 +68,4 @@ export class Mandate extends Request {
     this.paymentToken = paymentToken;
   }
   public getPaymentToken(): string | undefined { return this.paymentToken; }
-
 }

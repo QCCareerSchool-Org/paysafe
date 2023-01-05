@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MasterPass = void 0;
 class MasterPass {
     constructor(resp) {
         if (!resp) {

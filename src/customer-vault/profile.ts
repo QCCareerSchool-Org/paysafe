@@ -11,9 +11,9 @@ import { BACSBankAccount } from './bacs-bank-account';
 import { EFTBankAccount } from './eft-bank-account';
 import { SEPABankAccount } from './sepa-bank-account';
 
-export type statusType = 'INITIAL' | 'ACTIVE';
-export type localeType = 'en_US' | 'fr_CA' | 'en_GB';
-export type genderType = 'M' | 'F';
+export type ProfileStatus = 'INITIAL' | 'ACTIVE';
+export type ProfileLocale = 'en_US' | 'fr_CA' | 'en_GB';
+export type ProfileGender = 'M' | 'F';
 
 const STATUSES = ['INITIAL', 'ACTIVE'];
 const MERCHANT_CUSTOMER_ID_MAX_LENGTH = 100;
@@ -31,15 +31,15 @@ const PAYMENT_TOKEN_MAX_LENGTH = 50;
 
 export class Profile extends Request {
 
-  private status?: statusType;
+  private status?: ProfileStatus;
   private merchantCustomerId?: string;
-  private locale?: localeType;
+  private locale?: ProfileLocale;
   private firstName?: string;
   private middleName?: string;
   private lastName?: string;
   private dateOfBirth?: DateOfBirth;
   private ip?: string;
-  private gender?: genderType;
+  private gender?: ProfileGender;
   private nationality?: string;
   private email?: string;
   private phone?: string;
@@ -154,13 +154,13 @@ export class Profile extends Request {
     }
   }
 
-  public setStatus(status: statusType): void {
+  public setStatus(status: ProfileStatus): void {
     if (STATUSES.indexOf(status) === -1) {
       throw new Error('invalid status');
     }
     this.status = status;
   }
-  public getStatus(): statusType | undefined { return this.status; }
+  public getStatus(): ProfileStatus | undefined { return this.status; }
 
   public setMerchantCustomerId(merchantCustomerId: string): void {
     if (merchantCustomerId.length > MERCHANT_CUSTOMER_ID_MAX_LENGTH) {
@@ -170,13 +170,13 @@ export class Profile extends Request {
   }
   public getMerchantCustomerId(): string | undefined { return this.merchantCustomerId; }
 
-  public setLocale(locale: localeType): void {
+  public setLocale(locale: ProfileLocale): void {
     if (LOCALES.indexOf(locale) === -1) {
       throw new Error('invalid locale');
     }
     this.locale = locale;
   }
-  public getLocale(): string | undefined { return this.locale; }
+  public getLocale(): ProfileLocale | undefined { return this.locale; }
 
   public setFirstName(firstName: string): void {
     if (firstName.length > FIRST_NAME_MAX_LENGTH) {
@@ -218,13 +218,13 @@ export class Profile extends Request {
   }
   public getIp(): string | undefined { return this.ip; }
 
-  public setGender(gender: genderType): void {
+  public setGender(gender: ProfileGender): void {
     if (GENDERS.indexOf(gender) === -1) {
       throw new Error('invalid gender');
     }
     this.gender = gender;
   }
-  public getGender(): genderType | undefined { return this.gender; }
+  public getGender(): ProfileGender | undefined { return this.gender; }
 
   public setNationality(nationality: string): void {
     if (nationality.length > NATIONALITY_MAX_LENGTH) {
@@ -259,6 +259,9 @@ export class Profile extends Request {
   public getCellPhone(): string | undefined { return this.cellPhone; }
 
   public setPaymentToken(paymentToken: string): void {
+    if (paymentToken.length > PAYMENT_TOKEN_MAX_LENGTH) {
+      throw new Error('payment token exceeds maximum length');
+    }
     this.paymentToken = paymentToken;
   }
   public getPaymentToken(): string | undefined { return this.paymentToken; }

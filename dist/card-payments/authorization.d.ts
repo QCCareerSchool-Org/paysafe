@@ -9,17 +9,38 @@ import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { Recipient } from './lib/recipient';
 import { ShippingDetails } from './lib/shipping-details';
-export declare type recurringType = 'INITIAL' | 'RECURRING';
-export declare type avsResponseType = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
-export declare type cvvVerificationType = 'MATCH' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
-export declare type statusType = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
+import { StoredCredential } from './lib/stored-credential';
+export type AuthorizationRecurring = 'INITIAL' | 'RECURRING';
+export type AuthorizationAvsResponse = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
+export type AuthorizationCvvVerification = 'MATCH' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
+export type AuthorizationStatus = 'RECEIVED' | 'COMPLETED' | 'HELD' | 'FAILED' | 'CANCELLED';
 export declare class Authorization extends SplitpayRequest {
     private card?;
     private authentication?;
     private profile?;
     private billingDetails?;
     private shippingDetails?;
+    /**
+    * This indicates whether this is an initial or repeat transaction for a customer for whom you will be processing
+    * recurring transactions. The Recurring Indicator is used to identify transactions that are eligible for repeat
+    * processing. The merchant should identity the initial transaction processed with full billing information including
+    * the card security code (CVV) by setting the recurring indicator to “INITIAL”. Subsequent charges to the same card
+    * can be identified with the recurring indicator set to “RECURRING”. For these transactions the card security code
+    * is not required and could not be passed in because card regulations do not allow merchants to store it.
+    *
+    * Note: Not all processing gateways support this parameter. Contact your account manager for more information. You
+    * cannot include both the recurring parameter and the storedCredential object in the same authorization request.
+    * Paysafe recommends using the storedCredential object.
+    */
     private recurring?;
+    /**
+     * This object is used to identify requests that use stored credentials that the merchant has on file for the
+     * consumer, in order to improve authorization rates and reduce fraud.
+     *
+     * Note: You cannot include both the recurring parameter and the storedCredential object in the same authorization
+     * request. Paysafe recommends using the storedCredential object.
+     */
+    private storedCredential?;
     private customerIp?;
     private keywords?;
     private merchantDescriptor?;
@@ -46,8 +67,10 @@ export declare class Authorization extends SplitpayRequest {
     getBillingDetails(): BillingDetails | undefined;
     setShippingDetails(shippingDetails: ShippingDetails): void;
     getShippingDetails(): ShippingDetails | undefined;
-    setRecurring(recurring: recurringType): void;
-    getRecurring(): recurringType | undefined;
+    setRecurring(recurring: AuthorizationRecurring): void;
+    getRecurring(): AuthorizationRecurring | undefined;
+    setStoredCredential(storedCredential: StoredCredential): void;
+    getStoredCredential(): StoredCredential | undefined;
     setCustomerIp(customerIp: string): void;
     getCustomerIp(): string | undefined;
     setKeywords(keywords: string[]): void;
@@ -68,10 +91,10 @@ export declare class Authorization extends SplitpayRequest {
     getAuthCode(): string | undefined;
     setCurrencyCode(currencyCode: string): void;
     getCurrencyCode(): string | undefined;
-    getAvsResponse(): avsResponseType | undefined;
-    getCvvVerification(): cvvVerificationType | undefined;
-    setStatus(status: statusType): void;
-    getStatus(): statusType | undefined;
+    getAvsResponse(): AuthorizationAvsResponse | undefined;
+    getCvvVerification(): AuthorizationCvvVerification | undefined;
+    setStatus(status: AuthorizationStatus): void;
+    getStatus(): AuthorizationStatus | undefined;
     setSettlements(settlements: Settlement[]): void;
     getSettlements(): Settlement[] | undefined;
 }

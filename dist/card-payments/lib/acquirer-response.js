@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AcquirerResponse = void 0;
 class AcquirerResponse {
     constructor(resp) {
         if (!resp) {

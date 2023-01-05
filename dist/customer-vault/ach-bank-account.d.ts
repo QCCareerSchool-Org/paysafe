@@ -1,7 +1,7 @@
 import { Request } from './request';
 import { BillingAddress } from './lib/billing-address';
-export declare type statusType = 'ACTIVE' | 'INVALID' | 'INACTIVE';
-export declare type accountTypeType = 'CHECKING' | 'LOAN' | 'SAVINGS';
+export type ACHBankAccountStatus = 'ACTIVE' | 'INVALID' | 'INACTIVE';
+export type ACHBankAccountAccountType = 'CHECKING' | 'LOAN' | 'SAVINGS';
 export declare class ACHBankAccount extends Request {
     private nickName?;
     private merchantRefNum?;
@@ -20,7 +20,7 @@ export declare class ACHBankAccount extends Request {
     getNickName(): string | undefined;
     setMerchantRefNum(merchantRefNum: string): void;
     getMerchantRefNum(): string | undefined;
-    getStatus(): statusType | undefined;
+    getStatus(): ACHBankAccountStatus | undefined;
     getStatusReason(): string | undefined;
     setAccountNumber(accountNumber: string): void;
     getAccountNumber(): string | undefined;
@@ -28,8 +28,8 @@ export declare class ACHBankAccount extends Request {
     getAccountHolderName(): string | undefined;
     setRoutingNumber(routingNumber: string): void;
     getRoutingNumber(): string | undefined;
-    setAccountType(accountType: accountTypeType): void;
-    getAccountType(): accountTypeType | undefined;
+    setAccountType(accountType: ACHBankAccountAccountType): void;
+    getAccountType(): ACHBankAccountAccountType | undefined;
     getLastDigits(): string | undefined;
     setBillingAddress(billingAddress: BillingAddress): void;
     getBillingAddress(): BillingAddress | undefined;

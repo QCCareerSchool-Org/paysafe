@@ -1,5 +1,5 @@
 import { CardExpiry } from '../../common/card-expiry';
-export declare type cardType = 'AM' | 'DC' | 'JC' | 'MC' | 'MD' | 'SO' | 'VI' | 'VD' | 'VE';
+export type CardType = 'AM' | 'DC' | 'JC' | 'MC' | 'MD' | 'SO' | 'VI' | 'VD' | 'VE';
 export declare class Card {
     private paymentToken?;
     private singleUseToken?;
@@ -17,8 +17,8 @@ export declare class Card {
     getSingleUseToken(): string | undefined;
     setCardNum(cardNum: string): void;
     getCardNum(): string | undefined;
-    setType(type: cardType): void;
-    getType(): cardType | undefined;
+    setType(type: CardType): void;
+    getType(): CardType | undefined;
     setLastDigits(lastDigits: string): void;
     getLastDigits(): string | undefined;
     setCardExpiry(cardExpiry: CardExpiry): void;

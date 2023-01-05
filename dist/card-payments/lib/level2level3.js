@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Level2level3 = void 0;
 const create_array_1 = require("../../common/create-array");
 const line_item_1 = require("./line-item");
 const LOCAL_TAX_AMOUNT_MAX = 99999999999;
@@ -39,7 +40,7 @@ class Level2level3 {
             this.shipFromZip = resp.shipFromZip;
         }
         if (typeof resp.lineItems !== 'undefined') {
-            this.lineItems = create_array_1.createArray(resp.lineItems, line_item_1.LineItem);
+            this.lineItems = (0, create_array_1.createArray)(resp.lineItems, line_item_1.LineItem);
         }
     }
     setExemptLocalTax(exemptLocalTax) { this.exemptLocalTax = exemptLocalTax; }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BACSBankAccount = void 0;
 const request_1 = require("./request");
 const create_array_1 = require("../common/create-array");
 const billing_address_1 = require("./lib/billing-address");
@@ -54,7 +55,7 @@ class BACSBankAccount extends request_1.Request {
             if (!Array.isArray(resp.mandates)) {
                 throw new Error('mandates should be an array');
             }
-            this.mandates = create_array_1.createArray(resp.mandates, mandate_1.Mandate);
+            this.mandates = (0, create_array_1.createArray)(resp.mandates, mandate_1.Mandate);
         }
     }
     setNickName(nickName) {

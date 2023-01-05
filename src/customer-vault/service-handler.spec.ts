@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as dotenv from 'dotenv';
 import 'mocha';
-import * as request from 'request';
+import request from 'request';
 
 import { Paysafe } from '../index';
 
@@ -103,7 +103,6 @@ describe('Customer Vault API', () => {
       expect(profileResult.getEmail()).to.equal(emailAddress);
       expect(profileResult.getPhone()).to.equal(phoneNumber);
       expect(profileResult.getNationality()).to.equal(nationality);
-
     }).timeout(timeout);
 
     it('should create a profile with a card', async () => {
@@ -154,7 +153,6 @@ describe('Customer Vault API', () => {
       const cards = profileResult.getCards() as Card[];
       expect(cards[0].getId()).to.not.be.an('undefined');
       expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-
     }).timeout(timeout);
 
     it('should create a profile with a card with a billing address', async () => {
@@ -210,7 +208,6 @@ describe('Customer Vault API', () => {
       const cards = profileResult.getCards() as Card[];
       expect(cards[0].getId()).to.not.be.an('undefined');
       expect(cards[0].getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
-
     }).timeout(timeout);
 
     it('should create a profile with a dateOfBirth', async () => {
@@ -250,7 +247,6 @@ describe('Customer Vault API', () => {
       expect((dob as DateOfBirth).getMonth()).to.equal(month);
       expect((dob as DateOfBirth).getDay()).to.not.be.an('undefined');
       expect((dob as DateOfBirth).getDay()).to.equal(day);
-
     }).timeout(timeout);
 
     it('should create a profile with an achBankAccount', async () => {
@@ -289,7 +285,6 @@ describe('Customer Vault API', () => {
       expect(achBankAccounts[0].getId()).to.not.be.an('undefined');
       expect(achBankAccounts[0].getRoutingNumber()).to.equal(routingNumber);
       expect(achBankAccounts[0].getLastDigits()).to.equal(accountNumber.substr(accountNumber.length - 2));
-
     }).timeout(timeout);
 
     it('should create a profile with an bacsBankAccount and then add a mandate', async () => {
@@ -339,9 +334,7 @@ describe('Customer Vault API', () => {
       debug(updateResult);
 
       expect(updateResult).to.not.have.property('error');
-
     }).timeout(timeout * 2);
-
   });
 
   describe('Manipulating Profiles', () => {
@@ -397,7 +390,6 @@ describe('Customer Vault API', () => {
       expect(profileResult.getFirstName()).to.equal(firstName);
       expect(profileResult.getLastName()).to.be.an('undefined');
       expect(profileResult.getMerchantCustomerId()).to.equal(merchantCustomerId);
-
     }).timeout(timeout);
 
     it('should add a card', async () => {
@@ -444,7 +436,6 @@ describe('Customer Vault API', () => {
         }
       }
       expect(found).to.equal(true);
-
     }).timeout(timeout * 2);
 
     it('should add an address', async () => {
@@ -518,7 +509,6 @@ describe('Customer Vault API', () => {
         }
       }
       expect(found).to.equal(true);
-
     }).timeout(timeout * 2);
 
     it('should add an achBankAccount', async () => {
@@ -542,9 +532,7 @@ describe('Customer Vault API', () => {
 
       const achBankAccountResult = await paysafe.getCustomerServiceHandler().createACHBankAccount(profileId, achBankAccount);
       debug(achBankAccountResult);
-
     }).timeout(timeout * 2);
-
   });
 
   describe('Card Single Use Tokens', () => {
@@ -592,7 +580,6 @@ describe('Customer Vault API', () => {
       expect(expiry).to.not.be.an('undefined');
       expect(expiry.getMonth()).to.equal(expiryMonth);
       expect(expiry.getYear()).to.equal(expiryYear);
-
     }).timeout(timeout);
 
     it('should create a profile and then add a card using a single-use token', async () => {
@@ -629,7 +616,6 @@ describe('Customer Vault API', () => {
       expect(expiry).to.not.be.an('undefined');
       expect(expiry.getMonth()).to.equal(expiryMonth);
       expect(expiry.getYear()).to.equal(expiryYear);
-
     }).timeout(timeout * 2);
 
     it('should create a profile, then add an address, then add a card using a single-use token, and then update the card\'s billing address', async () => {
@@ -703,11 +689,8 @@ describe('Customer Vault API', () => {
       debug(cardUpdateResult);
 
       expect(cardUpdateResult).to.not.have.property('error');
-
     }).timeout(timeout * 4);
-
   });
-
 });
 
 function getCardSingleUseToken(): Promise<string> {
@@ -749,9 +732,7 @@ function getCardSingleUseToken(): Promise<string> {
         reject(new Error('unexpected result'));
       }
     });
-
   });
-
 }
 
 function randomStr(): string {

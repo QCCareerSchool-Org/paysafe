@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Address = void 0;
 const request_1 = require("./request");
 const NICK_NAME_MAX_LENGTH = 50;
 const STREET_MAX_LENGTH = 50;

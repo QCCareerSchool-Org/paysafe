@@ -1,7 +1,7 @@
 import { Request } from './request';
 import { BillingAddress } from './lib/billing-address';
 import { Mandate } from './mandate';
-export declare type statusType = 'ACTIVE' | 'INVALID' | 'INACTIVE';
+export type BACSBankAccountStatus = 'ACTIVE' | 'INVALID' | 'INACTIVE';
 export declare class BACSBankAccount extends Request {
     private nickName?;
     private merchantRefNum?;
@@ -20,7 +20,7 @@ export declare class BACSBankAccount extends Request {
     getNickName(): string | undefined;
     setMerchantRefNum(merchantRefNum: string): void;
     getMerchantRefNum(): string | undefined;
-    getStatus(): string | undefined;
+    getStatus(): BACSBankAccountStatus | undefined;
     getStatusReason(): string | undefined;
     setAccountNumber(accountNumber: string): void;
     getAccountNumber(): string | undefined;

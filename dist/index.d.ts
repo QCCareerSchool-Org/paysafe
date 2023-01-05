@@ -4,8 +4,8 @@ import { ServiceHandler as CardServiceHandler } from './card-payments/service-ha
 import { ServiceHandler as CustomerServiceHandler } from './customer-vault/service-handler';
 import { ServiceHandler as DirectDebitServiceHandler } from './direct-debit/service-handler';
 import { ServiceHandler as ThreeDSecureServiceHandler } from './three-d-secure/service-handler';
-export declare type GeneralRequest = CardPaymentRequest | CustomerVaultRequest;
-export declare type environmentType = 'LIVE' | 'TEST';
+export type GeneralRequest = CardPaymentRequest | CustomerVaultRequest;
+export type Environment = 'LIVE' | 'TEST';
 export declare class Paysafe {
     private apiKey;
     private apiPassword;
@@ -18,11 +18,11 @@ export declare class Paysafe {
     private maxSockets;
     private timeout;
     private baseRequest;
-    constructor(apiKey: string, apiPassword: string, environment: environmentType, accountNumber: string);
-    updateConfig(apiKey: string, apiPassword: string, environment: environmentType, accountNumber: string): void;
+    constructor(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string);
+    updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string): void;
     getApiKey(): string;
     getApiPassword(): string;
-    getEnvironment(): environmentType;
+    getEnvironment(): Environment;
     getAccountNumber(): string;
     getCardServiceHandler(): CardServiceHandler;
     getDirectDebitServiceHandler(): DirectDebitServiceHandler;
@@ -31,7 +31,7 @@ export declare class Paysafe {
     get<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
     post<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
     put<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
-    delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T>;
+    delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<void>;
     private process;
     private getHost;
 }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Card = void 0;
 const card_expiry_1 = require("../../common/card-expiry");
 class Card {
     constructor(resp) {

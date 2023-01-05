@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VisaAdditionalAuthData = void 0;
 const recipient_date_of_birth_1 = require("./recipient-date-of-birth");
 class VisaAdditionalAuthData {
     constructor(resp) {

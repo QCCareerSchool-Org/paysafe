@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SEPABankAccount = void 0;
 const create_array_1 = require("../common/create-array");
 const link_1 = require("../common/link");
 const paysafe_error_1 = require("../common/paysafe-error");
@@ -20,7 +21,7 @@ class SEPABankAccount {
         this.bic = resp.bic;
         if (resp.mandates) {
             if (resp.mandates instanceof Array) {
-                this.mandates = create_array_1.createArray(resp.mandates, mandate_1.Mandate);
+                this.mandates = (0, create_array_1.createArray)(resp.mandates, mandate_1.Mandate);
             }
             else {
                 this.mandates = new mandate_1.Mandate(resp.mandates);
@@ -37,7 +38,7 @@ class SEPABankAccount {
             this.profile = new profile_1.Profile(resp.profile);
         }
         if (resp.links) {
-            this.links = create_array_1.createArray(resp.links, link_1.Link);
+            this.links = (0, create_array_1.createArray)(resp.links, link_1.Link);
         }
     }
     setId(id) { this.id = id; }

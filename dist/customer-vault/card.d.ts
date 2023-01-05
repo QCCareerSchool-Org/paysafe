@@ -1,8 +1,8 @@
 import { Request } from './request';
 import { CardExpiry } from '../common/card-expiry';
 import { BillingAddress } from './lib/billing-address';
-export declare type cardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
-export declare type statusType = 'ACTIVE';
+export type CardCardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
+export type CardStatus = 'ACTIVE';
 export declare class Card extends Request {
     private nickName?;
     private merchantRefNum?;
@@ -31,7 +31,7 @@ export declare class Card extends Request {
     getLastDigits(): string | undefined;
     setCardExpiry(cardExpiry: CardExpiry): void;
     getCardExpiry(): CardExpiry | undefined;
-    getCardType(): cardType | undefined;
+    getCardType(): CardCardType | undefined;
     setBillingAddress(billingAddress: BillingAddress): void;
     getBillingAddress(): BillingAddress | undefined;
     setBillingAddressId(billingAddressId: string): void;
@@ -42,5 +42,5 @@ export declare class Card extends Request {
     getPaymentToken(): string | undefined;
     setSingleUseToken(singleUseToken: string): void;
     getSingleUseToken(): string | undefined;
-    getStatus(): statusType | undefined;
+    getStatus(): CardStatus | undefined;
 }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Mandate = void 0;
 const request_1 = require("./request");
 const REFERENCE_MAX_LENGTH = 35; // 10 for BACS, 35 for SEPA
 const PAYMENT_TOKEN_MAX_LENGTH = 50;

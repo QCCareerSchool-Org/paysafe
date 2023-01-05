@@ -1,12 +1,10 @@
 import { Request } from './request';
 
 import { CardExpiry } from '../common/card-expiry';
-import { createArray } from '../common/create-array';
 import { BillingAddress } from './lib/billing-address';
-import { Profile } from './profile';
 
-export type cardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
-export type statusType = 'ACTIVE';
+export type CardCardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
+export type CardStatus = 'ACTIVE';
 
 export class Card extends Request {
 
@@ -17,13 +15,13 @@ export class Card extends Request {
   private cardBin?: string;
   private lastDigits?: string;
   private cardExpiry?: CardExpiry;
-  private cardType?: cardType;
+  private cardType?: CardCardType;
   private billingAddress?: BillingAddress;
   private billingAddressId?: string;
   private defaultCardIndicator?: boolean;
   private paymentToken?: string;
   private singleUseToken?: string;
-  private status?: statusType;
+  private status?: CardStatus;
 
   constructor(resp?: Card) {
     super(resp);
@@ -93,7 +91,7 @@ export class Card extends Request {
   public setCardExpiry(cardExpiry: CardExpiry): void { this.cardExpiry = cardExpiry; }
   public getCardExpiry(): CardExpiry | undefined { return this.cardExpiry; }
 
-  public getCardType(): cardType | undefined { return this.cardType; }
+  public getCardType(): CardCardType | undefined { return this.cardType; }
 
   public setBillingAddress(billingAddress: BillingAddress): void { this.billingAddress = billingAddress; }
   public getBillingAddress(): BillingAddress | undefined { return this.billingAddress; }
@@ -110,6 +108,6 @@ export class Card extends Request {
   public setSingleUseToken(singleUseToken: string): void { this.singleUseToken = singleUseToken; }
   public getSingleUseToken(): string | undefined { return this.singleUseToken; }
 
-  public getStatus(): statusType | undefined { return this.status; }
+  public getStatus(): CardStatus | undefined { return this.status; }
 
 }

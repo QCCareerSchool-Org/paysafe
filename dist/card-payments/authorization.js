@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Authorization = void 0;
 const create_array_1 = require("../common/create-array");
 const splitpay_request_1 = require("./splitpay-request");
 const settlement_1 = require("./settlement");
@@ -79,7 +80,7 @@ class Authorization extends splitpay_request_1.SplitpayRequest {
             this.status = resp.status;
         }
         if (typeof resp.settlements !== 'undefined') {
-            this.settlements = create_array_1.createArray(resp.settlements, settlement_1.Settlement);
+            this.settlements = (0, create_array_1.createArray)(resp.settlements, settlement_1.Settlement);
         }
     }
     setCard(card) { this.card = card; }
@@ -94,6 +95,8 @@ class Authorization extends splitpay_request_1.SplitpayRequest {
     getShippingDetails() { return this.shippingDetails; }
     setRecurring(recurring) { this.recurring = recurring; }
     getRecurring() { return this.recurring; }
+    setStoredCredential(storedCredential) { this.storedCredential = storedCredential; }
+    getStoredCredential() { return this.storedCredential; }
     setCustomerIp(customerIp) { this.customerIp = customerIp; }
     getCustomerIp() { return this.customerIp; }
     setKeywords(keywords) { this.keywords = keywords; }

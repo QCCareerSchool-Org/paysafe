@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Recipient = void 0;
 const date_of_birth_1 = require("../../common/date-of-birth");
 const ZIP_MAX_LENGTH = 10;
 const LAST_NAME_MAX_LENGTH = 255;

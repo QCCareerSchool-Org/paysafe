@@ -12,13 +12,13 @@ const SORT_CODE_LENGTH = 6;
 const BILLING_ADDRESS_ID_MAX_LENGTH = 36;
 const PAYMENT_TOKEN_MAX_LENGTH = 50;
 
-export type statusType = 'ACTIVE' | 'INVALID' | 'INACTIVE';
+export type BACSBankAccountStatus = 'ACTIVE' | 'INVALID' | 'INACTIVE';
 
 export class BACSBankAccount extends Request {
 
   private nickName?: string;
   private merchantRefNum?: string;
-  private status?: statusType;
+  private status?: BACSBankAccountStatus;
   private statusReason?: string;
   private accountNumber?: string;
   private accountHolderName?: string;
@@ -91,7 +91,7 @@ export class BACSBankAccount extends Request {
   }
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
-  public getStatus(): string | undefined { return this.status; }
+  public getStatus(): BACSBankAccountStatus | undefined { return this.status; }
 
   public getStatusReason(): string | undefined { return this.statusReason; }
 

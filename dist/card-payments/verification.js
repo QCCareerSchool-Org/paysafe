@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Verification = void 0;
 const create_array_1 = require("../common/create-array");
 const request_1 = require("./request");
 const accord_d_1 = require("./lib/accord-d");
@@ -46,7 +47,7 @@ class Verification extends request_1.Request {
             this.status = resp.status;
         }
         if (typeof resp.verifications !== 'undefined') {
-            this.verifications = create_array_1.createArray(resp.verifications, Verification);
+            this.verifications = (0, create_array_1.createArray)(resp.verifications, Verification);
         }
         if (typeof resp.accordD !== 'undefined') {
             this.accordD = new accord_d_1.AccordD(resp.accordD);

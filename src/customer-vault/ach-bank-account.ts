@@ -1,8 +1,8 @@
 import { Request } from './request';
 
 import { BillingAddress } from './lib/billing-address';
-export type statusType = 'ACTIVE' | 'INVALID' | 'INACTIVE';
-export type accountTypeType = 'CHECKING' | 'LOAN' | 'SAVINGS';
+export type ACHBankAccountStatus = 'ACTIVE' | 'INVALID' | 'INACTIVE';
+export type ACHBankAccountAccountType = 'CHECKING' | 'LOAN' | 'SAVINGS';
 
 const NICK_NAME_MAX_LENGTH = 50;
 const MERCHANT_REF_NUM_MAX_LENGTH = 255;
@@ -17,12 +17,12 @@ export class ACHBankAccount extends Request {
 
   private nickName?: string;
   private merchantRefNum?: string;
-  private status?: statusType;
+  private status?: ACHBankAccountStatus;
   private statusReason?: string;
   private accountNumber?: string;
   private accountHolderName?: string;
   private routingNumber?: string;
-  private accountType?: accountTypeType;
+  private accountType?: ACHBankAccountAccountType;
   private lastDigits?: string;
   private billingAddressId?: string;
   private billingAddress?: BillingAddress;
@@ -87,7 +87,7 @@ export class ACHBankAccount extends Request {
   }
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
-  public getStatus(): statusType | undefined { return this.status; }
+  public getStatus(): ACHBankAccountStatus | undefined { return this.status; }
 
   public getStatusReason(): string | undefined { return this.statusReason; }
 
@@ -115,8 +115,8 @@ export class ACHBankAccount extends Request {
   }
   public getRoutingNumber(): string | undefined { return this.routingNumber; }
 
-  public setAccountType(accountType: accountTypeType): void { this.accountType = accountType; }
-  public getAccountType(): accountTypeType | undefined { return this.accountType; }
+  public setAccountType(accountType: ACHBankAccountAccountType): void { this.accountType = accountType; }
+  public getAccountType(): ACHBankAccountAccountType | undefined { return this.accountType; }
 
   public getLastDigits(): string | undefined { return this.lastDigits; }
 

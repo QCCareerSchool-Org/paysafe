@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FieldError = void 0;
 class FieldError {
     constructor(resp) {
         if (!resp) {

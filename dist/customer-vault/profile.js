@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Profile = void 0;
 const create_array_1 = require("../common/create-array");
 const date_of_birth_1 = require("../common/date-of-birth");
 const request_1 = require("./request");
@@ -71,7 +72,7 @@ class Profile extends request_1.Request {
             this.paymentToken = resp.paymentToken;
         }
         if (typeof resp.addresses !== 'undefined') {
-            this.addresses = create_array_1.createArray(resp.addresses, address_1.Address);
+            this.addresses = (0, create_array_1.createArray)(resp.addresses, address_1.Address);
         }
         if (typeof resp.card !== 'undefined') {
             this.card = new card_1.Card(resp.card);
@@ -80,7 +81,7 @@ class Profile extends request_1.Request {
             if (!Array.isArray(resp.cards)) {
                 throw new Error('cards should be an array');
             }
-            this.cards = create_array_1.createArray(resp.cards, card_1.Card);
+            this.cards = (0, create_array_1.createArray)(resp.cards, card_1.Card);
         }
         if (typeof resp.achBankAccount !== 'undefined') {
             this.achBankAccount = resp.achBankAccount;
@@ -89,7 +90,7 @@ class Profile extends request_1.Request {
             if (!Array.isArray(resp.achBankAccounts)) {
                 throw new Error('achBankAccounts should be an array');
             }
-            this.achBankAccounts = create_array_1.createArray(resp.achBankAccounts, ach_bank_account_1.ACHBankAccount);
+            this.achBankAccounts = (0, create_array_1.createArray)(resp.achBankAccounts, ach_bank_account_1.ACHBankAccount);
         }
         if (typeof resp.eftBankAccount !== 'undefined') {
             this.eftBankAccount = resp.eftBankAccount;
@@ -98,7 +99,7 @@ class Profile extends request_1.Request {
             if (!Array.isArray(resp.eftBankAccounts)) {
                 throw new Error('eftBankAccounts should be an array');
             }
-            this.eftBankAccounts = create_array_1.createArray(resp.eftBankAccounts, eft_bank_account_1.EFTBankAccount);
+            this.eftBankAccounts = (0, create_array_1.createArray)(resp.eftBankAccounts, eft_bank_account_1.EFTBankAccount);
         }
         if (typeof resp.bacsBankAccount !== 'undefined') {
             this.bacsBankAccount = resp.bacsBankAccount;
@@ -107,7 +108,7 @@ class Profile extends request_1.Request {
             if (!Array.isArray(resp.bacsBankAccounts)) {
                 throw new Error('bacsBankAccounts should be an array');
             }
-            this.bacsBankAccounts = create_array_1.createArray(resp.bacsBankAccounts, bacs_bank_account_1.BACSBankAccount);
+            this.bacsBankAccounts = (0, create_array_1.createArray)(resp.bacsBankAccounts, bacs_bank_account_1.BACSBankAccount);
         }
         if (typeof resp.sepaBankAccount !== 'undefined') {
             this.sepaBankAccount = resp.sepaBankAccount;
@@ -116,7 +117,7 @@ class Profile extends request_1.Request {
             if (!Array.isArray(resp.sepaBankAccounts)) {
                 throw new Error('sepaBankAccounts should be an array');
             }
-            this.sepaBankAccounts = create_array_1.createArray(resp.sepaBankAccounts, sepa_bank_account_1.SEPABankAccount);
+            this.sepaBankAccounts = (0, create_array_1.createArray)(resp.sepaBankAccounts, sepa_bank_account_1.SEPABankAccount);
         }
     }
     setStatus(status) {
@@ -211,6 +212,9 @@ class Profile extends request_1.Request {
     }
     getCellPhone() { return this.cellPhone; }
     setPaymentToken(paymentToken) {
+        if (paymentToken.length > PAYMENT_TOKEN_MAX_LENGTH) {
+            throw new Error('payment token exceeds maximum length');
+        }
         this.paymentToken = paymentToken;
     }
     getPaymentToken() { return this.paymentToken; }

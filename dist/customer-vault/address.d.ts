@@ -1,5 +1,5 @@
 import { Request } from './request';
-export declare type statusType = 'ACTIVE';
+export type AddressStatus = 'ACTIVE';
 export declare class Address extends Request {
     private nickName?;
     private street?;
@@ -31,7 +31,7 @@ export declare class Address extends Request {
     getRecipientName(): string | undefined;
     setPhone(phone: string): void;
     getPhone(): string | undefined;
-    getStatus(): statusType | undefined;
+    getStatus(): AddressStatus | undefined;
     setDefaultShippingAddressIndicator(defaultShippingAddressIndicator: boolean): void;
     getDefaultShippingAddressIndicator(): boolean | undefined;
 }

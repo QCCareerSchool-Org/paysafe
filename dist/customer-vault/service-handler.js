@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceHandler = void 0;
 const address_1 = require("./address");
 const card_1 = require("./card");
 const mandate_1 = require("./mandate");
