@@ -33,6 +33,7 @@ export class DateOfBirth {
     }
     this.day = day;
   }
+
   public getDay(): number | undefined { return this.day; }
 
   public setMonth(month: number): void {
@@ -41,6 +42,7 @@ export class DateOfBirth {
     }
     this.month = month;
   }
+
   public getMonth(): number | undefined { return this.month; }
 
   public setYear(year: number): void {
@@ -49,6 +51,7 @@ export class DateOfBirth {
     }
     this.year = year;
   }
+
   public getYear(): number | undefined { return this.year; }
 
 }

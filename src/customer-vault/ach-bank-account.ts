@@ -1,6 +1,6 @@
+import { BillingAddress } from './lib/billing-address';
 import { Request } from './request';
 
-import { BillingAddress } from './lib/billing-address';
 export type ACHBankAccountStatus = 'ACTIVE' | 'INVALID' | 'INACTIVE';
 export type ACHBankAccountAccountType = 'CHECKING' | 'LOAN' | 'SAVINGS';
 
@@ -17,13 +17,13 @@ export class ACHBankAccount extends Request {
 
   private nickName?: string;
   private merchantRefNum?: string;
-  private status?: ACHBankAccountStatus;
-  private statusReason?: string;
+  private readonly status?: ACHBankAccountStatus;
+  private readonly statusReason?: string;
   private accountNumber?: string;
   private accountHolderName?: string;
   private routingNumber?: string;
   private accountType?: ACHBankAccountAccountType;
-  private lastDigits?: string;
+  private readonly lastDigits?: string;
   private billingAddressId?: string;
   private billingAddress?: BillingAddress;
   private paymentToken?: string;
@@ -77,6 +77,7 @@ export class ACHBankAccount extends Request {
     }
     this.nickName = nickName;
   }
+
   public getNickName(): string | undefined { return this.nickName; }
 
   public setMerchantRefNum(merchantRefNum: string): void {
@@ -85,6 +86,7 @@ export class ACHBankAccount extends Request {
     }
     this.merchantRefNum = merchantRefNum;
   }
+
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public getStatus(): ACHBankAccountStatus | undefined { return this.status; }
@@ -97,6 +99,7 @@ export class ACHBankAccount extends Request {
     }
     this.accountNumber = accountNumber;
   }
+
   public getAccountNumber(): string | undefined { return this.accountNumber; }
 
   public setAccountHolderName(accountHolderName: string): void {
@@ -105,6 +108,7 @@ export class ACHBankAccount extends Request {
     }
     this.accountHolderName = accountHolderName;
   }
+
   public getAccountHolderName(): string | undefined { return this.accountHolderName; }
 
   public setRoutingNumber(routingNumber: string): void {
@@ -113,6 +117,7 @@ export class ACHBankAccount extends Request {
     }
     this.routingNumber = routingNumber;
   }
+
   public getRoutingNumber(): string | undefined { return this.routingNumber; }
 
   public setAccountType(accountType: ACHBankAccountAccountType): void { this.accountType = accountType; }
@@ -129,6 +134,7 @@ export class ACHBankAccount extends Request {
     }
     this.billingAddressId = billingAddressId;
   }
+
   public getBillingAddressId(): string | undefined { return this.billingAddressId; }
 
   public setPaymentToken(paymentToken: string): void {
@@ -137,6 +143,7 @@ export class ACHBankAccount extends Request {
     }
     this.paymentToken = paymentToken;
   }
+
   public getPaymentToken(): string | undefined { return this.paymentToken; }
 
 }

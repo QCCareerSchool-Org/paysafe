@@ -26,6 +26,7 @@ export class CardExpiry {
     }
     this.month = month;
   }
+
   public getMonth(): number | undefined { return this.month; }
 
   public setYear(year: number): void {
@@ -34,6 +35,7 @@ export class CardExpiry {
     }
     this.year = year;
   }
+
   public getYear(): number | undefined { return this.year; }
 
 }

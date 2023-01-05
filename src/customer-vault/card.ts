@@ -1,7 +1,6 @@
-import { Request } from './request';
-
 import { CardExpiry } from '../common/card-expiry';
 import { BillingAddress } from './lib/billing-address';
+import { Request } from './request';
 
 export type CardCardType = 'AM' | 'DC' | 'DI' | 'MC' | 'VI';
 export type CardStatus = 'ACTIVE';
@@ -12,16 +11,16 @@ export class Card extends Request {
   private merchantRefNum?: string;
   private holderName?: string;
   private cardNum?: string;
-  private cardBin?: string;
-  private lastDigits?: string;
+  private readonly cardBin?: string;
+  private readonly lastDigits?: string;
   private cardExpiry?: CardExpiry;
-  private cardType?: CardCardType;
+  private readonly cardType?: CardCardType;
   private billingAddress?: BillingAddress;
   private billingAddressId?: string;
   private defaultCardIndicator?: boolean;
   private paymentToken?: string;
   private singleUseToken?: string;
-  private status?: CardStatus;
+  private readonly status?: CardStatus;
 
   constructor(resp?: Card) {
     super(resp);

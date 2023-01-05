@@ -1,5 +1,4 @@
 import { createArray } from '../common/create-array';
-import { Request } from './request';
 import { AccordD } from './lib/accord-d';
 import { Authentication } from './lib/authentication';
 import { BillingDetails } from './lib/billing-details';
@@ -7,13 +6,14 @@ import { Card } from './lib/card';
 import { MerchantDescriptor } from './lib/merchant-descriptor';
 import { Profile } from './lib/profile';
 import { ShippingDetails } from './lib/shipping-details';
+import { Request } from './request';
 
 export type VerificationStatus = 'RECEIVED' | 'COMPLETED' | 'FAILED';
 
 export class Verification extends Request {
 
   private card?: Card;
-  private authCode?: string;
+  private readonly authCode?: string;
   private profile?: Profile;
   private billingDetails?: BillingDetails;
   private customerIp?: string;

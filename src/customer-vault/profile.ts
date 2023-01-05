@@ -1,28 +1,25 @@
 import { createArray } from '../common/create-array';
 import { DateOfBirth } from '../common/date-of-birth';
-
-import { Request } from './request';
-
-import { Address } from './address';
-import { Card } from './card';
-
 import { ACHBankAccount } from './ach-bank-account';
+import { Address } from './address';
 import { BACSBankAccount } from './bacs-bank-account';
+import { Card } from './card';
 import { EFTBankAccount } from './eft-bank-account';
+import { Request } from './request';
 import { SEPABankAccount } from './sepa-bank-account';
 
 export type ProfileStatus = 'INITIAL' | 'ACTIVE';
 export type ProfileLocale = 'en_US' | 'fr_CA' | 'en_GB';
 export type ProfileGender = 'M' | 'F';
 
-const STATUSES = ['INITIAL', 'ACTIVE'];
+const STATUSES = [ 'INITIAL', 'ACTIVE' ];
 const MERCHANT_CUSTOMER_ID_MAX_LENGTH = 100;
-const LOCALES = ['en_US', 'fr_CA', 'en_GB'];
+const LOCALES = [ 'en_US', 'fr_CA', 'en_GB' ];
 const FIRST_NAME_MAX_LENGTH = 80;
 const MIDDLE_NAME_MAX_LENGTH = 80;
 const LAST_NAME_MAX_LENGTH = 80;
 const IP_MAX_LENGTH = 46;
-const GENDERS = ['M', 'F'];
+const GENDERS = [ 'M', 'F' ];
 const NATIONALITY_MAX_LENGTH = 30;
 const EMAIL_MAX_LENGTH = 255;
 const PHONE_MAX_LENGTH = 40;
@@ -49,13 +46,13 @@ export class Profile extends Request {
   private card?: Card;
   private cards?: Card[];
   private achBankAccount?: ACHBankAccount;
-  private achBankAccounts?: ACHBankAccount[];
+  private readonly achBankAccounts?: ACHBankAccount[];
   private bacsBankAccount?: BACSBankAccount;
-  private bacsBankAccounts?: BACSBankAccount[];
+  private readonly bacsBankAccounts?: BACSBankAccount[];
   private eftBankAccount?: EFTBankAccount;
-  private eftBankAccounts?: EFTBankAccount[];
+  private readonly eftBankAccounts?: EFTBankAccount[];
   private sepaBankAccount?: SEPABankAccount;
-  private sepaBankAccounts?: SEPABankAccount[];
+  private readonly sepaBankAccounts?: SEPABankAccount[];
 
   constructor(resp?: Profile) {
     super(resp);
@@ -117,7 +114,7 @@ export class Profile extends Request {
       this.cards = createArray(resp.cards, Card);
     }
     if (typeof resp.achBankAccount !== 'undefined') {
-        this.achBankAccount = resp.achBankAccount;
+      this.achBankAccount = resp.achBankAccount;
     }
     if (typeof resp.achBankAccounts !== 'undefined') {
       if (!Array.isArray(resp.achBankAccounts)) {
@@ -155,11 +152,12 @@ export class Profile extends Request {
   }
 
   public setStatus(status: ProfileStatus): void {
-    if (STATUSES.indexOf(status) === -1) {
+    if (!STATUSES.includes(status)) {
       throw new Error('invalid status');
     }
     this.status = status;
   }
+
   public getStatus(): ProfileStatus | undefined { return this.status; }
 
   public setMerchantCustomerId(merchantCustomerId: string): void {
@@ -168,14 +166,16 @@ export class Profile extends Request {
     }
     this.merchantCustomerId = merchantCustomerId;
   }
+
   public getMerchantCustomerId(): string | undefined { return this.merchantCustomerId; }
 
   public setLocale(locale: ProfileLocale): void {
-    if (LOCALES.indexOf(locale) === -1) {
+    if (!LOCALES.includes(locale)) {
       throw new Error('invalid locale');
     }
     this.locale = locale;
   }
+
   public getLocale(): ProfileLocale | undefined { return this.locale; }
 
   public setFirstName(firstName: string): void {
@@ -184,6 +184,7 @@ export class Profile extends Request {
     }
     this.firstName = firstName;
   }
+
   public getFirstName(): string | undefined { return this.firstName; }
 
   public setMiddleName(middleName: string): void {
@@ -192,6 +193,7 @@ export class Profile extends Request {
     }
     this.middleName = middleName;
   }
+
   public getMiddleName(): string | undefined { return this.middleName; }
 
   public setLastName(lastName: string): void {
@@ -200,6 +202,7 @@ export class Profile extends Request {
     }
     this.lastName = lastName;
   }
+
   public getLastName(): string | undefined { return this.lastName; }
 
   public setDateOfBirth(dateOfBirth: DateOfBirth): void {
@@ -208,6 +211,7 @@ export class Profile extends Request {
     }
     this.dateOfBirth = dateOfBirth;
   }
+
   public getDateOfBirth(): DateOfBirth | undefined { return this.dateOfBirth; }
 
   public setIp(ip: string): void {
@@ -216,14 +220,16 @@ export class Profile extends Request {
     }
     this.ip = ip;
   }
+
   public getIp(): string | undefined { return this.ip; }
 
   public setGender(gender: ProfileGender): void {
-    if (GENDERS.indexOf(gender) === -1) {
+    if (!GENDERS.includes(gender)) {
       throw new Error('invalid gender');
     }
     this.gender = gender;
   }
+
   public getGender(): ProfileGender | undefined { return this.gender; }
 
   public setNationality(nationality: string): void {
@@ -232,6 +238,7 @@ export class Profile extends Request {
     }
     this.nationality = nationality;
   }
+
   public getNationality(): string | undefined { return this.nationality; }
 
   public setEmail(email: string): void {
@@ -240,6 +247,7 @@ export class Profile extends Request {
     }
     this.email = email;
   }
+
   public getEmail(): string | undefined { return this.email; }
 
   public setPhone(phone: string): void {
@@ -248,6 +256,7 @@ export class Profile extends Request {
     }
     this.phone = phone;
   }
+
   public getPhone(): string | undefined { return this.phone; }
 
   public setCellPhone(cellPhone: string): void {
@@ -256,6 +265,7 @@ export class Profile extends Request {
     }
     this.cellPhone = cellPhone;
   }
+
   public getCellPhone(): string | undefined { return this.cellPhone; }
 
   public setPaymentToken(paymentToken: string): void {
@@ -264,6 +274,7 @@ export class Profile extends Request {
     }
     this.paymentToken = paymentToken;
   }
+
   public getPaymentToken(): string | undefined { return this.paymentToken; }
 
   public setAddresses(addresses: Address | Address[]): void {
@@ -277,6 +288,7 @@ export class Profile extends Request {
     }
     this.addresses = addresses;
   }
+
   public getAddresses(): Address | Address[] | undefined { return this.addresses; }
 
   public setCard(card: Card): void {
@@ -285,6 +297,7 @@ export class Profile extends Request {
     }
     this.card = card;
   }
+
   public getCard(): Card | undefined { return this.card; }
 
   public setCards(cards: Card[]): void {
@@ -298,6 +311,7 @@ export class Profile extends Request {
     }
     this.cards = cards;
   }
+
   public getCards(): Card[] | undefined { return this.cards; }
 
   public setACHBankAccount(achBankAccount: ACHBankAccount): void {
@@ -306,6 +320,7 @@ export class Profile extends Request {
     }
     this.achBankAccount = achBankAccount;
   }
+
   public getACHBankAccount(): ACHBankAccount | undefined { return this.achBankAccount; }
 
   public getACHBankAccounts(): ACHBankAccount[] | undefined { return this.achBankAccounts; }
@@ -316,6 +331,7 @@ export class Profile extends Request {
     }
     this.bacsBankAccount = bacsBankAccount;
   }
+
   public getBACSBankAccount(): BACSBankAccount | undefined { return this.bacsBankAccount; }
 
   public getBACSBankAccounts(): BACSBankAccount[] | undefined { return this.bacsBankAccounts; }
@@ -326,6 +342,7 @@ export class Profile extends Request {
     }
     this.eftBankAccount = eftBankAccount;
   }
+
   public getEFTBankAccount(): EFTBankAccount | undefined { return this.eftBankAccount; }
 
   public getEFTBankAccounts(): EFTBankAccount[] | undefined { return this.eftBankAccounts; }
@@ -336,6 +353,7 @@ export class Profile extends Request {
     }
     this.sepaBankAccount = sepaBankAccount;
   }
+
   public getSEPABankAccount(): SEPABankAccount | undefined { return this.sepaBankAccount; }
 
   public getSEPABankAccounts(): SEPABankAccount[] | undefined { return this.sepaBankAccounts; }

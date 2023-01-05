@@ -23,7 +23,7 @@ export class Address extends Request {
   private country?: string;
   private recipientName?: string;
   private phone?: string;
-  private status?: AddressStatus;
+  private readonly status?: AddressStatus;
   private defaultShippingAddressIndicator?: boolean;
 
   constructor(resp?: Address) {
@@ -72,6 +72,7 @@ export class Address extends Request {
     }
     this.nickName = nickName;
   }
+
   public getNickName(): string | undefined { return this.nickName; }
 
   public setStreet(street: string) {
@@ -80,6 +81,7 @@ export class Address extends Request {
     }
     this.street = street;
   }
+
   public getStreet(): string | undefined { return this.street; }
 
   public setStreet2(street2: string) {
@@ -88,6 +90,7 @@ export class Address extends Request {
     }
     this.street2 = street2;
   }
+
   public getStreet2(): string | undefined { return this.street2; }
 
   public setCity(city: string) {
@@ -96,6 +99,7 @@ export class Address extends Request {
     }
     this.city = city;
   }
+
   public getCity(): string | undefined { return this.city; }
 
   public setState(state: string) {
@@ -104,6 +108,7 @@ export class Address extends Request {
     }
     this.state = state;
   }
+
   public getState(): string | undefined { return this.state; }
 
   public setZip(zip: string) {
@@ -112,6 +117,7 @@ export class Address extends Request {
     }
     this.zip = zip;
   }
+
   public getZip(): string | undefined { return this.zip; }
 
   public setCountry(country: string) {
@@ -120,6 +126,7 @@ export class Address extends Request {
     }
     this.country = country;
   }
+
   public getCountry(): string | undefined { return this.country; }
 
   public setRecipientName(recipientName: string) {
@@ -128,6 +135,7 @@ export class Address extends Request {
     }
     this.recipientName = recipientName;
   }
+
   public getRecipientName(): string | undefined { return this.recipientName; }
 
   public setPhone(phone: string) {
@@ -136,6 +144,7 @@ export class Address extends Request {
     }
     this.phone = phone;
   }
+
   public getPhone(): string | undefined { return this.phone; }
 
   public getStatus(): AddressStatus | undefined { return this.status; }

@@ -1,12 +1,10 @@
 import { Paysafe } from '../index';
-
 import { Authorization } from './authorization';
+import { Pagination } from './lib/pagination';
 import { Refund } from './refund';
 import { Settlement } from './settlement';
 import { Verification } from './verification';
 import { VoidAuth } from './void-auth';
-
-import { Pagination } from './lib/pagination';
 
 const paths = {
   AUTHORIZATION: 'auths',
@@ -26,10 +24,10 @@ const searchByMerchantRefNumClasses: { [key: string]: any } = {
 
 export class ServiceHandler {
 
-  constructor(private paysafe: Paysafe) { }
+  constructor(private readonly paysafe: Paysafe) { /* empty */ }
 
   /** verifies that the service is up and accessible */
-  public monitor(): Promise<any> {
+  public async monitor(): Promise<any> {
     return this.paysafe.get('/cardpayments/monitor');
   }
 
@@ -37,21 +35,19 @@ export class ServiceHandler {
    * authorize a credit card transaction
    * @param authorization
    */
-  public authorize(authorization: Authorization): Promise<Authorization> {
-
+  public async authorize(authorization: Authorization): Promise<Authorization> {
     return new Promise((resolve, reject) => {
 
       const path = this.getPath(paths.AUTHORIZATION);
 
-      this.paysafe.post(path, authorization).then((response) => {
+      this.paysafe.post(path, authorization).then(response => {
         if (response) {
           return resolve(new Authorization(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
-
     });
   }
 
@@ -59,7 +55,7 @@ export class ServiceHandler {
    * approve a held authorization
    * @param authorization
    */
-  public approveHeldAuth(authorizationId: string): Promise<Authorization> {
+  public async approveHeldAuth(authorizationId: string): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
@@ -72,12 +68,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.AUTHORIZATION}/${authorizationId}`);
 
-      this.paysafe.put(path, authorization).then((response) => {
+      this.paysafe.put(path, authorization).then(response => {
         if (response) {
           return resolve(new Authorization(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -89,7 +85,7 @@ export class ServiceHandler {
    * cancel a held authorization
    * @param authorization
    */
-  public cancelHeldAuth(authorizationId: string): Promise<Authorization> {
+  public async cancelHeldAuth(authorizationId: string): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
@@ -102,12 +98,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.AUTHORIZATION}/${authorizationId}`);
 
-      this.paysafe.put(path, authorization).then((response) => {
+      this.paysafe.put(path, authorization).then(response => {
         if (response) {
           return resolve(new Authorization(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -119,7 +115,7 @@ export class ServiceHandler {
    * reverse an authorization
    * @param authorizationReversal
    */
-  public void(authorizationId: string, voidAuth: VoidAuth): Promise<VoidAuth> {
+  public async void(authorizationId: string, voidAuth: VoidAuth): Promise<VoidAuth> {
 
     return new Promise((resolve, reject) => {
 
@@ -133,12 +129,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.AUTHORIZATION}/${authorizationId}/${paths.VOIDAUTH}`);
 
-      this.paysafe.post(path, voidAuth).then((response) => {
+      this.paysafe.post(path, voidAuth).then(response => {
         if (response) {
           return resolve(new VoidAuth(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -150,7 +146,7 @@ export class ServiceHandler {
    * settle
    * @param settlement
    */
-  public settle(authorizationId: string, settlement: Settlement): Promise<Settlement> {
+  public async settle(authorizationId: string, settlement: Settlement): Promise<Settlement> {
 
     return new Promise((resolve, reject) => {
 
@@ -164,12 +160,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.AUTHORIZATION}/${authorizationId}/${paths.SETTLEMENT}`);
 
-      this.paysafe.post(path, settlement).then((response) => {
+      this.paysafe.post(path, settlement).then(response => {
         if (response) {
           return resolve(new Settlement(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -181,7 +177,7 @@ export class ServiceHandler {
    * cancel a settlement
    * @param settlement
    */
-  public cancelSettlement(settlementId: string): Promise<Settlement> {
+  public async cancelSettlement(settlementId: string): Promise<Settlement> {
     return new Promise((resolve, reject) => {
 
       if (typeof settlementId === 'undefined') {
@@ -193,12 +189,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.SETTLEMENT}/${settlementId}`);
 
-      this.paysafe.put(path, settlement).then((response) => {
+      this.paysafe.put(path, settlement).then(response => {
         if (response) {
           return resolve(new Settlement(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -210,7 +206,7 @@ export class ServiceHandler {
    * refund a credit card
    * @param refund
    */
-  public refund(settlementId: string, refund: Refund): Promise<Refund> {
+  public async refund(settlementId: string, refund: Refund): Promise<Refund> {
 
     return new Promise((resolve, reject) => {
 
@@ -224,12 +220,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.SETTLEMENT}/${settlementId}/${paths.REFUND}`);
 
-      this.paysafe.post(path, refund).then((response) => {
+      this.paysafe.post(path, refund).then(response => {
         if (response) {
           return resolve(new Refund(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -241,7 +237,7 @@ export class ServiceHandler {
    * cancel a refund
    * @param refund
    */
-  public cancelRefund(refundId: string): Promise<Refund> {
+  public async cancelRefund(refundId: string): Promise<Refund> {
 
     return new Promise((resolve, reject) => {
 
@@ -254,12 +250,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.REFUND}/${refundId}`);
 
-      this.paysafe.post(path, refund).then((response) => {
+      this.paysafe.post(path, refund).then(response => {
         if (response) {
           return resolve(new Refund(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -271,7 +267,7 @@ export class ServiceHandler {
    * retreive an authorization
    * @param authorization
    */
-  public getAuth(authorizationId: string): Promise<Authorization> {
+  public async getAuth(authorizationId: string): Promise<Authorization> {
 
     return new Promise((resolve, reject) => {
 
@@ -281,12 +277,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.AUTHORIZATION}/${authorizationId}`);
 
-      this.paysafe.get<Authorization>(path).then((response) => {
+      this.paysafe.get<Authorization>(path).then(response => {
         if (response) {
           return resolve(new Authorization(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -298,7 +294,7 @@ export class ServiceHandler {
    * retrieve an authorization reversal
    * @param authorizationReversal
    */
-  public getVoid(voidAuthId: string): Promise<VoidAuth> {
+  public async getVoid(voidAuthId: string): Promise<VoidAuth> {
 
     return new Promise((resolve, reject) => {
 
@@ -308,12 +304,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.VOIDAUTH}/${voidAuthId}`);
 
-      this.paysafe.get<VoidAuth>(path).then((response) => {
+      this.paysafe.get<VoidAuth>(path).then(response => {
         if (response) {
           return resolve(new VoidAuth(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -354,7 +350,7 @@ export class ServiceHandler {
    * @param merchObj
    * @param pagination
    */
-  public searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any> {
+  public async searchByMerchantRef(merchObj: any, pagination: Pagination): Promise<any> {
 
     return new Promise((resolve, reject) => {
 
@@ -377,12 +373,12 @@ export class ServiceHandler {
 
       const path = this.getPath(searchPath + '?' + toInclude);
 
-      this.paysafe.get(path).then((response) => {
+      this.paysafe.get(path).then(response => {
         if (response) {
           return resolve(new searchByMerchantRefNumClasses[className](response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -390,7 +386,7 @@ export class ServiceHandler {
 
   }
 
-  public getSettlement(settlementId: string): Promise<Settlement> {
+  public async getSettlement(settlementId: string): Promise<Settlement> {
 
     return new Promise((resolve, reject) => {
 
@@ -400,12 +396,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.SETTLEMENT}/${settlementId}`);
 
-      this.paysafe.get<Settlement>(path).then((response) => {
+      this.paysafe.get<Settlement>(path).then(response => {
         if (response) {
           return resolve(new Settlement(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -413,7 +409,7 @@ export class ServiceHandler {
 
   }
 
-  public getRefund(refundId: string): Promise<Refund> {
+  public async getRefund(refundId: string): Promise<Refund> {
 
     return new Promise((resolve, reject) => {
 
@@ -423,12 +419,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.REFUND}/${refundId}`);
 
-      this.paysafe.get<Refund>(path).then((response) => {
+      this.paysafe.get<Refund>(path).then(response => {
         if (response) {
           return resolve(new Refund(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -436,19 +432,19 @@ export class ServiceHandler {
 
   }
 
-  public verify(verification: Verification): Promise<Verification> {
+  public async verify(verification: Verification): Promise<Verification> {
 
     return new Promise((resolve, reject) => {
 
       const path = this.getPath(paths.VERIFICATION);
 
-      this.paysafe.post(path, verification).then((response) => {
+      this.paysafe.post(path, verification).then(response => {
 
         if (response) {
           return resolve(new Verification(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 
@@ -456,7 +452,7 @@ export class ServiceHandler {
 
   }
 
-  public getVerification(verificationId: string): Promise<Verification> {
+  public async getVerification(verificationId: string): Promise<Verification> {
 
     return new Promise((resolve, reject) => {
 
@@ -466,12 +462,12 @@ export class ServiceHandler {
 
       const path = this.getPath(`${paths.VERIFICATION}/${verificationId}`);
 
-      this.paysafe.get<Verification>(path).then((response) => {
+      this.paysafe.get<Verification>(path).then(response => {
         if (response) {
           return resolve(new Verification(response));
         }
         reject(new Error('empty response'));
-      }).catch((err) => {
+      }).catch(err => {
         reject(err);
       });
 

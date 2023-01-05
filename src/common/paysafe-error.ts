@@ -4,17 +4,10 @@ import { Link } from './link';
 
 export class PaysafeError extends Error {
 
-  public static create(code: number, message: string): PaysafeError {
-    const err = new PaysafeError();
-    err.setCode(code);
-    err.setMessage(message);
-    return err;
-  }
-
   private code?: number;
-  private details?: string[];
-  private fieldErrors?: FieldError[];
-  private links?: Link[];
+  private readonly details?: string[];
+  private readonly fieldErrors?: FieldError[];
+  private readonly links?: Link[];
 
   constructor(resp?: PaysafeError) {
     if (!resp) {
@@ -40,6 +33,13 @@ export class PaysafeError extends Error {
     if (typeof resp.links !== 'undefined') {
       this.links = createArray(resp.links, Link);
     }
+  }
+
+  public static create(code: number, message: string): PaysafeError {
+    const err = new PaysafeError();
+    err.setCode(code);
+    err.setMessage(message);
+    return err;
   }
 
   public setCode(code: number): void { this.code = code; }

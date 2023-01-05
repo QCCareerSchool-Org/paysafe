@@ -1,8 +1,8 @@
 export class Splitpay {
 
-  private linkedAccount?: string;
-  private account?: number;
-  private percent?: number;
+  private readonly linkedAccount?: string;
+  private readonly account?: number;
+  private readonly percent?: number;
 
   public constructor(resp?: Splitpay) {
     if (typeof resp === 'undefined') {

@@ -63,6 +63,7 @@ export class Level2level3 {
     }
     this.localTaxAmount = localTaxAmount;
   }
+
   public getLocalTaxAmount(): number | undefined { return this.localTaxAmount; }
 
   public setNationalTaxAmount(nationalTaxAmount: number): void {
@@ -71,6 +72,7 @@ export class Level2level3 {
     }
     this.nationalTaxAmount = nationalTaxAmount;
   }
+
   public getNationalTaxAmount(): number | undefined { return this.nationalTaxAmount; }
 
   public setFreightAmount(freightAmount: number): void {
@@ -79,6 +81,7 @@ export class Level2level3 {
     }
     this.freightAmount = freightAmount;
   }
+
   public getFreightTaxAmount(): number | undefined { return this.freightAmount; }
 
   public setDutyAmount(dutyAmount: number): void {
@@ -87,6 +90,7 @@ export class Level2level3 {
     }
     this.dutyAmount = dutyAmount;
   }
+
   public getDutyAmount(): number | undefined { return this.dutyAmount; }
 
   public setDesitinationZip(destinationZip: string): void {
@@ -95,6 +99,7 @@ export class Level2level3 {
     }
     this.destinationZip = destinationZip;
   }
+
   public getDesitinationZip(): string | undefined { return this.destinationZip; }
 
   public setDesitinationCountry(destinationCountry: string): void {
@@ -103,6 +108,7 @@ export class Level2level3 {
     }
     this.destinationCountry = destinationCountry;
   }
+
   public getDesitinationCountry(): string | undefined { return this.destinationCountry; }
 
   public setShipFromZip(shipFromZip: string): void {
@@ -111,6 +117,7 @@ export class Level2level3 {
     }
     this.shipFromZip = shipFromZip;
   }
+
   public getShipFromZip(): string | undefined { return this.shipFromZip; }
 
   public setLineItems(lineItems: LineItem[]): void { this.lineItems = lineItems; }

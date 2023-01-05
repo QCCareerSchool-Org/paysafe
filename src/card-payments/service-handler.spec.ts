@@ -1,18 +1,15 @@
-import { expect } from 'chai';
 import Debug from 'debug';
 import * as dotenv from 'dotenv';
-import 'mocha';
+import 'jest';
 import request from 'request';
-
-import { Paysafe } from '../index';
-
-import { Authorization } from './authorization';
-import { Verification } from './verification';
 
 import { CardExpiry } from '../common/card-expiry';
 import { PaysafeError } from '../common/paysafe-error';
+import { Paysafe } from '../index';
+import { Authorization } from './authorization';
 import { BillingDetails } from './lib/billing-details';
 import { Card } from './lib/card';
+import { Verification } from './verification';
 
 dotenv.config();
 
@@ -59,24 +56,19 @@ describe('Card Payments API', () => {
 
   it('should be up and running', async () => {
     const result = await paysafe.getCardServiceHandler().monitor();
-    expect(result).to.not.have.property('error');
-    expect(result).to.have.property('status').that.equals('READY');
-  }).timeout(timeout);
+    expect(result).not.toHaveProperty('error');
+    expect(result).toHaveProperty('status');
+    expect(result.status).toBe('READY');
+  });
 
   describe('Card Single Use Tokens', () => {
-
     let singleUseToken: string;
 
-    beforeEach(function (done) {
-      this.timeout(timeout);
-      getCardSingleUseToken().then((result) => {
-        singleUseToken = result;
-        done();
-      }).catch(done);
+    beforeEach(async () => {
+      singleUseToken = await getCardSingleUseToken();
     });
 
     it('should verify a single-use token', async () => {
-
       const merchantRefNum = randomStr();
 
       const verification = new Verification();
@@ -91,13 +83,12 @@ describe('Card Payments API', () => {
       verification.setBillingDetails(billingDetails);
 
       const verificationResult = await paysafe.getCardServiceHandler().verify(verification);
-      debug(verificationResult);
-      expect(verificationResult).to.not.have.property('error');
-      expect(verificationResult.getId()).to.not.be.an('undefined');
-      expect(verificationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-      expect(verificationResult.getStatus()).to.equal('COMPLETED');
-
-    }).timeout(timeout);
+      // debug(verificationResult);
+      expect(verificationResult).not.toHaveProperty('error');
+      expect(verificationResult.getId()).toBeDefined();
+      expect(verificationResult.getMerchantRefNum()).toBe(merchantRefNum);
+      expect(verificationResult.getStatus()).toBe('COMPLETED');
+    });
 
     it('should perform an authorization on a single-use token', async () => {
       const merchantRefNum = randomStr();
@@ -117,22 +108,21 @@ describe('Card Payments API', () => {
       authorization.setBillingDetails(billingDetails);
 
       const authorizationResult = await paysafe.getCardServiceHandler().authorize(authorization);
-      debug(authorizationResult);
-      expect(authorizationResult).to.not.have.property('error');
-      expect(authorizationResult.getId()).to.not.be.an('undefined');
-      expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-      expect(authorizationResult.getAmount()).to.equal(amount);
-      expect(authorizationResult.getStatus()).to.equal('COMPLETED');
-      expect(authorizationResult.getTxnTime()).to.be.a('Date');
+      // debug(authorizationResult);
+      expect(authorizationResult).not.toHaveProperty('error');
+      expect(authorizationResult.getId()).toBeDefined();
+      expect(authorizationResult.getMerchantRefNum()).toBe(merchantRefNum);
+      expect(authorizationResult.getAmount()).toBe(amount);
+      expect(authorizationResult.getStatus()).toBe('COMPLETED');
+      expect(authorizationResult.getTxnTime()).toBeInstanceOf(Date);
       const c = authorizationResult.getCard();
-      expect(c).to.not.be.an('undefined');
-      expect((c as Card).getLastDigits()).to.equal(creditCardNumber.substr(creditCardNumber.length - 4));
+      expect(c).toBeDefined();
+      expect((c as Card).getLastDigits()).toBe(creditCardNumber.substring(creditCardNumber.length - 4));
       const exp = (c as Card).getCardExpiry();
-      expect(exp).to.not.be.an('undefined');
-      expect((exp as CardExpiry).getMonth()).to.equal(expiryMonth);
-      expect((exp as CardExpiry).getYear()).to.equal(expiryYear);
-
-    }).timeout(timeout);
+      expect(exp).toBeDefined();
+      expect((exp as CardExpiry).getMonth()).toBe(expiryMonth);
+      expect((exp as CardExpiry).getYear()).toBe(expiryYear);
+    });
 
     it('should perform an authorization on a single-use token and fail', async () => {
       const merchantRefNum = randomStr();
@@ -152,19 +142,18 @@ describe('Card Payments API', () => {
       authorization.setBillingDetails(billingDetails);
 
       const authorizationResult = await paysafe.getCardServiceHandler().authorize(authorization);
-      debug(authorizationResult);
-      expect(authorizationResult).to.have.property('error');
+      // debug(authorizationResult);
+      expect(authorizationResult).toHaveProperty('error');
       const e = authorizationResult.getError();
-      expect(e).to.not.be.an('undefined');
-      expect((e as PaysafeError).getCode()).to.equal(3022);
-      expect(authorizationResult.getId()).to.not.be.an('undefined');
-      expect(authorizationResult.getMerchantRefNum()).to.equal(merchantRefNum);
-      expect(authorizationResult).to.not.have.property('amount');
-      expect(authorizationResult).to.not.have.property('status');
-      expect(authorizationResult).to.not.have.property('txnTime');
-      expect(authorizationResult).to.not.have.property('card');
-
-    }).timeout(timeout);
+      expect(e).toBeDefined();
+      expect((e as PaysafeError).getCode()).toBe(3022);
+      expect(authorizationResult.getId()).toBeDefined();
+      expect(authorizationResult.getMerchantRefNum()).toBe(merchantRefNum);
+      expect(authorizationResult).not.toHaveProperty('amount');
+      expect(authorizationResult).not.toHaveProperty('status');
+      expect(authorizationResult).not.toHaveProperty('txnTime');
+      expect(authorizationResult).not.toHaveProperty('card');
+    });
 
     it('should perform an authorization on a single-use token and have a server error', async () => {
       const merchantRefNum = randomStr();
@@ -183,61 +172,48 @@ describe('Card Payments API', () => {
       billingDetails.setZip('K1L 6R2');
       authorization.setBillingDetails(billingDetails);
 
-      try {
-        await paysafe.getCardServiceHandler().authorize(authorization);
-        expect.fail();
-      } catch (err) {
-        debug(err);
-        expect(err).to.be.an('Error');
-      }
-
-    }).timeout(timeout);
-
+      await expect(paysafe.getCardServiceHandler().authorize(authorization)).rejects.toBeDefined();
+    });
   });
-
 });
 
-function getCardSingleUseToken(): Promise<string> {
+async function getCardSingleUseToken(): Promise<string> {
+  const headers: request.Headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('Base64'),
+  };
+
+  const data = {
+    card: {
+      cardNum: creditCardNumber,
+      cardExpiry: {
+        year: expiryYear,
+        month: expiryMonth,
+      },
+    },
+  };
+
+  const options: request.OptionsWithUri = {
+    uri: 'https://api.test.paysafe.com/customervault/v1/singleusetokens',
+    headers,
+    method: 'POST',
+    json: true,
+    body: data,
+    timeout,
+  };
 
   return new Promise((resolve, reject) => {
-
-    const headers: request.Headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('Base64'),
-    };
-
-    const data = {
-      card: {
-        cardNum: creditCardNumber,
-        cardExpiry: {
-          year: expiryYear,
-          month: expiryMonth,
-        },
-      },
-    };
-
-    const options: request.OptionsWithUri = {
-      uri: 'https://api.test.paysafe.com/customervault/v1/singleusetokens',
-      headers,
-      method: 'POST',
-      json: true,
-      body: data,
-      timeout,
-    };
-
     request(options, (err, response, body) => {
       if (err) {
         return reject(err);
       }
-      if (typeof body.paymentToken !== 'undefined') {
+      if (typeof body.paymentToken === 'string') {
         resolve(body.paymentToken);
       } else {
         reject(new Error('unexpected result'));
       }
     });
-
   });
-
 }
 
 function randomStr(): string {
