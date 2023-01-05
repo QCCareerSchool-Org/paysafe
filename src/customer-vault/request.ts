@@ -9,9 +9,9 @@ const ID_MAX_LENGTH = 36;
  */
 export abstract class Request {
 
-  private id?: string;
-  private links?: Link[];
-  private error?: PaysafeError;
+  private readonly id?: string;
+  private readonly links?: Link[];
+  private readonly error?: PaysafeError;
 
   constructor(resp?: Request) {
     if (!resp) {

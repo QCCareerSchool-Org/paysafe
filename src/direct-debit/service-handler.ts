@@ -2,6 +2,6 @@ import { Paysafe } from '../index';
 
 export class ServiceHandler {
 
-  constructor(private paysafe: Paysafe) { }
+  constructor(private readonly paysafe: Paysafe) { /* empty */ }
 
 }

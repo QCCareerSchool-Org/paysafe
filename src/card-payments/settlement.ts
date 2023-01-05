@@ -6,7 +6,7 @@ const AMOUNT_MAX = 99999999999;
 
 export class Settlement extends SplitpayRequest {
 
-  private availableToRefund?: number;
+  private readonly availableToRefund?: number;
   private status?: SettlementStatus;
 
   constructor(resp?: Settlement) {

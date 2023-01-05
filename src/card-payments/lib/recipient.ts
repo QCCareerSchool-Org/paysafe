@@ -38,6 +38,7 @@ export class Recipient {
     }
     this.zip = zip;
   }
+
   public getZip(): string | undefined { return this.zip; }
 
   public setLastName(lastName: string): void {
@@ -46,6 +47,7 @@ export class Recipient {
     }
     this.lastName = lastName;
   }
+
   public getLastName(): string | undefined { return this.lastName; }
 
   public setAccountNumber(accountNumber: string): void {
@@ -54,6 +56,7 @@ export class Recipient {
     }
     this.accountNumber = accountNumber;
   }
+
   public getAccountNumber(): string | undefined { return this.accountNumber; }
 
 }

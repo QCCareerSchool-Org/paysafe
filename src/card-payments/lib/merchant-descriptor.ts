@@ -24,6 +24,7 @@ export class MerchantDescriptor {
     }
     this.dynamicDescriptor = dynamicDescriptor;
   }
+
   public getDynamicDescriptor(): string | undefined { return this.dynamicDescriptor; }
 
   public setPhone(phone: string): void {
@@ -32,6 +33,7 @@ export class MerchantDescriptor {
     }
     this.phone = phone;
   }
+
   public getPhone(): string | undefined { return this.phone; }
 
 }

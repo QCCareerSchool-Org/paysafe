@@ -10,15 +10,15 @@ const MERCHANT_REF_NUM_MAX_LENGTH = 255;
  */
 export abstract class Request {
 
-  private id?: string;
+  private readonly id?: string;
   private merchantRefNum?: string;
   private dupCheck?: boolean;
-  private txnTime?: Date;
-  private riskReasonCode?: number[];
-  private acquirerResponse?: AcquirerResponse;
-  private childAccountNum?: string;
-  private links?: Link[];
-  private error?: PaysafeError;
+  private readonly txnTime?: Date;
+  private readonly riskReasonCode?: number[];
+  private readonly acquirerResponse?: AcquirerResponse;
+  private readonly childAccountNum?: string;
+  private readonly links?: Link[];
+  private readonly error?: PaysafeError;
 
   constructor(resp?: Request) {
     if (!resp) {
@@ -61,6 +61,7 @@ export abstract class Request {
     }
     this.merchantRefNum = merchantRefNum;
   }
+
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public setDupCheck(dupCheck: boolean): void { this.dupCheck = dupCheck; }

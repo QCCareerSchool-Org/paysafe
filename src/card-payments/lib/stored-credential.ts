@@ -5,7 +5,7 @@ export enum StoredCredentialType {
   TOPUP = 'TOPUP',
   /** Scheduled, merchant-initiated recurring request */
   RECURRING = 'RECURRING',
-};
+}
 
 export enum StoredCredentialOccurrence {
   /** Used when this is the first time the consumer uses this credit card */
@@ -20,10 +20,10 @@ const EXTERNAL_INITIAL_TRANSACTION_ID_MAX_LENGTH = 256;
 /**
  * The storedCredential object is used to identify authorization requests that use stored credentials for a consumer,
  * in order to improve authorization rates and reduce fraud. Stored credentials can be used in two cases:
- * 
+ *
  * Using a payment token – An authorization request that uses a paymentToken from the Customer Vault API
  * Using a card number – An authorization request that uses a credit card number stored by the merchant
- * 
+ *
  * Notes:
  * * If you use a paymentToken in the authorization request but do not include the storedCredential object, Paysafe
  *   will provide default information taken from Customer Vault data.
@@ -40,7 +40,7 @@ export class StoredCredential {
    * * ADHOC – Ad hoc consumer-initiated request
    * * TOPUP – Unscheduled merchant-iniitated request
    * * RECURRING – Scheduled, merchant-initiated recurring request
-   * 
+   *
    * Note: This value defaults to ADHOC.
    */
   private type?: StoredCredentialType;
@@ -48,7 +48,7 @@ export class StoredCredential {
    * This specifies whether this stored credential request is initial or recurring. Possible values are:
    * * INITIAL – Used when this is the first time the consumer uses this credit card
    * * SUBSEQUENT – Used when the consumer uses this credit card for subsquent requests
-   * 
+   *
    * Note: This value defaults to INITIAL.
    */
   private occurrence?: StoredCredentialOccurrence;
@@ -58,7 +58,7 @@ export class StoredCredential {
    * should be provided when:
    * * type=RECURRING and occurrence=SUBSEQUENT
    * * type=TOPUP and occurrence=SUBSEQUENT
-   * 
+   *
    * Note: This reference is a must to meet PSD 2 authentication process requirements for merchant initiated transactions successfully.
    */
   private initialTransactionId?: string;
@@ -67,7 +67,7 @@ export class StoredCredential {
    * reference should be provided only when:
    * * type=RECURRING and occurrence=SUBSEQUENT
    * * type=TOPUP and occurrence=SUBSEQUENT
-   * 
+   *
    * Note: This reference cannot be provided along with initialTransactionId.
    */
   private externalInitialTransactionId?: string;
@@ -96,6 +96,7 @@ export class StoredCredential {
     }
     this.initialTransactionId = initialTransactionId;
   }
+
   public getInitialTransactionId(): string | undefined { return this.initialTransactionId; }
 
   public setExternalInitialTransactionId(externalInitialTransactionId: string): void {
@@ -104,5 +105,6 @@ export class StoredCredential {
     }
     this.externalInitialTransactionId = externalInitialTransactionId;
   }
+
   public getExternalInitialTransactionId(): string | undefined { return this.externalInitialTransactionId; }
 }

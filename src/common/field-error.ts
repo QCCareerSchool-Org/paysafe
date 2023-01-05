@@ -1,7 +1,7 @@
 export class FieldError {
 
-  private field?: string;
-  private error?: string;
+  private readonly field?: string;
+  private readonly error?: string;
 
   constructor(resp?: FieldError) {
     if (!resp) {

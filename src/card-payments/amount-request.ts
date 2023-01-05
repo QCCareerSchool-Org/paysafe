@@ -25,6 +25,6 @@ export abstract class AmountRequest extends Request {
     }
     this.amount = amount;
   }
-  public getAmount(): number | undefined { return this.amount; }
 
+  public getAmount(): number | undefined { return this.amount; }
 }

@@ -1,7 +1,4 @@
 import { createArray } from '../common/create-array';
-
-import { SplitpayRequest } from './splitpay-request';
-import { Settlement } from './settlement';
 import { AccordD } from './lib/accord-d';
 import { Authentication } from './lib/authentication';
 import { BillingDetails } from './lib/billing-details';
@@ -12,6 +9,8 @@ import { Profile } from './lib/profile';
 import { Recipient } from './lib/recipient';
 import { ShippingDetails } from './lib/shipping-details';
 import { StoredCredential } from './lib/stored-credential';
+import { Settlement } from './settlement';
+import { SplitpayRequest } from './splitpay-request';
 
 export type AuthorizationRecurring = 'INITIAL' | 'RECURRING';
 export type AuthorizationAvsResponse = 'MATCH' | 'MATCH_ADDRESS_ONLY' | 'MATCH_ZIP_ONLY' | 'NO_MATCH' | 'NOT_PROCESSED' | 'UNKNOWN';
@@ -25,14 +24,14 @@ export class Authorization extends SplitpayRequest {
   private profile?: Profile;
   private billingDetails?: BillingDetails;
   private shippingDetails?: ShippingDetails;
-   /**
+  /**
    * This indicates whether this is an initial or repeat transaction for a customer for whom you will be processing
    * recurring transactions. The Recurring Indicator is used to identify transactions that are eligible for repeat
    * processing. The merchant should identity the initial transaction processed with full billing information including
    * the card security code (CVV) by setting the recurring indicator to “INITIAL”. Subsequent charges to the same card
    * can be identified with the recurring indicator set to “RECURRING”. For these transactions the card security code
    * is not required and could not be passed in because card regulations do not allow merchants to store it.
-   * 
+   *
    * Note: Not all processing gateways support this parameter. Contact your account manager for more information. You
    * cannot include both the recurring parameter and the storedCredential object in the same authorization request.
    * Paysafe recommends using the storedCredential object.
@@ -41,7 +40,7 @@ export class Authorization extends SplitpayRequest {
   /**
    * This object is used to identify requests that use stored credentials that the merchant has on file for the
    * consumer, in order to improve authorization rates and reduce fraud.
-   * 
+   *
    * Note: You cannot include both the recurring parameter and the storedCredential object in the same authorization
    * request. Paysafe recommends using the storedCredential object.
    */
@@ -54,11 +53,11 @@ export class Authorization extends SplitpayRequest {
   private recipient?: Recipient;
   private level2level3?: Level2level3;
   private settleWithAuth?: boolean;
-  private availableToSettle?: number;
-  private authCode?: string;
+  private readonly availableToSettle?: number;
+  private readonly authCode?: string;
   private currencyCode?: string;
-  private avsResponse?: AuthorizationAvsResponse;
-  private cvvVerification?: AuthorizationCvvVerification;
+  private readonly avsResponse?: AuthorizationAvsResponse;
+  private readonly cvvVerification?: AuthorizationCvvVerification;
   private status?: AuthorizationStatus;
 
   private settlements?: Settlement[];

@@ -1,7 +1,7 @@
 export class Link {
 
-  private rel?: string;
-  private href?: string;
+  private readonly rel?: string;
+  private readonly href?: string;
 
   constructor(resp?: Link) {
     if (!resp) {

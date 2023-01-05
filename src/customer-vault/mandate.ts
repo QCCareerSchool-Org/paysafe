@@ -8,12 +8,12 @@ export type MandateStatus = 'INITIAL' | 'PENDING' | 'DECLINED' | 'BATCHED' | 'AC
 export class Mandate extends Request {
 
   private reference?: string;
-  private bankAccountId?: string;
-  private status?: MandateStatus;
+  private readonly bankAccountId?: string;
+  private readonly status?: MandateStatus;
   private paymentToken?: string;
-  private statusChangeDate?: Date;
-  private statusReasonCode?: string;
-  private statusReason?: string;
+  private readonly statusChangeDate?: Date;
+  private readonly statusReasonCode?: string;
+  private readonly statusReason?: string;
 
   constructor(resp?: Mandate) {
     super(resp);
@@ -49,6 +49,7 @@ export class Mandate extends Request {
     }
     this.reference = reference;
   }
+
   public getReference(): string | undefined { return this.reference; }
 
   public getBankAccountId(): string | undefined { return this.bankAccountId; }
@@ -67,5 +68,6 @@ export class Mandate extends Request {
     }
     this.paymentToken = paymentToken;
   }
+
   public getPaymentToken(): string | undefined { return this.paymentToken; }
 }

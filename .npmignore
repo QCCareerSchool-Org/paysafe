@@ -1,4 +1,7 @@
+/node_modules/
+.env
 src
+.vscode
 tsconfig.json
 coverage
 .eslintrc.js

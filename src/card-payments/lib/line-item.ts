@@ -10,13 +10,13 @@ const TOTAL_AMOUNT_MAX = 99999999999;
 
 export class LineItem {
 
-  private description?: string;
-  private productCode?: string;
-  private quanity?: number;
-  private unitAmount?: number;
-  private taxRate?: number;
-  private taxAmount?: number;
-  private totalAmount?: number;
+  private readonly description?: string;
+  private readonly productCode?: string;
+  private readonly quanity?: number;
+  private readonly unitAmount?: number;
+  private readonly taxRate?: number;
+  private readonly taxAmount?: number;
+  private readonly totalAmount?: number;
 
   public constructor(resp?: LineItem) {
     if (typeof resp === 'undefined') {

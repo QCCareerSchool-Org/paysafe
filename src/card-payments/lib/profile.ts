@@ -29,6 +29,7 @@ export class Profile {
     }
     this.firstName = firstName;
   }
+
   public getFirstName(): string | undefined { return this.firstName; }
 
   public setLastName(lastName: string): void {
@@ -37,6 +38,7 @@ export class Profile {
     }
     this.lastName = lastName;
   }
+
   public getLastName(): string | undefined { return this.lastName; }
 
   public setEmail(email: string): void {
@@ -45,6 +47,7 @@ export class Profile {
     }
     this.email = email;
   }
+
   public getEmail(): string | undefined { return this.email; }
 
 }

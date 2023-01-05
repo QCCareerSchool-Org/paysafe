@@ -6,9 +6,8 @@ import Debug from 'debug';
 import request from 'request';
 
 import { Request as CardPaymentRequest } from './card-payments/request';
-import { Request as CustomerVaultRequest } from './customer-vault/request';
-
 import { ServiceHandler as CardServiceHandler } from './card-payments/service-handler';
+import { Request as CustomerVaultRequest } from './customer-vault/request';
 import { ServiceHandler as CustomerServiceHandler } from './customer-vault/service-handler';
 import { ServiceHandler as DirectDebitServiceHandler } from './direct-debit/service-handler';
 import { ServiceHandler as ThreeDSecureServiceHandler } from './three-d-secure/service-handler';
@@ -25,13 +24,13 @@ export class Paysafe {
   private customerServiceHandler?: CustomerServiceHandler;
   private directDebitServiceHandler?: DirectDebitServiceHandler;
   private threeDSecureServiceHandler?: ThreeDSecureServiceHandler;
-  private maxSockets = 40;
-  private timeout = 60000; // 60 seconds
-  private baseRequest = request.defaults({
+  private readonly maxSockets = 40;
+  private readonly timeout = 60000; // 60 seconds
+  private readonly baseRequest = request.defaults({
     pool: { maxSockets: this.maxSockets },
   });
 
-  constructor(private apiKey: string, private apiPassword: string, private environment: Environment, private accountNumber: string) { }
+  constructor(private apiKey: string, private apiPassword: string, private environment: Environment, private accountNumber: string) { /* empty */ }
 
   public updateConfig(apiKey: string, apiPassword: string, environment: Environment, accountNumber: string) {
     this.apiKey = apiKey;
@@ -76,22 +75,25 @@ export class Paysafe {
     return this.threeDSecureServiceHandler;
   }
 
-  public get<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
+  public async get<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
     return this.process('GET', uri, requestObject);
   }
-  public post<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
+
+  public async post<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
     return this.process('POST', uri, requestObject);
   }
-  public put<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
+
+  public async put<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<T> {
     return this.process('PUT', uri, requestObject);
   }
-  public delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<void> {
+
+  public async delete<T extends GeneralRequest>(uri: string, requestObject?: T): Promise<void> {
     return this.process('DELETE', uri, requestObject);
   }
 
   private process<T extends GeneralRequest>(method: 'DELETE', uri: string, requestObject?: T): Promise<void>;
-  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT', uri: string, requestObject?: T): Promise<T>
-  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', uri: string, requestObject?: T): Promise<void | T> {
+  private process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT', uri: string, requestObject?: T): Promise<T>;
+  private async process<T extends GeneralRequest>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', uri: string, requestObject?: T): Promise<void | T> {
     const options: request.OptionsWithUri = {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -143,5 +145,5 @@ export class Paysafe {
 function prepareAPICredential(apiKey: string, apiPassword: string): string {
   const apiCredential = apiKey + ':' + apiPassword;
   const apiCredBuffer = Buffer.from(apiCredential);
-  return apiCredBuffer.toString('Base64');
+  return apiCredBuffer.toString('base64');
 }

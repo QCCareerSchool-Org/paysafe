@@ -1,8 +1,7 @@
-import { Request } from './request';
-
 import { createArray } from '../common/create-array';
 import { BillingAddress } from './lib/billing-address';
 import { Mandate } from './mandate';
+import { Request } from './request';
 
 const NICK_NAME_MAX_LENGTH = 50;
 const MERCHANT_REF_NUM_MAX_LENGTH = 255;
@@ -18,16 +17,16 @@ export class BACSBankAccount extends Request {
 
   private nickName?: string;
   private merchantRefNum?: string;
-  private status?: BACSBankAccountStatus;
-  private statusReason?: string;
+  private readonly status?: BACSBankAccountStatus;
+  private readonly statusReason?: string;
   private accountNumber?: string;
   private accountHolderName?: string;
   private sortCode?: string;
-  private lastDigits?: string;
+  private readonly lastDigits?: string;
   private billingAddress?: BillingAddress;
   private billingAddressId?: string;
   private paymentToken?: string;
-  private mandates?: Mandate[];
+  private readonly mandates?: Mandate[];
 
   constructor(resp?: BACSBankAccount) {
     super(resp);
@@ -81,6 +80,7 @@ export class BACSBankAccount extends Request {
     }
     this.nickName = nickName;
   }
+
   public getNickName(): string | undefined { return this.nickName; }
 
   public setMerchantRefNum(merchantRefNum: string): void {
@@ -89,6 +89,7 @@ export class BACSBankAccount extends Request {
     }
     this.merchantRefNum = merchantRefNum;
   }
+
   public getMerchantRefNum(): string | undefined { return this.merchantRefNum; }
 
   public getStatus(): BACSBankAccountStatus | undefined { return this.status; }
@@ -101,6 +102,7 @@ export class BACSBankAccount extends Request {
     }
     this.accountNumber = accountNumber;
   }
+
   public getAccountNumber(): string | undefined { return this.accountNumber; }
 
   public setAccountHolderName(accountHolderName: string): void {
@@ -109,6 +111,7 @@ export class BACSBankAccount extends Request {
     }
     this.accountHolderName = accountHolderName;
   }
+
   public getAccountHolderName(): string | undefined { return this.accountHolderName; }
 
   public setSortCode(sortCode: string): void {
@@ -117,6 +120,7 @@ export class BACSBankAccount extends Request {
     }
     this.sortCode = sortCode;
   }
+
   public getSortCode(): string | undefined { return this.sortCode; }
 
   public setBillingAddress(billingAddress: BillingAddress): void { this.billingAddress = billingAddress; }
@@ -128,6 +132,7 @@ export class BACSBankAccount extends Request {
     }
     this.billingAddressId = billingAddressId;
   }
+
   public getBillingAddressId(): string | undefined { return this.billingAddressId; }
 
   public getMandates(): Mandate[] | undefined { return this.mandates; }
@@ -140,6 +145,7 @@ export class BACSBankAccount extends Request {
     }
     this.paymentToken = paymentToken;
   }
+
   public getPaymentToken(): string | undefined { return this.paymentToken; }
 
 }
