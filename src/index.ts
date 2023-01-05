@@ -3,7 +3,7 @@
  *
  */
 import Debug from 'debug';
-import * as request from 'request';
+import request from 'request';
 
 import { Request as CardPaymentRequest } from './card-payments/request';
 import { Request as CustomerVaultRequest } from './customer-vault/request';
@@ -142,6 +142,6 @@ export class Paysafe {
 
 function prepareAPICredential(apiKey: string, apiPassword: string): string {
   const apiCredential = apiKey + ':' + apiPassword;
-  const apiCredBuffer = new Buffer(apiCredential);
+  const apiCredBuffer = Buffer.from(apiCredential);
   return apiCredBuffer.toString('Base64');
 }
