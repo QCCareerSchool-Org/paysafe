@@ -717,7 +717,7 @@ describe('Paysafe API Auths, Refunds, and Voids', () => {
 async function getSingleUseToken(): Promise<string> {
   const headers: request.Headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('Base64'),
+    'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('base64'),
   };
 
   const data = {

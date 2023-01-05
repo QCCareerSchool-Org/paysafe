@@ -676,7 +676,7 @@ async function getCardSingleUseToken(): Promise<string> {
   return new Promise((resolve, reject) => {
     const headers: request.Headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('Base64'),
+      'Authorization': 'Basic ' + Buffer.from(`${singleUseApiKey}:${singleUseApiPassword}`).toString('base64'),
     };
 
     const data = {

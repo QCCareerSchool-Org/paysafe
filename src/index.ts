@@ -145,5 +145,5 @@ export class Paysafe {
 function prepareAPICredential(apiKey: string, apiPassword: string): string {
   const apiCredential = apiKey + ':' + apiPassword;
   const apiCredBuffer = Buffer.from(apiCredential);
-  return apiCredBuffer.toString('Base64');
+  return apiCredBuffer.toString('base64');
 }
